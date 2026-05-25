@@ -1,0 +1,12 @@
+{
+      "name": "simag-frontend",
+      "version": "1.0.0",
+      "description": "Frontend untuk Sistem Informasi Magang",
+      "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+      },
+      "dependencies": {
+        "vue": "^3.2.0"
+      }
+    }
