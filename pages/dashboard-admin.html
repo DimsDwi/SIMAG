@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin — SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+
+<div style="display:flex;min-height:100vh;">
+
+  <!-- ── Sidebar ────────────────────────────────────────────── -->
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+    </div>
+
+    <!-- Admin Info -->
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">DS</div>
+      <div style="overflow:hidden;">
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Dr. Dwi Soleh, M.T.</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi </p>
+      </div>
+    </div>
+
+    <nav>
+      <div class="sidebar-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Manajemen Mahasiswa
+      </div>
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Perusahaan Mitra
+        <span class="badge badge-warning" style="margin-left:auto;">3</span>
+      </div>
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Approve Pendaftaran
+        <span class="badge badge-info" style="margin-left:auto;">8</span>
+      </div>
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analitik & Laporan
+      </div>
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Konversi SKS
+      </div>
+
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ───────────────────────────────────────── -->
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+      <div>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Panel Admin & Dosen</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Program Studi Informatika — S1 • Semester Genap 2024/2025</p>
+      </div>
+      <button class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Ekspor Laporan</button>
+    </div>
+
+    <!-- Pending Approval Alert -->
+    <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <span style="font-size:18px;">📋</span>
+      <div>
+        <p style="font-size:14px;font-weight:500;color:#818cf8;">8 Pendaftaran Magang Menunggu Approval</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">Dari 3 mahasiswa baru dan 5 yang perpanjang kontrak.</p>
+      </div>
+      <button class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;font-family:'Syne',sans-serif;">Review Sekarang</button>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
+      <div class="glass-card" style="border-radius:12px;padding:20px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Mahasiswa Aktif</p>
+        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">347</p>
+        <p style="font-size:11px;color:#4ade80;margin-top:4px;">↑ 12 dari bulan lalu</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:20px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Perusahaan Mitra</p>
+        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">184</p>
+        <p style="font-size:11px;color:#4ade80;margin-top:4px;">↑ 8 baru bulan ini</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:20px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total SKS Terkonversi</p>
+        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">41,280</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:20px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Avg. Kepuasan</p>
+        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">96%</p>
+      </div>
+    </div>
+
+    <!-- Bottom Cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+      <!-- Recent Activity -->
+      <div class="glass-card" style="border-radius:14px;padding:24px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas Terbaru</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">✅</div>
+            <div>
+              <p style="font-size:13px;font-weight:500;">Raka Aditya — logbook diapprove</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">2 jam lalu · oleh Budi Santoso (Supervisor)</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,211,238,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🏢</div>
+            <div>
+              <p style="font-size:13px;font-weight:500;">PT. Tokopedia mendaftar sebagai mitra baru</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">4 jam lalu · Menunggu verifikasi</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(251,191,36,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">📊</div>
+            <div>
+              <p style="font-size:13px;font-weight:500;">Konversi SKS 15 mahasiswa diproses</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">Kemarin · 210 SKS total dikreditkan</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(74,222,128,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎓</div>
+            <div>
+              <p style="font-size:13px;font-weight:500;">5 mahasiswa menyelesaikan program magang</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">2 hari lalu · Sertifikat diterbitkan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Approvals Table -->
+      <div class="glass-card" style="border-radius:14px;padding:24px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Pending Approval</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">MF</div>
+            <div style="flex:1;">
+              <p style="font-size:13px;font-weight:500;">Muhammad Farhan</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Gojek • Backend Intern</p>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#f97316);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">NR</div>
+            <div style="flex:1;">
+              <p style="font-size:13px;font-weight:500;">Nadia Rahma</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Tokopedia • Data Science</p>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">BW</div>
+            <div style="flex:1;">
+              <p style="font-size:13px;font-weight:500;">Budi Wijaya</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Grab • Mobile Dev</p>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
+              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
+            </div>
+          </div>
+        </div>
+        <button style="width:100%;margin-top:14px;padding:10px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;">
+          Lihat 5 Lainnya →
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script>
+  simag_requireAuth('adminprodi');
+
+  const { user } = simag_getSession();
+  if (user) {
+    document.getElementById('sidebar-name').textContent = user.name;
+  }
+</script>
+</body>
+</html>
