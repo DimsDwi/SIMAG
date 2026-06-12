@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Intern — SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+
+<div style="display:flex;min-height:100vh;">
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+
+    <div style="margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+      <button onclick="window.history.back()" style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;cursor:pointer;">
+        ← Kembali
+      </button>
+      <span style="color:rgba(255,255,255,0.4);font-size:13px;">Daftar Intern Aktif / Detail Mahasiswa</span>
+    </div>
+
+    <div class="glass-card" style="border-radius:14px;padding:32px;margin-bottom:24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:28px;font-family:'Syne',sans-serif;font-weight:700;">AF</div>
+      <div style="flex:1;min-width:250px;">
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Ahmad Faiz</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:12px;">S1 Informatika — Universitas Amikom Yogyakarta</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="badge" style="background:rgba(34,211,238,0.1);color:#22d3ee;padding:4px 10px;border-radius:6px;font-size:11px;">UI/UX Designer</span>
+          <span class="badge" style="background:rgba(74,222,128,0.1);color:#4ade80;padding:4px 10px;border-radius:6px;font-size:11px;">Aktif</span>
+        </div>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.2);padding:16px 24px;border-radius:12px;text-align:center;min-width:150px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Progress Magang</p>
+        <p style="font-family:'Syne',sans-serif;font-size:32px;font-weight:700;color:#22d3ee;">55%</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:24px;">
+
+      <div class="glass-card" style="border-radius:14px;padding:24px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Informasi Magang</h3>
+        <ul style="list-style:none;padding:0;margin:0;font-size:13px;">
+          <li style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="color:rgba(255,255,255,0.4);">Periode</span>
+            <span>1 Feb 2025 - 31 Jul 2025</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="color:rgba(255,255,255,0.4);">Mentor</span>
+            <span>Budi Santoso</span>
+          </li>
+          <li style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="color:rgba(255,255,255,0.4);">Kehadiran</span>
+            <span>42 / 50 Hari</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="glass-card" style="border-radius:14px;padding:24px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Status Logbook</h3>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-bottom:12px;">
+          <div>
+            <p style="font-size:13px;font-weight:600;">Minggu ke-8</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.4);">Menunggu Review</p>
+          </div>
+          <button style="padding:6px 12px;border-radius:6px;background:#818cf8;color:#fff;border:none;font-size:11px;cursor:pointer;">Review Sekarang</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script>
+  simag_requireAuth('mitra');
+</script>
+</body>
+</html>

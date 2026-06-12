@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Akun Baru — SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+
+<div style="min-height:100vh;display:flex;align-items:stretch;">
+
+  <!-- ── Left panel (branding) ─────────────────────────────── -->
+  <div class="login-left" style="flex:1;background:linear-gradient(135deg,rgba(79,70,229,0.15) 0%,rgba(6,182,212,0.08) 100%);border-right:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;padding:40px;">
+    <div>
+      <div style="margin-bottom:40px;">
+        <a href="index.html" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      </div>
+      <h2 style="font-size:32px;font-weight:700;line-height:1.2;margin-bottom:16px;">
+        Mulai langkah awal<br>karir profesionalmu<br><span class="gradient-text">bersama Amikom</span>
+      </h2>
+      <p style="font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;max-width:340px;">
+        Bergabunglah dengan ribuan mahasiswa lainnya dan temukan peluang magang terbaik di berbagai perusahaan mitra terpercaya.
+      </p>
+      <div style="margin-top:40px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;"></div>
+          <span style="font-size:13px;color:rgba(255,255,255,0.5);">Proses pendaftaran cepat & mudah</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#818cf8;flex-shrink:0;"></div>
+          <span style="font-size:13px;color:rgba(255,255,255,0.5);">Terintegrasi langsung dengan kurikulum</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#22d3ee;flex-shrink:0;"></div>
+          <span style="font-size:13px;color:rgba(255,255,255,0.5);">Akses ke modul bimbingan otomatis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right panel (form) ─────────────────────────────────── -->
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;">
+    <div style="width:100%;max-width:420px;">
+      <h3 style="font-size:26px;font-weight:700;margin-bottom:6px;">Daftar Akun Baru</h3>
+      <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:32px;">Pilih peran Anda dan lengkapi data di bawah ini</p>
+
+      <!-- Role Tabs -->
+      <div style="display:flex;gap:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:4px;margin-bottom:28px;">
+        <button class="tab-btn active" id="tab-mahasiswa" onclick="switchTab('mahasiswa')">Mahasiswa</button>
+        <button class="tab-btn" id="tab-adminprodi" onclick="switchTab('adminprodi')">Admin Prodi</button>
+        <button class="tab-btn" id="tab-mitra" onclick="switchTab('mitra')">Mitra</button>
+        <button class="tab-btn" id="tab-dospem" onclick="switchTab('dospem')">Dospem</button>
+      </div>
+
+      <!-- Register Form -->
+      <form id="register-form" onsubmit="handleRegister(event)">
+        <!-- Full Name -->
+        <div style="margin-bottom:18px;">
+          <label class="form-label" id="name-label">Nama Lengkap</label>
+          <input type="text" id="fullname" class="form-input" placeholder="Masukkan nama lengkap Anda" required />
+          <p class="error-msg" id="fullname-error" style="display:none;"></p>
+        </div>
+
+        <!-- Identifier (NIM/NIP/Email/Username) -->
+        <div style="margin-bottom:18px;">
+          <label class="form-label" id="identifier-label">NIM</label>
+          <input type="text" id="identifier" class="form-input" placeholder="Masukkan NIM Anda" required />
+          <p class="error-msg" id="identifier-error" style="display:none;"></p>
+        </div>
+
+        <!-- Password -->
+        <div style="margin-bottom:18px;">
+          <label class="form-label">Password</label>
+          <div style="position:relative;">
+            <input type="password" id="password" class="form-input" placeholder="Buat password minimal 6 karakter" style="padding-right:44px;" required />
+            <button type="button" onclick="togglePwd('password')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:18px;">👁</button>
+          </div>
+          <p class="error-msg" id="password-error" style="display:none;"></p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div style="margin-bottom:24px;">
+          <label class="form-label">Konfirmasi Password</label>
+          <div style="position:relative;">
+            <input type="password" id="confirm-password" class="form-input" placeholder="Ulangi password Anda" style="padding-right:44px;" required />
+            <button type="button" onclick="togglePwd('confirm-password')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:18px;">👁</button>
+          </div>
+          <p class="error-msg" id="confirm-password-error" style="display:none;"></p>
+        </div>
+
+        <p class="error-msg" id="form-error" style="display:none;margin-bottom:16px;font-size:13px;text-align:center;"></p>
+        <p class="success-msg" id="form-success" style="display:none;margin-bottom:16px;font-size:13px;text-align:center;color:#4ade80;"></p>
+
+        <button type="submit" class="btn-primary" id="register-btn"
+          style="width:100%;padding:13px;border-radius:10px;font-size:15px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span id="btn-text">Daftar Sekarang</span>
+          <span id="btn-spinner" style="display:none;">⟳</span>
+        </button>
+      </form>
+
+      <p style="text-align:center;font-size:13px;color:rgba(255,255,255,0.4);margin-top:24px;">
+        Sudah punya akun? <a href="login.html" style="color:#818cf8;text-decoration:none;">Masuk sekarang</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Shared utilities -->
+<script src="shared/utils.js"></script>
+
+<!-- Register-specific logic -->
+<script>
+'use strict';
+
+let currentRole = 'mahasiswa';
+
+function switchTab(role) {
+  currentRole = role;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tab = document.getElementById('tab-' + role);
+  if (tab) tab.classList.add('active');
+
+  const label = document.getElementById('identifier-label');
+  const idInput = document.getElementById('identifier');
+  const nameLabel = document.getElementById('name-label');
+  const nameInput = document.getElementById('fullname');
+
+  if(role === 'mahasiswa'){
+    label.textContent = 'NIM';
+    idInput.placeholder = 'Masukkan NIM Anda (Format: 23.11.5508)';
+    nameLabel.textContent = 'Nama Lengkap';
+    nameInput.placeholder = 'Masukkan nama lengkap sesuai KTM';
+  }
+  else if(role === 'adminprodi'){
+    label.textContent = 'Username Admin';
+    idInput.placeholder = 'Buat username admin prodi';
+    nameLabel.textContent = 'Nama Admin / Bagian';
+    nameInput.placeholder = 'Contoh: Admin Prodi FIKOM';
+  }
+  else if(role === 'mitra'){
+    label.textContent = 'Email Perusahaan';
+    idInput.placeholder = 'Masukkan email resmi perusahaan';
+    nameLabel.textContent = 'Nama Perusahaan';
+    nameInput.placeholder = 'Contoh: PT. Bank Mandiri';
+  }
+  else if(role === 'dospem'){
+    label.textContent = 'NIP Dosen';
+    idInput.placeholder = 'Masukkan NIP atau NIDN Dosen';
+    nameLabel.textContent = 'Nama Lengkap Dosen';
+    nameInput.placeholder = 'Masukkan nama lengkap beserta gelar';
+  }
+  clearErrors();
+}
+
+function clearErrors() {
+  ['fullname', 'identifier', 'password', 'confirm-password'].forEach(id => {
+    const input = document.getElementById(id);
+    const err   = document.getElementById(id + '-error');
+    if (input) { input.classList.remove('error'); input.value = ''; }
+    if (err)   { err.style.display = 'none'; err.textContent = ''; }
+  });
+  const fe = document.getElementById('form-error');
+  const fs = document.getElementById('form-success');
+  if (fe) { fe.style.display = 'none'; fe.textContent = ''; }
+  if (fs) { fs.style.display = 'none'; fs.textContent = ''; }
+}
+
+function validateForm() {
+  let valid = true;
+  const fullname = document.getElementById('fullname').value.trim();
+  const identifier = document.getElementById('identifier').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+
+  const idInput = document.getElementById('identifier');
+  const idErr   = document.getElementById('identifier-error');
+  const pwInput = document.getElementById('password');
+  const pwErr   = document.getElementById('password-error');
+  const cpwInput = document.getElementById('confirm-password');
+  const cpwErr   = document.getElementById('confirm-password-error');
+
+  // Reset errors
+  document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
+
+  // Validate Identifier format
+  if (currentRole === 'mahasiswa' && !/^\d{2}\.\d{2}\.\d{4}$/.test(identifier)) {
+    idInput.classList.add('error');
+    idErr.textContent  = 'Format NIM tidak valid. Gunakan format: 23.11.5508';
+    idErr.style.display = 'block';
+    valid = false;
+  } else if (currentRole === 'mitra' && !/\S+@\S+\.\S+/.test(identifier)) {
+    idInput.classList.add('error');
+    idErr.textContent  = 'Format email perusahaan tidak valid.';
+    idErr.style.display = 'block';
+    valid = false;
+  }
+
+  // Validate Password length
+  if (password.length < 6) {
+    pwInput.classList.add('error');
+    pwErr.textContent  = 'Password minimal terdiri dari 6 karakter.';
+    pwErr.style.display = 'block';
+    valid = false;
+  }
+
+  // Validate Confirm Password matching
+  if (password !== confirmPassword) {
+    cpwInput.classList.add('error');
+    cpwErr.textContent  = 'Konfirmasi password tidak cocok dengan password di atas.';
+    cpwErr.style.display = 'block';
+    valid = false;
+  }
+
+  return valid;
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  const btn       = document.getElementById('register-btn');
+  const btnText   = document.getElementById('btn-text');
+  const btnSpinner = document.getElementById('btn-spinner');
+  const formError = document.getElementById('form-error');
+  const formSuccess = document.getElementById('form-success');
+
+  btn.disabled          = true;
+  btnText.textContent   = 'Memproses Pendaftaran...';
+  btnSpinner.style.display   = 'inline';
+  btnSpinner.style.animation = 'spin 1s linear infinite';
+
+  // Simulasi API call pendaftaran
+  setTimeout(() => {
+    btn.disabled            = false;
+    btnSpinner.style.display = 'none';
+    btnText.textContent     = 'Daftar Sekarang';
+
+    // Tampilkan sukses dan arahkan ke login
+    formSuccess.textContent = '✓ Pendaftaran Berhasil! Mengalihkan ke halaman masuk...';
+    formSuccess.style.display = 'block';
+
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000);
+  }, 1500);
+}
+
+function togglePwd(id) {
+  const input = document.getElementById(id);
+  input.type  = input.type === 'password' ? 'text' : 'password';
+}
+</script>
+</body>
+</html>

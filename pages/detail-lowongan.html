@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Lowongan — SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    /* Modal / Popup Styles for Application */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-content {
+      background: #1e1e1e; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; width: 100%; max-width: 450px;
+      padding: 32px; transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    @media (max-width: 900px) {
+      .job-detail-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="display:flex;min-height:100vh;">
+
+  <!-- ── Sidebar ────────────────────────────────────────────── -->
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+    </div>
+
+    <!-- User Info -->
+    <div id="sidebar-user" style="display:flex;align-items:center;gap:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div id="sidebar-avatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">RA</div>
+      <div style="overflow:hidden;">
+        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Raka Aditya</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Mahasiswa • S1 IF</p>
+      </div>
+    </div>
+
+    <nav>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-mahasiswa.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item active" onclick="window.location.href='cari-lowongan.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Cari Lowongan
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='logbook-saya.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Logbook Saya
+        <span class="badge badge-warning" style="margin-left:auto;">2</span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='progress-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Progress SKS
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='jadwal.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2h-19A1.5 1.5 0 0 0 1 3.5v17A1.5 1.5 0 0 0 2.5 22h19a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 21.5 2zM1 8h22"/></svg>
+        Jadwal
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='notifikasi.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
+        Notifikasi
+        <span class="badge badge-info" style="margin-left:auto;">3</span>
+      </div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item" onclick="window.location.href='profil.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          Profil
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ───────────────────────────────────────── -->
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+
+    <!-- Breadcrumb & Back Button -->
+    <div style="margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+      <button onclick="window.location.href='cari-lowongan.html'" style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+        ← Kembali
+      </button>
+      <span style="color:rgba(255,255,255,0.4);font-size:13px;">Cari Lowongan / Detail</span>
+    </div>
+
+    <!-- Header Perusahaan -->
+    <div class="glass-card" style="border-radius:14px;padding:32px;margin-bottom:24px;position:relative;">
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+        <div id="company-logo" style="width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;">GT</div>
+        <div style="flex:1;">
+          <h1 id="job-title" style="font-size:26px;font-weight:700;margin-bottom:4px;">Frontend Developer Intern</h1>
+          <p id="job-meta" style="font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:12px;">PT. GoTo Gojek Tokopedia • Jakarta (WFO)</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span id="job-badge" class="badge badge-success">Sesuai Jurusan</span>
+            <span id="job-quota" class="badge" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);">Kuota: 3 Orang</span>
+          </div>
+        </div>
+        <div>
+          <button id="btn-lamar" onclick="openApplyModal()" class="btn-primary" style="padding:12px 24px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;width:100%;">Lamar Sekarang</button>
+          <p id="application-deadline" style="font-size:11px;color:rgba(255,255,255,0.4);text-align:center;margin-top:8px;">Batas: 15 Agustus 2026</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Konten Detail -->
+    <div class="job-detail-grid" style="display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start;">
+
+      <!-- Kolom Kiri: Deskripsi & Syarat -->
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <div class="glass-card" style="border-radius:14px;padding:28px;">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Deskripsi Pekerjaan</h3>
+          <p id="job-description" style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:16px;">
+            Sebagai Frontend Developer Intern, kamu akan bergabung dengan tim engineering inti kami untuk merancang dan mengimplementasikan antarmuka pengguna yang interaktif dan responsif pada aplikasi web GoTo. Kamu akan dibimbing langsung oleh Senior Engineer kami.
+          </p>
+          <ul id="job-responsibilities" style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.6;padding-left:20px;margin:0;">
+            <li>Mengembangkan fitur baru menggunakan React.js dan Next.js</li>
+            <li>Mengoptimalkan performa aplikasi untuk kecepatan dan skalabilitas maksimum</li>
+            <li>Berkolaborasi dengan UI/UX designer untuk mengubah wireframe menjadi kode</li>
+            <li>Berpartisipasi dalam code review harian</li>
+          </ul>
+        </div>
+
+        <div class="glass-card" style="border-radius:14px;padding:28px;">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Kualifikasi Pelamar</h3>
+          <ul id="job-qualifications" style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.6;padding-left:20px;margin:0;">
+            <li>Mahasiswa aktif S1 Teknik Informatika / Ilmu Komputer (minimal semester 5)</li>
+            <li>Memahami dasar-dasar HTML, CSS, dan JavaScript modern (ES6+)</li>
+            <li>Memiliki pengalaman menggunakan framework seperti React atau Vue (nilai plus)</li>
+            <li>Memahami konsep penggunaan Git & GitHub</li>
+            <li>Mampu bekerja secara WFO di kantor pusat Jakarta (Kawasan Blok M)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Profil Perusahaan -->
+      <div class="glass-card" style="border-radius:14px;padding:28px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Tentang Perusahaan</h3>
+        <p id="company-description" style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:16px;">
+          Grup GoTo adalah ekosistem digital terbesar di Indonesia, menghubungkan jutaan konsumen, mitra pengemudi, dan pedagang melalui layanan mobilitas, e-commerce, dan finansial.
+        </p>
+
+        <ul style="list-style:none;padding:0;margin:0;font-size:13px;">
+          <li style="margin-bottom:12px;">
+            <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Website</span>
+            <a id="company-website" href="https://www.gotocompany.com/" target="_blank" rel="noopener noreferrer" style="color:#22d3ee;text-decoration:none;">www.gotocompany.com</a>
+          </li>
+          <li style="margin-bottom:12px;">
+            <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Industri</span>
+            <span id="company-industry" style="color:#fff;">Teknologi & Informasi</span>
+          </li>
+          <li>
+            <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Alamat</span>
+            <span id="company-address" style="color:#fff;">Gedung Pasaraya Blok M, Lt. 6-7, Jakarta Selatan</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- Modal Konfirmasi Lamaran -->
+<div id="apply-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="apply-modal-title">
+  <div class="modal-content glass-card">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="width:60px;height:60px;border-radius:50%;background:rgba(34,211,238,0.1);color:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h2 id="apply-modal-title" style="font-size:20px;font-weight:700;margin-bottom:8px;">Konfirmasi Lamaran</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Apakah kamu yakin ingin melamar posisi <b id="modal-job-title">Frontend Developer Intern</b> di <span id="modal-company">PT. GoTo</span>? Pastikan profil SIMAG-mu sudah lengkap.</p>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button onclick="closeApplyModal()" style="padding:10px 20px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:14px;cursor:pointer;font-weight:600;flex:1;">Batal</button>
+      <button onclick="submitApplication()" style="padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;flex:1;">Kirim Lamaran</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script>
+  simag_requireAuth('mahasiswa');
+
+  const vacancies = {
+    'frontend-goto': {
+      title: 'Frontend Developer Intern',
+      company: 'PT. GoTo Gojek Tokopedia',
+      location: 'Jakarta (WFO)',
+      logo: 'GT',
+      logoBackground: 'linear-gradient(135deg,#0ea5e9,#06b6d4)',
+      badge: 'Sesuai Jurusan',
+      badgeClass: 'badge-success',
+      quota: '3 Orang',
+      deadline: '15 Agustus 2026',
+      description: 'Sebagai Frontend Developer Intern, kamu akan bergabung dengan tim engineering untuk merancang dan mengimplementasikan antarmuka pengguna yang interaktif dan responsif pada aplikasi web GoTo. Kamu akan dibimbing langsung oleh Senior Engineer.',
+      responsibilities: [
+        'Mengembangkan fitur baru menggunakan React.js dan Next.js',
+        'Mengoptimalkan performa aplikasi untuk kecepatan dan skalabilitas',
+        'Berkolaborasi dengan UI/UX designer untuk mengubah wireframe menjadi kode',
+        'Berpartisipasi dalam code review harian'
+      ],
+      qualifications: [
+        'Mahasiswa aktif S1 Teknik Informatika atau Ilmu Komputer, minimal semester 5',
+        'Memahami dasar HTML, CSS, dan JavaScript modern (ES6+)',
+        'Memiliki pengalaman menggunakan React atau Vue menjadi nilai tambah',
+        'Memahami penggunaan Git dan GitHub',
+        'Mampu bekerja secara WFO di Jakarta'
+      ],
+      companyDescription: 'Grup GoTo adalah ekosistem digital Indonesia yang menghubungkan konsumen, mitra pengemudi, dan pedagang melalui layanan mobilitas, e-commerce, dan finansial.',
+      websiteLabel: 'www.gotocompany.com',
+      websiteUrl: 'https://www.gotocompany.com/',
+      industry: 'Teknologi & Informasi',
+      address: 'Gedung Pasaraya Blok M, Jakarta Selatan'
+    },
+    'uiux-traveloka': {
+      title: 'UI/UX Researcher',
+      company: 'Traveloka',
+      location: 'Yogyakarta (Hybrid)',
+      logo: 'TV',
+      logoBackground: 'linear-gradient(135deg,#2563eb,#22d3ee)',
+      badge: 'Terbuka',
+      badgeClass: 'badge-info',
+      quota: '2 Orang',
+      deadline: '30 Agustus 2026',
+      description: 'Sebagai UI/UX Researcher Intern, kamu akan membantu tim produk memahami kebutuhan pengguna melalui riset kualitatif dan kuantitatif, lalu menerjemahkan temuan tersebut menjadi rekomendasi yang dapat ditindaklanjuti.',
+      responsibilities: [
+        'Membantu menyusun rencana dan pertanyaan riset pengguna',
+        'Melakukan wawancara, usability testing, dan survei',
+        'Mengolah temuan riset menjadi insight dan rekomendasi produk',
+        'Mempresentasikan hasil riset kepada tim produk dan desain'
+      ],
+      qualifications: [
+        'Mahasiswa aktif jurusan Desain, Psikologi, Sistem Informasi, atau bidang terkait',
+        'Memahami dasar user research dan design thinking',
+        'Mampu berkomunikasi dan menyusun laporan dengan baik',
+        'Terbiasa menggunakan Figma menjadi nilai tambah',
+        'Bersedia mengikuti pola kerja hybrid di Yogyakarta'
+      ],
+      companyDescription: 'Traveloka adalah platform perjalanan dan gaya hidup yang membantu pengguna merencanakan serta memesan berbagai kebutuhan perjalanan dalam satu aplikasi.',
+      websiteLabel: 'www.traveloka.com',
+      websiteUrl: 'https://www.traveloka.com/',
+      industry: 'Teknologi Perjalanan',
+      address: 'Yogyakarta, Daerah Istimewa Yogyakarta'
+    }
+  };
+
+  const vacancyId = new URLSearchParams(window.location.search).get('id');
+  const currentVacancy = vacancies[vacancyId] || vacancies['frontend-goto'];
+
+  function renderList(elementId, items) {
+    const list = document.getElementById(elementId);
+    const listItems = items.map(item => {
+      const listItem = document.createElement('li');
+      listItem.textContent = item;
+      return listItem;
+    });
+    list.replaceChildren(...listItems);
+  }
+
+  function renderVacancy(vacancy) {
+    document.title = `${vacancy.title} - SIMAG`;
+    document.getElementById('company-logo').textContent = vacancy.logo;
+    document.getElementById('company-logo').style.background = vacancy.logoBackground;
+    document.getElementById('job-title').textContent = vacancy.title;
+    document.getElementById('job-meta').textContent = `${vacancy.company} \u2022 ${vacancy.location}`;
+
+    const badge = document.getElementById('job-badge');
+    badge.textContent = vacancy.badge;
+    badge.className = `badge ${vacancy.badgeClass}`;
+
+    document.getElementById('job-quota').textContent = `Kuota: ${vacancy.quota}`;
+    document.getElementById('application-deadline').textContent = `Batas: ${vacancy.deadline}`;
+    document.getElementById('job-description').textContent = vacancy.description;
+    renderList('job-responsibilities', vacancy.responsibilities);
+    renderList('job-qualifications', vacancy.qualifications);
+
+    document.getElementById('company-description').textContent = vacancy.companyDescription;
+    const website = document.getElementById('company-website');
+    website.textContent = vacancy.websiteLabel;
+    website.href = vacancy.websiteUrl;
+    document.getElementById('company-industry').textContent = vacancy.industry;
+    document.getElementById('company-address').textContent = vacancy.address;
+    document.getElementById('modal-job-title').textContent = vacancy.title;
+    document.getElementById('modal-company').textContent = vacancy.company;
+  }
+
+  const { user } = simag_getSession();
+  if (user) {
+    const name = user.name || 'Mahasiswa';
+    const initials = name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(part => part[0].toUpperCase())
+      .join('');
+
+    document.getElementById('sidebar-name').textContent = name;
+    document.getElementById('sidebar-avatar').textContent = initials || 'M';
+  }
+
+  function openApplyModal() {
+    const modal = document.getElementById('apply-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+  }
+
+  function closeApplyModal() {
+    const modal = document.getElementById('apply-modal');
+    modal.classList.remove('active');
+    setTimeout(() => modal.style.display = 'none', 300);
+  }
+
+  function submitApplication() {
+    closeApplyModal();
+    const btnLamar = document.getElementById('btn-lamar');
+    btnLamar.textContent = 'Sedang Mengirim...';
+    btnLamar.style.opacity = '0.7';
+    btnLamar.disabled = true;
+
+    setTimeout(() => {
+      btnLamar.textContent = 'Lamaran Terkirim';
+      btnLamar.style.background = 'linear-gradient(135deg,#22c55e,#10b981)';
+      btnLamar.style.opacity = '1';
+      alert(`Berhasil! Lamaran magang kamu telah dikirim ke ${currentVacancy.company}.`);
+    }, 1000);
+  }
+
+  document.getElementById('apply-modal').addEventListener('click', event => {
+    if (event.target.id === 'apply-modal') closeApplyModal();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeApplyModal();
+  });
+
+  renderVacancy(currentVacancy);
+</script>
+</body>
+</html>

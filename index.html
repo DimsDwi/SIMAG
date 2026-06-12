@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIMAG — Magang Cerdas & Terukur</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Times New Roman"', 'Times', 'serif'],
+            body: ['"Times New Roman"', 'Times', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="shared/styles.css" />
+
+  <style>
+    /* Tambahan inline style untuk responsivitas grid yang baru */
+    @media (max-width: 1024px) {
+      .roles-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .testi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 768px) {
+      .roles-grid, .testi-grid, .hiw-grid { grid-template-columns: 1fr !important; }
+      .preview-role-tabs { display:flex !important; width:100%; }
+      .preview-role-tab { flex:1; padding:8px 10px !important; }
+    }
+    .preview-role-tab {
+      padding:8px 24px;
+      border:none;
+      border-radius:99px;
+      background:transparent;
+      color:rgba(255,255,255,0.5);
+      font-family:inherit;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background 0.2s ease, color 0.2s ease;
+    }
+    .preview-role-tab.active {
+      background:rgba(255,255,255,0.1);
+      color:#fff;
+    }
+    .preview-role-panel { display:none; }
+    .preview-role-panel.active { display:block; }
+  </style>
+</head>
+<body style="background-color: #0f0f1a; color: #fff; font-family: 'Times New Roman', Times, serif;">
+
+<nav style="position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(20px);background:rgba(15,15,26,0.85);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;">
+    <div style="display:flex;align-items:center;gap:32px;">
+      <a href="index.html" style="font-family:'Times New Roman', Times, serif;font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <div style="display:flex;gap:24px;" class="hide-mobile">
+        <a href="#fitur"     class="nav-link" style="font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;">Fitur</a>
+        <a href="#untuk-siapa" class="nav-link" style="font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;">Untuk Siapa</a>
+        <a href="#cara-kerja" class="nav-link" style="font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;">Cara Kerja</a>
+        <a href="#kontak"    class="nav-link" style="font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;">Kontak</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="login.html" class="btn-outline" style="padding:8px 18px;border-radius:9px;font-size:14px;color:rgba(255,255,255,0.8);font-family:'Times New Roman', Times, serif;text-decoration:none;">Masuk</a>
+      <a href="register.html" class="btn-primary" style="padding:8px 18px;border-radius:9px;font-size:14px;color:#fff;font-family:'Times New Roman', Times, serif;font-weight:600;text-decoration:none;background:linear-gradient(135deg, #4f46e5, #3b82f6);">Daftar Sekarang</a>
+    </div>
+  </div>
+</nav>
+
+<section style="max-width:1200px;margin:0 auto;padding:80px 24px 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;" class="hero-grid">
+  <div>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:999px;padding:5px 14px;font-size:12px;color:#818cf8;margin-bottom:24px;">
+      ✦ Platform Magang Digital untuk FIKOM Amikom
+    </div>
+    <h1 style="font-size:clamp(40px,5vw,62px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px;">
+      Magang yang<br><span class="gradient-text" style="background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Cerdas & Terukur</span>
+    </h1>
+    <p style="font-size:16px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:32px;max-width:420px;">
+      SIMAG membantu mengotomatisasi seluruh proses magang — mulai dari seleksi mahasiswa, matching perusahaan, monitoring real-time, hingga konversi SKS yang sesuai kurikulum FIKOM.
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="login.html" class="btn-primary" style="padding:13px 28px;border-radius:10px;font-size:15px;font-weight:600;color:#fff;font-family:'Times New Roman', Times, serif;text-decoration:none;background:linear-gradient(135deg, #4f46e5, #3b82f6);">
+        Coba Demo Interaktif →
+      </a>
+      <a href="#fitur" class="btn-outline" style="padding:13px 28px;border-radius:10px;font-size:15px;color:rgba(255,255,255,0.8);font-family:'Times New Roman', Times, serif;text-decoration:none;border: 1px solid rgba(255,255,255,0.2);">
+        Pelajari Lebih Lanjut
+      </a>
+    </div>
+  </div>
+
+  <div style="position:relative;">
+    <div class="glass-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:24px;position:relative;overflow:hidden;backdrop-filter:blur(10px);">
+      <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(99,102,241,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Selamat datang,</p>
+          <p style="font-family:'Times New Roman', Times, serif;font-size:16px;font-weight:700;">Raka Aditya</p>
+        </div>
+        <div style="background:linear-gradient(135deg,#4f46e5,#06b6d4);border-radius:12px;padding:10px 16px;text-align:center;">
+          <div style="font-family:'Times New Roman', Times, serif;font-size:28px;font-weight:800;line-height:1;">87<span style="font-size:14px;">%</span></div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">Progress</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">SKS Konversi</div>
+          <div style="font-family:'Times New Roman', Times, serif;font-size:20px;font-weight:700;color:#818cf8;">16</div>
+        </div>
+        <div style="background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">Hari Berjalan</div>
+          <div style="font-family:'Times New Roman', Times, serif;font-size:20px;font-weight:700;color:#22d3ee;">82</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;color:rgba(255,255,255,0.6);">PT. Bank Mandiri</span>
+          <span style="font-size:12px;color:#4ade80;">● Aktif</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);height:6px;border-radius:4px;overflow:hidden;"><div style="width:87%;height:100%;background:#4ade80;"></div></div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px;">131 logbook dari 150 target ✓</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);padding:40px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;" class="stats-grid">
+    <div class="stat-card"><div style="font-size:32px;font-weight:800;">2,847+</div><div style="font-size:13px;color:rgba(255,255,255,0.5);">Mahasiswa Terdaftar</div></div>
+    <div class="stat-card" style="border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);"><div style="font-size:32px;font-weight:800;">184</div><div style="font-size:13px;color:rgba(255,255,255,0.5);">Perusahaan Mitra</div></div>
+    <div class="stat-card" style="border-right:1px solid rgba(255,255,255,0.05);"><div style="font-size:32px;font-weight:800;">96%</div><div style="font-size:13px;color:rgba(255,255,255,0.5);">Tingkat Kepuasan</div></div>
+    <div class="stat-card"><div style="font-size:32px;font-weight:800;">41k+</div><div style="font-size:13px;color:rgba(255,255,255,0.5);">SKS Dikonversi</div></div>
+  </div>
+</section>
+
+<section id="fitur" style="max-width:1200px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:56px;">
+    <span style="font-size:12px;color:#818cf8;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">FITUR UNGGULAN</span>
+    <h2 style="font-size:clamp(28px,4vw,42px);font-weight:700;margin-top:12px;letter-spacing:-0.5px;">Dirancang khusus untuk ekosistem<br>magang FIKOM Amikom</h2>
+    <p style="color:rgba(255,255,255,0.45);margin-top:12px;font-size:15px;">Menggantikan proses manual dengan workflow digital yang efisien dan reliabel</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;">
+    <div class="glass-card scroll-reveal" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+      <div class="feature-icon" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(99,102,241,0.15);margin-bottom:16px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Smart Matching & Vetting</h3>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;">Sistem AI mencocokkan mahasiswa dengan kompetensi 95% akurasi. SKS dikonversi otomatis 1:1 berdasarkan durasi magang aktif.</p>
+    </div>
+    <div class="glass-card scroll-reveal" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+      <div class="feature-icon" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(168,85,247,0.15);margin-bottom:16px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Curation Perusahaan & Lowongan</h3>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;">Database perusahaan terverifikasi dengan sistem rating dan review. Lowongan difilter sesuai jurusan dan semester.</p>
+    </div>
+    <div class="glass-card scroll-reveal" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+      <div class="feature-icon" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(20,184,166,0.15);margin-bottom:16px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Logbook Interaktif & Monitoring Real-time</h3>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;">Logbook digital dengan approval supervisor. Dosen pembimbing memantau aktivitas harian, performa, dan feedback mahasiswa.</p>
+    </div>
+    <div class="glass-card scroll-reveal" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+      <div class="feature-icon" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(245,158,11,0.15);margin-bottom:16px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Konversi SKS & CPL Otomatis</h3>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;">Platform menjamin pemenuhan Capaian Pembelajaran Lulusan 87% lebih cepat dari jalur konvensional. Output KHS digital terintegrasi.</p>
+    </div>
+  </div>
+</section>
+
+<section id="untuk-siapa" style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:80px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span style="font-size:12px;color:#818cf8;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">UNTUK SIAPA</span>
+      <h2 style="font-size:clamp(26px,4vw,38px);font-weight:700;margin-top:12px;">Setiap aktor memiliki pengalaman yang sempurna</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;" class="roles-grid">
+      <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#818cf8);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">🎓</div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Mahasiswa FIKOM</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Eksplor lowongan, daftar, isi daily logbook dan lihat progres persetujuan secara instan.</p>
+        <a href="login.html" style="font-size:13px;color:#818cf8;text-decoration:none;font-weight:600;">Lihat panduan Maba →</a>
+      </div>
+      <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#a78bfa);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">👨‍💼</div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Admin Program Studi</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Kelola pendaftaran, verifikasi data, dan awasi seluruh pelaksanaan magang secara terpusat.</p>
+        <a href="login.html" style="font-size:13px;color:#a78bfa;text-decoration:none;font-weight:600;">Lihat dashboard admin →</a>
+      </div>
+      <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">🏢</div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Perusahaan Mitra</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Buat lowongan, saring pelamar, beri approval, dan nilai performa anak magang.</p>
+        <a href="login.html" style="font-size:13px;color:#34d399;text-decoration:none;font-weight:600;">Mulai rekrut intern →</a>
+      </div>
+      <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">👨‍🏫</div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Dosen Pembimbing</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Pantau logbook bimbingan, berikan evaluasi, dan setujui konversi SKS akhir.</p>
+        <a href="login.html" style="font-size:13px;color:#fbbf24;text-decoration:none;font-weight:600;">Lihat panduan dosen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cara-kerja" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+  <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;" class="hiw-grid">
+    <div>
+      <span style="font-size:12px;color:#818cf8;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">ALUR MAGANG</span>
+      <h2 style="font-size:clamp(32px,4vw,48px);font-weight:700;margin-top:16px;line-height:1.2;letter-spacing:-1px;">Dari pendaftaran hingga sertifikat magang, hanya dalam hitungan minggu</h2>
+      <p style="color:rgba(255,255,255,0.5);margin-top:20px;font-size:16px;line-height:1.6;">Platform SIMAG mengotomatisasi kerumitan birokrasi magang FIKOM, membantu Anda fokus pada pembelajaran dan pengalaman kerja.</p>
+      <a href="login.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-size:15px;color:#fff;font-weight:600;text-decoration:none;">Baca detail alur <span style="color:#818cf8;">→</span></a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:32px;background:rgba(255,255,255,0.02);padding:40px;border-radius:24px;border:1px solid rgba(255,255,255,0.05);">
+      <div style="display:flex;gap:20px;align-items:flex-start;">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">01</div>
+        <div>
+          <h4 style="font-size:18px;font-weight:700;margin-bottom:8px;">Pendaftaran & Verifikasi</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Lengkapi biodata dan unggah dokumen pendukung. Admin FIKOM akan memverifikasi kelayakan Anda.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start;">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">02</div>
+        <div>
+          <h4 style="font-size:18px;font-weight:700;margin-bottom:8px;">Smart Matching</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Algoritma akan merekomendasikan posisi dan mitra terbaik sesuai peminatan kurikulum S1 Anda.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start;">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">03</div>
+        <div>
+          <h4 style="font-size:18px;font-weight:700;margin-bottom:8px;">Pelaksanaan Magang</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Isi jurnal harian, lakukan bimbingan bersama dosen pembimbing, dan dapatkan persetujuan langsung dari supervisor industri.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start;">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">04</div>
+        <div>
+          <h4 style="font-size:18px;font-weight:700;margin-bottom:8px;">Konversi & Laporan Akhir</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Nilai akhir diakumulasi dan otomatis terkonversi menjadi KHS / Transkrip sesuai bobot SKS prodi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:80px 0;">
+  <div style="max-width:1000px;margin:0 auto;padding:0 24px;text-align:center;">
+    <span style="font-size:12px;color:#818cf8;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">SIMULASI FITUR</span>
+    <h2 style="font-size:clamp(26px,4vw,36px);font-weight:700;margin-top:12px;margin-bottom:16px;">Rasakan sendiri bagaimana SIMAG bekerja</h2>
+    <p style="color:rgba(255,255,255,0.45);font-size:15px;margin-bottom:40px;">Pilih antarmuka peran di bawah ini untuk melihat pratinjau sistem kami.</p>
+
+    <div class="preview-role-tabs" role="tablist" aria-label="Pratinjau peran" style="display:inline-flex;background:rgba(255,255,255,0.05);border-radius:99px;padding:6px;margin-bottom:32px;">
+      <button type="button" class="preview-role-tab active" role="tab" aria-selected="true" aria-controls="preview-mahasiswa" id="tab-preview-mahasiswa" onclick="switchPreviewRole('mahasiswa')">Mahasiswa</button>
+      <button type="button" class="preview-role-tab" role="tab" aria-selected="false" aria-controls="preview-dospem" id="tab-preview-dospem" onclick="switchPreviewRole('dospem')">Dosen Pembimbing</button>
+      <button type="button" class="preview-role-tab" role="tab" aria-selected="false" aria-controls="preview-mitra" id="tab-preview-mitra" onclick="switchPreviewRole('mitra')">Mitra</button>
+    </div>
+
+    <div style="background:#13131f;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px;box-shadow:0 20px 40px rgba(0,0,0,0.4);text-align:left;">
+      <div id="preview-mahasiswa" class="preview-role-panel active" role="tabpanel" aria-labelledby="tab-preview-mahasiswa">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;">
+          <div style="font-family:'Times New Roman', Times, serif;font-weight:700;font-size:18px;">Magang Saya</div>
+          <div style="font-size:12px;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px;color:rgba(255,255,255,0.6);">Lihat Semua →</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;">
+            <div>
+              <h3 style="font-size:18px;font-weight:700;margin-bottom:4px;">PT. Bank Mandiri (Persero) Tbk</h3>
+              <span style="font-size:13px;color:rgba(255,255,255,0.4);">UI/UX Designer Intern</span>
+            </div>
+            <div style="font-size:28px;font-family:'Times New Roman', Times, serif;font-weight:700;color:#34d399;">74<span style="font-size:16px;">%</span></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);height:8px;border-radius:4px;overflow:hidden;margin-bottom:20px;">
+            <div style="width:74%;height:100%;background:linear-gradient(90deg, #10b981, #34d399);"></div>
+          </div>
+          <a href="login.html" onclick="openStudentLogbook(event)" style="display:block;width:100%;box-sizing:border-box;background:#fff;color:#000;padding:12px;border-radius:8px;font-weight:600;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;">Tulis Jurnal Harian</a>
+        </div>
+      </div>
+
+      <div id="preview-dospem" class="preview-role-panel" role="tabpanel" aria-labelledby="tab-preview-dospem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;">
+          <div style="font-family:'Times New Roman', Times, serif;font-weight:700;font-size:18px;">Mahasiswa Bimbingan</div>
+          <div style="font-size:12px;background:rgba(245,158,11,0.12);padding:6px 12px;border-radius:6px;color:#fbbf24;">8 Logbook Pending</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
+          <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px;">
+            <div>
+              <h3 style="font-size:18px;font-weight:700;margin-bottom:4px;">Raka Aditya</h3>
+              <span style="font-size:13px;color:rgba(255,255,255,0.4);">PT. Bank Mandiri • Software Engineer</span>
+            </div>
+            <div style="font-size:28px;font-family:'Times New Roman', Times, serif;font-weight:700;color:#a78bfa;">87<span style="font-size:16px;">%</span></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-left:3px solid #fbbf24;border-radius:8px;padding:14px;margin-bottom:20px;">
+            <p style="font-size:13px;font-weight:600;margin-bottom:4px;">Optimalisasi Database Query</p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.4);">Logbook terbaru menunggu review dan persetujuan.</p>
+          </div>
+          <a href="login.html" onclick="openRolePage(event, 'dospem', 'pages/dashboard-dospem.html#review-logbook')" style="display:block;width:100%;box-sizing:border-box;background:#a855f7;color:#fff;padding:12px;border-radius:8px;font-family:inherit;font-weight:600;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;">Review Logbook</a>
+        </div>
+      </div>
+
+      <div id="preview-mitra" class="preview-role-panel" role="tabpanel" aria-labelledby="tab-preview-mitra">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;">
+          <div style="font-family:'Times New Roman', Times, serif;font-weight:700;font-size:18px;">Intern Aktif</div>
+          <div style="font-size:12px;background:rgba(34,211,238,0.1);padding:6px 12px;border-radius:6px;color:#22d3ee;">12 Mahasiswa</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
+          <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px;">
+            <div>
+              <h3 style="font-size:18px;font-weight:700;margin-bottom:4px;">Raka Aditya</h3>
+              <span style="font-size:13px;color:rgba(255,255,255,0.4);">Software Engineer Intern</span>
+            </div>
+            <span style="font-size:12px;background:rgba(74,222,128,0.12);padding:6px 10px;border-radius:99px;color:#4ade80;">Aktif</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;">
+            <span style="color:rgba(255,255,255,0.5);">Progress Magang</span>
+            <span style="font-weight:700;color:#34d399;">87%</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);height:8px;border-radius:4px;overflow:hidden;margin-bottom:10px;">
+            <div style="width:87%;height:100%;background:linear-gradient(90deg, #06b6d4, #34d399);"></div>
+          </div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px;">131 dari 150 logbook telah dikumpulkan.</p>
+          <a href="login.html" onclick="openRolePage(event, 'mitra', 'pages/detail-intern.html')" style="display:block;width:100%;box-sizing:border-box;background:#0891b2;color:#fff;padding:12px;border-radius:8px;font-family:inherit;font-weight:600;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;">Lihat Detail Intern</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:80px 24px;">
+  <h2 style="text-align:center;font-size:clamp(26px,4vw,38px);font-weight:700;margin-bottom:48px;">Apa kata mereka yang telah menggunakan SIMAG?</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;" class="testi-grid">
+    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);padding:32px;border-radius:16px;">
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:24px;">"Platform ini sangat membantu saya dalam memantau logbook bimbingan mahasiswa. Proses approval dan konversi nilai ke fakultas jadi lebih rapi dan terekam baik."</p>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#fff;">Bapak Dosen Pembimbing</h4>
+        <span style="font-size:12px;color:#818cf8;">Dosen FIKOM Amikom</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);padding:32px;border-radius:16px;">
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:24px;">"Kami di perusahaan sangat terbantu. Memfilter kandidat intern dari FIKOM jadi lebih mudah, dan dashboard penilaian sangat user-friendly untuk supervisor."</p>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#fff;">Ibu HR Perusahaan</h4>
+        <span style="font-size:12px;color:#34d399;">HR Bank Mandiri</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);padding:32px;border-radius:16px;">
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:24px;">"Akhirnya tidak perlu lagi bawa-bawa kertas logbook ke kampus. Semua sudah digital, notifikasi realtime, konversi SKS juga sangat transparan. Keren!"</p>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#fff;">Raka Aditya</h4>
+        <span style="font-size:12px;color:#a78bfa;">Mahasiswa Informatika</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="margin:40px 24px 80px;border-radius:24px;background:linear-gradient(135deg, #3730a3, #4f46e5);padding:80px 24px;text-align:center;box-shadow: 0 20px 40px rgba(79,70,229,0.2);">
+  <div style="max-width:800px;margin:0 auto;">
+    <span style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">GABUNG SEKARANG JUGA</span>
+    <h2 style="font-size:clamp(28px,4vw,40px);font-weight:700;color:#fff;margin-top:16px;margin-bottom:24px;line-height:1.3;">Bergabunglah dengan ratusan mahasiswa dan dosen Amikom yang telah menggunakan SIMAG</h2>
+    <div style="display:flex;justify-content:center;gap:16px;margin-top:32px;flex-wrap:wrap;">
+      <a href="login.html" class="btn-primary" style="background:#fff;color:#4f46e5;padding:14px 32px;border-radius:10px;font-weight:700;text-decoration:none;">Mulai Sekarang →</a>
+      <a href="panduan.html" class="btn-outline" style="border: 1px solid rgba(255,255,255,0.3);color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:600;">Lihat Panduan</a>
+    </div>
+  </div>
+</section>
+
+<footer id="kontak" style="border-top:1px solid rgba(255,255,255,0.05);padding:48px 0 24px;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;" class="footer-grid">
+      <div>
+        <span style="font-family:'Times New Roman', Times, serif;font-size:20px;font-weight:700;">◈ SIMAG</span>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;margin-top:12px;max-width:260px;">Platform manajemen magang digital untuk ekosistem FIKOM Universitas Amikom Yogyakarta.</p>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Platform</p>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+          <a href="#fitur"      style="color:rgba(255,255,255,0.4);text-decoration:none;">Fitur</a>
+          <a href="#cara-kerja" style="color:rgba(255,255,255,0.4);text-decoration:none;">Cara Kerja</a>
+          <a href="#"           style="color:rgba(255,255,255,0.4);text-decoration:none;">Harga</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Dukungan</p>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+          <a href="panduan.html" style="color:rgba(255,255,255,0.4);text-decoration:none;">Dokumentasi</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">FAQ</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Hubungi Kami</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Institusi</p>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+          <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Amikom</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">FIKOM</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Informatika</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.25);">© 2026 SIMAG — Universitas Amikom Yogyakarta. All rights reserved.</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.25);">Proyek Pemrograman — FIKOM</p>
+    </div>
+  </div>
+</footer>
+
+<script src="shared/utils.js"></script>
+<script>
+  function switchPreviewRole(role) {
+    document.querySelectorAll('.preview-role-tab').forEach((tab) => {
+      const isActive = tab.id === `tab-preview-${role}`;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', String(isActive));
+    });
+
+    document.querySelectorAll('.preview-role-panel').forEach((panel) => {
+      panel.classList.toggle('active', panel.id === `preview-${role}`);
+    });
+  }
+
+  function openStudentLogbook(event) {
+    openRolePage(event, 'mahasiswa', 'pages/logbook-saya.html');
+  }
+
+  function openRolePage(event, requiredRole, destination) {
+    event.preventDefault();
+    const { token, role } = simag_getSession();
+    window.location.href = token && role === requiredRole
+      ? destination
+      : 'login.html';
+  }
+</script>
+</body>
+</html>
