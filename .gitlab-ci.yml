@@ -1,0 +1,18 @@
+image: node:18-alpine
+
+stages:
+  - deploy
+
+pages:
+  stage: deploy
+  script:
+    - echo "Mempersiapkan deployment proyek SIMAG dengan Vite..."
+    - npm install
+    - npm run build
+    - rm -rf public
+    - mv dist public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
