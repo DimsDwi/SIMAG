@@ -10,6 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width:768px) {
+      aside { display:none; }
+      main { padding:20px !important; }
+      .profile-header { align-items:flex-start !important; flex-direction:column; }
+      .profile-grid { grid-template-columns:1fr !important; }
+      .profile-grid > div { grid-column:auto !important; }
+      .profile-identity { align-items:center !important; flex-direction:column; text-align:center; }
+    }
+  </style>
 </head>
 <body>
 
@@ -42,7 +52,7 @@
       </div>
       <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -70,36 +80,46 @@
   <!-- ── Main Content ───────────────────────────────────────── -->
   <main style="flex:1;padding:32px;overflow-x:hidden;">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div class="profile-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;">
       <div>
         <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Profil Perusahaan</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Kelola detail informasi perusahaan Anda di sistem SIMAG.</p>
       </div>
-      <button class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Simpan Perubahan</button>
+      <button type="button" onclick="saveProfile()" class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Simpan Perubahan</button>
     </div>
 
     <div class="glass-card" style="padding:32px;border-radius:12px;">
-      <div style="display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;">
-        <div style="width:100px;height:100px;border-radius:16px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;">BM</div>
+      <div class="profile-identity" style="display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;">
+        <div id="company-logo" style="width:100px;height:100px;border-radius:16px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;flex-shrink:0;">BM</div>
         <div>
-          <h2 style="font-size:20px;font-weight:600;margin-bottom:8px;">PT. Bank Mandiri (Persero) Tbk</h2>
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:12px;">Perbankan & Keuangan Terbesar di Indonesia</p>
-          <button style="padding:6px 16px;border-radius:6px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;border:none;cursor:pointer;">Ubah Logo</button>
+          <h2 id="company-heading" style="font-size:20px;font-weight:600;margin-bottom:8px;">PT. Bank Mandiri (Persero) Tbk</h2>
+          <p id="company-tagline-display" style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:12px;">Perbankan & Keuangan Terbesar di Indonesia</p>
+          <button type="button" onclick="document.getElementById('logo-input').click()" style="padding:6px 16px;border-radius:6px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;border:none;cursor:pointer;">Ubah Logo</button>
+          <input id="logo-input" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewLogo(event)" hidden>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div id="profile-success" style="display:none;margin-bottom:20px;padding:12px 14px;border-radius:9px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#86efac;font-size:13px;">Profil perusahaan berhasil disimpan.</div>
+      <div class="profile-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
         <div>
-          <label style="display:block;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;">Email HR / Rekrutmen</label>
-          <input type="email" value="hr@bankmandiri.co.id" style="width:100%;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);color:#fff;" readonly>
+          <label class="form-label" for="company-name">Nama Perusahaan</label>
+          <input id="company-name" type="text" class="form-input" required>
         </div>
         <div>
-          <label style="display:block;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;">Website Resmi</label>
-          <input type="text" value="https://bankmandiri.co.id" style="width:100%;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);color:#fff;">
+          <label class="form-label" for="company-email">Email HR / Rekrutmen</label>
+          <input id="company-email" type="email" class="form-input" readonly>
         </div>
-        <div style="grid-column: span 2;">
-          <label style="display:block;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;">Alamat Kantor Pusat</label>
-          <input type="text" value="Plaza Mandiri, Jl. Jend. Gatot Subroto Kav. 36-38, Jakarta 12190" style="width:100%;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);color:#fff;">
+        <div>
+          <label class="form-label" for="company-website">Website Resmi</label>
+          <input id="company-website" type="url" class="form-input" required>
+        </div>
+        <div>
+          <label class="form-label" for="company-tagline">Bidang / Tagline</label>
+          <input id="company-tagline" type="text" class="form-input" required>
+        </div>
+        <div style="grid-column:span 2;">
+          <label class="form-label" for="company-address">Alamat Kantor Pusat</label>
+          <textarea id="company-address" class="form-input" rows="3" required style="resize:vertical;"></textarea>
         </div>
       </div>
     </div>
@@ -108,13 +128,85 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
+  let pendingLogo = '';
   const { user } = simag_getSession();
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function renderProfile() {
+    const profile = SIMAG_MITRA.getCompanyProfile();
+    pendingLogo = profile.logo || '';
+    document.getElementById('company-name').value = profile.name;
+    document.getElementById('company-email').value = profile.email;
+    document.getElementById('company-website').value = profile.website;
+    document.getElementById('company-tagline').value = profile.tagline;
+    document.getElementById('company-address').value = profile.address;
+    document.getElementById('company-heading').textContent = profile.name;
+    document.getElementById('company-tagline-display').textContent = profile.tagline;
+    updateLogoPreview(profile.logo);
+  }
+
+  function updateLogoPreview(logo) {
+    const logoBox = document.getElementById('company-logo');
+    if (logo) {
+      logoBox.style.backgroundImage = `url("${logo}")`;
+      logoBox.textContent = '';
+    } else {
+      logoBox.style.backgroundImage = '';
+      logoBox.textContent = 'BM';
+    }
+  }
+
+  function previewLogo(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 1024 * 1024) {
+      alert('Ukuran logo maksimal 1 MB.');
+      event.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingLogo = reader.result;
+      updateLogoPreview(pendingLogo);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function saveProfile() {
+    const name = document.getElementById('company-name').value.trim();
+    const website = document.getElementById('company-website').value.trim();
+    const tagline = document.getElementById('company-tagline').value.trim();
+    const address = document.getElementById('company-address').value.trim();
+    if (!name || !website || !tagline || !address) {
+      alert('Lengkapi seluruh data profil perusahaan.');
+      return;
+    }
+    const profile = SIMAG_MITRA.saveCompanyProfile({
+      name,
+      email: document.getElementById('company-email').value,
+      website,
+      tagline,
+      address,
+      logo: pendingLogo
+    });
+    const session = simag_getSession();
+    if (session.user) {
+      session.user.name = profile.name;
+      sessionStorage.setItem('simag_user', JSON.stringify(session.user));
+    }
+    document.getElementById('company-heading').textContent = profile.name;
+    document.getElementById('company-tagline-display').textContent = profile.tagline;
+    document.getElementById('sidebar-name').textContent = profile.name;
+    document.getElementById('profile-success').style.display = 'block';
+  }
+
+  renderProfile();
 </script>
 </body>
 </html>

@@ -133,6 +133,7 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mahasiswa');
 
@@ -161,25 +162,16 @@
       return;
     }
 
-    let logbooks = [];
-    try {
-      const savedLogbooks = JSON.parse(localStorage.getItem('simag_logbooks') || '[]');
-      logbooks = Array.isArray(savedLogbooks) ? savedLogbooks : [];
-    } catch (error) {
-      logbooks = [];
-    }
-    logbooks.unshift({
-      id: Date.now(),
+    SIMAG_DATA.addLogbook({
       date: document.getElementById('tanggal').value,
       startTime,
       endTime,
-      activity: document.getElementById('kegiatan').value.trim(),
+      title: document.getElementById('kegiatan').value.trim(),
+      description: document.getElementById('kegiatan').value.trim(),
       result: document.getElementById('hasil').value.trim(),
-      obstacle: document.getElementById('kendala').value.trim(),
-      status: 'Pending'
+      obstacle: document.getElementById('kendala').value.trim()
     });
 
-    localStorage.setItem('simag_logbooks', JSON.stringify(logbooks));
     window.location.href = 'logbook-saya.html?created=1';
   }
 </script>

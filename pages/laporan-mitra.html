@@ -10,6 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width:768px) {
+      aside { display:none; }
+      main { padding:20px !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -42,7 +48,7 @@
       </div>
       <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -79,28 +85,30 @@
 
     <div class="glass-card" style="padding:24px;border-radius:12px;margin-bottom:24px;">
       <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Mahasiswa Siap Dievaluasi</h3>
-      <table style="width:100%;text-align:left;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama Intern</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Durasi</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook Selesai</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
-        </tr>
-        <tr>
-          <td style="padding:12px;font-weight:600;">Siti Nurbaya</td>
-          <td style="padding:12px;color:rgba(255,255,255,0.6);font-size:13px;">10 Feb 2025 - 10 Jun 2025</td>
-          <td style="padding:12px;color:#4ade80;">120/120</td>
-          <td style="padding:12px;">
-            <button class="btn-primary" style="padding:8px 16px;border-radius:6px;font-size:11px;font-weight:600;">Isi Nilai Evaluasi</button>
-          </td>
-        </tr>
-      </table>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:650px;text-align:left;border-collapse:collapse;">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama Intern</th>
+            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Durasi</th>
+            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook Selesai</th>
+            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+          </tr></thead>
+          <tbody id="evaluation-candidates"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="glass-card" style="padding:24px;border-radius:12px;">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Riwayat Evaluasi</h3>
+      <div id="evaluation-history"></div>
     </div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
@@ -108,6 +116,53 @@
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function renderEvaluations() {
+    const candidates = SIMAG_MITRA.getEvaluationCandidates();
+    const evaluations = SIMAG_MITRA.getEvaluations();
+    const candidateBody = document.getElementById('evaluation-candidates');
+    const history = document.getElementById('evaluation-history');
+    candidateBody.innerHTML = '';
+    history.innerHTML = '';
+
+    candidates.forEach((candidate) => {
+      const evaluation = evaluations.find((item) => item.candidateId === candidate.id);
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      row.innerHTML = `
+        <td style="padding:12px;font-weight:600;">${candidate.name}<span style="display:block;color:rgba(255,255,255,0.4);font-size:11px;margin-top:3px;">${candidate.position}</span></td>
+        <td style="padding:12px;color:rgba(255,255,255,0.6);font-size:13px;">${candidate.period}</td>
+        <td style="padding:12px;color:#4ade80;">${candidate.logbookCompleted}/${candidate.logbookTarget}</td>
+        <td style="padding:12px;"><span class="badge ${evaluation ? 'badge-success' : 'badge-warning'}">${evaluation ? 'Sudah Dinilai' : 'Menunggu Nilai'}</span></td>
+        <td style="padding:12px;"><button type="button" class="btn-primary" style="padding:8px 16px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;">${evaluation ? 'Ubah Nilai' : 'Isi Nilai Evaluasi'}</button></td>
+      `;
+      row.querySelector('button').onclick = () => {
+        window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(candidate.id)}`;
+      };
+      candidateBody.appendChild(row);
+    });
+
+    if (!evaluations.length) {
+      history.innerHTML = '<p style="padding:22px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada evaluasi yang dikirim.</p>';
+      return;
+    }
+
+    evaluations.forEach((evaluation) => {
+      const candidate = candidates.find((item) => item.id === evaluation.candidateId);
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);';
+      item.innerHTML = `
+        <div>
+          <p style="font-size:14px;font-weight:600;">${candidate ? candidate.name : 'Mahasiswa'}</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Nilai dikirim ${new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(evaluation.submittedAt))}</p>
+        </div>
+        <div style="text-align:right;"><strong style="font-family:'Syne',sans-serif;font-size:24px;color:#4ade80;">${evaluation.finalScore}</strong><span style="font-size:12px;color:rgba(255,255,255,0.4);"> / 100</span></div>
+      `;
+      history.appendChild(item);
+    });
+  }
+
+  renderEvaluations();
 </script>
 </body>
 </html>

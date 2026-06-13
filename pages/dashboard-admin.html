@@ -23,43 +23,38 @@
 
     <!-- Admin Info -->
     <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">DS</div>
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
       <div style="overflow:hidden;">
-        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Dr. Dwi Soleh, M.T.</p>
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Admin Prodi FIKOM</p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi </p>
       </div>
     </div>
 
     <nav>
-      <div class="sidebar-item active">
+      <div class="sidebar-item active" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        Manajemen Mahasiswa
-      </div>
-      <div class="sidebar-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        Perusahaan Mitra
-        <span class="badge badge-warning" style="margin-left:auto;">3</span>
-      </div>
-      <div class="sidebar-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Approve Pendaftaran
-        <span class="badge badge-info" style="margin-left:auto;">8</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Konversi SKS
+        <span id="admin-sks-pending-badge" class="badge badge-warning" style="margin-left:auto;">0</span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         Analitik & Laporan
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        Konversi SKS
+        Riwayat SKS
       </div>
 
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item">
+        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
           Pengaturan
         </div>
@@ -80,127 +75,76 @@
         <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Panel Admin & Dosen</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Program Studi Informatika — S1 • Semester Genap 2024/2025</p>
       </div>
-      <button class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Ekspor Laporan</button>
+      <button type="button" onclick="window.location.href='laporan-admin.html'" class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Ekspor Laporan</button>
     </div>
 
     <!-- Pending Approval Alert -->
     <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;">
       <span style="font-size:18px;">📋</span>
       <div>
-        <p style="font-size:14px;font-weight:500;color:#818cf8;">8 Pendaftaran Magang Menunggu Approval</p>
-        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">Dari 3 mahasiswa baru dan 5 yang perpanjang kontrak.</p>
+        <p id="admin-alert-title" style="font-size:14px;font-weight:500;color:#818cf8;">Pendaftaran Magang Menunggu Approval</p>
+        <p id="admin-alert-copy" style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">Data sedang dimuat.</p>
       </div>
-      <button class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;font-family:'Syne',sans-serif;">Review Sekarang</button>
+      <button onclick="window.location.href='approval-pendaftaran.html'" class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;font-family:'Syne',sans-serif;">Review Sekarang</button>
     </div>
 
     <!-- Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
       <div class="glass-card" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Mahasiswa Aktif</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">347</p>
+        <p id="admin-active-students" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0</p>
         <p style="font-size:11px;color:#4ade80;margin-top:4px;">↑ 12 dari bulan lalu</p>
       </div>
       <div class="glass-card" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Perusahaan Mitra</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">184</p>
+        <p id="admin-company-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
         <p style="font-size:11px;color:#4ade80;margin-top:4px;">↑ 8 baru bulan ini</p>
       </div>
       <div class="glass-card" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total SKS Terkonversi</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">41,280</p>
+        <p id="admin-sks-total" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0</p>
       </div>
       <div class="glass-card" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Avg. Kepuasan</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">96%</p>
+        <p id="admin-score-average" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0%</p>
       </div>
     </div>
 
     <!-- Bottom Cards -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="dashboard-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
 
       <!-- Recent Activity -->
       <div class="glass-card" style="border-radius:14px;padding:24px;">
         <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas Terbaru</h3>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">✅</div>
-            <div>
-              <p style="font-size:13px;font-weight:500;">Raka Aditya — logbook diapprove</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">2 jam lalu · oleh Budi Santoso (Supervisor)</p>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,211,238,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🏢</div>
-            <div>
-              <p style="font-size:13px;font-weight:500;">PT. Tokopedia mendaftar sebagai mitra baru</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">4 jam lalu · Menunggu verifikasi</p>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(251,191,36,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">📊</div>
-            <div>
-              <p style="font-size:13px;font-weight:500;">Konversi SKS 15 mahasiswa diproses</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">Kemarin · 210 SKS total dikreditkan</p>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(74,222,128,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎓</div>
-            <div>
-              <p style="font-size:13px;font-weight:500;">5 mahasiswa menyelesaikan program magang</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">2 hari lalu · Sertifikat diterbitkan</p>
-            </div>
-          </div>
-        </div>
+        <div id="admin-activity-list" style="display:flex;flex-direction:column;gap:12px;"></div>
       </div>
 
       <!-- Pending Approvals Table -->
       <div class="glass-card" style="border-radius:14px;padding:24px;">
         <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Pending Approval</h3>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
-            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">MF</div>
-            <div style="flex:1;">
-              <p style="font-size:13px;font-weight:500;">Muhammad Farhan</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Gojek • Backend Intern</p>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
-            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#f97316);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">NR</div>
-            <div style="flex:1;">
-              <p style="font-size:13px;font-weight:500;">Nadia Rahma</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Tokopedia • Data Science</p>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
-            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">BW</div>
-            <div style="flex:1;">
-              <p style="font-size:13px;font-weight:500;">Budi Wijaya</p>
-              <p style="font-size:11px;color:rgba(255,255,255,0.35);">PT. Grab • Mobile Dev</p>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
-              <button style="padding:5px 10px;border-radius:6px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;font-size:11px;cursor:pointer;">Tolak</button>
-            </div>
-          </div>
-        </div>
-        <button style="width:100%;margin-top:14px;padding:10px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;">
-          Lihat 5 Lainnya →
+        <div id="admin-pending-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <button onclick="window.location.href='approval-pendaftaran.html'" style="width:100%;margin-top:14px;padding:10px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;">
+          Lihat Semua →
         </button>
       </div>
 
+    </div>
+
+    <div class="glass-card" style="border-radius:14px;padding:24px;margin-top:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+        <div>
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:4px;">Koneksi Antar Dashboard</h3>
+          <p style="font-size:12px;color:rgba(255,255,255,0.45);">Data approval, logbook, nilai, dan SKS tersinkron ke semua role.</p>
+        </div>
+        <span id="admin-sync-summary" class="badge badge-info">Sinkron</span>
+      </div>
+      <div id="admin-connection-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;"></div>
     </div>
   </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('adminprodi');
 
@@ -208,6 +152,175 @@
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function getApplicationStudent(application, data) {
+    if (application.studentId === data.people.student.id) return data.people.student;
+    return {
+      name: application.name || 'Mahasiswa',
+      initials: application.initials || 'SM',
+      nim: application.nim || '-',
+      studyProgram: application.studyProgram || 'S1 Informatika'
+    };
+  }
+
+  function approveApplication(applicationId) {
+    SIMAG_DATA.approveApplication(applicationId);
+    renderAdminDashboard();
+  }
+
+  function openConnectedDashboard(role, page) {
+    const session = simag_getSession();
+    if (session.token && session.role === role) {
+      window.location.href = page;
+      return;
+    }
+
+    simag_setPostLoginRedirect(role, `pages/${page}`);
+    window.location.href = `../login.html?role=${encodeURIComponent(role)}`;
+  }
+
+  function renderAdminConnections(data, pendingApplications, pendingSks) {
+    const reviewLogbooks = data.logbooks.filter((item) => ['submitted', 'pending', 'revision'].includes(item.status));
+    const evaluatedStudentIds = new Set(data.evaluations.map((item) => item.candidateId));
+    const waitingEvaluations = data.interns.filter((intern) => !evaluatedStudentIds.has(intern.id)).length;
+    const activeVacancies = data.vacancies.filter((item) => item.status === 'active');
+    const primaryIntern = data.interns.find((item) => item.id === data.people.student.id) || data.interns[0];
+    const primarySks = primaryIntern
+      ? data.sksConversions.find((item) => item.studentId === primaryIntern.id) || { sks: 0, target: 20, status: 'Pending' }
+      : { sks: 0, target: 20, status: 'Pending' };
+
+    document.getElementById('admin-sync-summary').textContent =
+      `${data.applications.length} pendaftaran - ${data.logbooks.length} logbook`;
+
+    const cards = [
+      {
+        role: 'adminprodi',
+        page: 'laporan-admin.html',
+        title: 'Admin Prodi',
+        value: `${pendingApplications.length} approval`,
+        copy: `${pendingSks} mahasiswa perlu cek SKS`,
+        color: '#fbbf24',
+        button: 'Buka laporan'
+      },
+      {
+        role: 'mahasiswa',
+        page: 'dashboard-mahasiswa.html',
+        title: 'Mahasiswa',
+        value: `${primarySks.sks}/${primarySks.target} SKS`,
+        copy: primaryIntern ? `${primaryIntern.progress}% progress magang` : 'Belum ada magang aktif',
+        color: '#818cf8',
+        button: 'Lihat dashboard'
+      },
+      {
+        role: 'mitra',
+        page: 'dashboard-mitra.html',
+        title: 'Mitra',
+        value: `${data.interns.length} intern`,
+        copy: `${activeVacancies.length} lowongan aktif`,
+        color: '#22d3ee',
+        button: 'Cek mitra'
+      },
+      {
+        role: 'dospem',
+        page: 'dashboard-dospem.html',
+        title: 'Dosen Pembimbing',
+        value: `${reviewLogbooks.length} review`,
+        copy: `${waitingEvaluations} penilaian menunggu`,
+        color: '#a855f7',
+        button: 'Pantau bimbingan'
+      }
+    ];
+
+    const grid = document.getElementById('admin-connection-grid');
+    grid.innerHTML = cards.map((card) => `
+      <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">${simag_escapeHtml(card.title)}</p>
+          <strong style="font-family:'Syne',sans-serif;font-size:22px;color:${card.color};">${simag_escapeHtml(card.value)}</strong>
+          <p style="font-size:12px;color:rgba(255,255,255,0.42);margin-top:6px;line-height:1.5;">${simag_escapeHtml(card.copy)}</p>
+        </div>
+        <button type="button" data-role="${card.role}" data-page="${card.page}" class="btn-outline" style="margin-top:auto;padding:8px 10px;border-radius:8px;color:#fff;font-size:12px;">${simag_escapeHtml(card.button)}</button>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('button[data-role]').forEach((button) => {
+      button.onclick = () => openConnectedDashboard(button.dataset.role, button.dataset.page);
+    });
+  }
+
+  function renderAdminDashboard() {
+    const data = SIMAG_DATA.getData();
+    const pendingApplications = data.applications.filter((item) => item.adminStatus === 'Pending');
+    const totalSks = data.sksConversions.reduce((total, item) => total + Number(item.sks || 0), 0);
+    const pendingSks = data.interns.filter((intern) => {
+      const conversion = data.sksConversions.find((item) => item.studentId === intern.id);
+      return !conversion || conversion.status !== 'Completed';
+    }).length;
+    const companyCount = new Set([
+      ...data.vacancies.map((item) => item.companyId || item.company),
+      ...data.interns.map((item) => item.companyId || item.company)
+    ].filter(Boolean)).size;
+    const scoreAverage = data.evaluations.length
+      ? Math.round(data.evaluations.reduce((total, item) => total + Number(item.finalScore || 0), 0) / data.evaluations.length)
+      : 0;
+
+    document.getElementById('sidebar-name').textContent = data.people.admin.name;
+    document.getElementById('admin-alert-title').textContent = `${pendingApplications.length} Pendaftaran Magang Menunggu Approval`;
+    document.getElementById('admin-alert-copy').textContent = pendingApplications.length
+      ? 'Setelah disetujui, mahasiswa otomatis muncul pada dashboard Mitra dan Dosen.'
+      : 'Semua pendaftaran magang sudah selesai diproses.';
+    document.getElementById('admin-active-students').textContent = data.interns.length;
+    document.getElementById('admin-company-count').textContent = companyCount || 0;
+    document.getElementById('admin-sks-total').textContent = totalSks;
+    document.getElementById('admin-score-average').textContent = `${scoreAverage}%`;
+    document.getElementById('admin-sks-pending-badge').textContent = pendingSks;
+    renderAdminConnections(data, pendingApplications, pendingSks);
+
+    const activityList = document.getElementById('admin-activity-list');
+    activityList.innerHTML = '';
+    if (!data.activities.length) {
+      activityList.innerHTML = '<div style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Belum ada aktivitas terbaru.</div>';
+    }
+    data.activities.slice(0, 5).forEach((activity) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+      item.innerHTML = `
+        <div style="width:32px;height:32px;border-radius:8px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${simag_escapeHtml(activity.icon)}</div>
+        <div>
+          <p style="font-size:13px;font-weight:500;">${simag_escapeHtml(activity.title)}</p>
+          <p style="font-size:11px;color:rgba(255,255,255,0.35);">${simag_escapeHtml(activity.meta)}</p>
+        </div>
+      `;
+      activityList.appendChild(item);
+    });
+
+    const pendingList = document.getElementById('admin-pending-list');
+    pendingList.innerHTML = '';
+    if (!pendingApplications.length) {
+      pendingList.innerHTML = '<div style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;background:rgba(255,255,255,0.03);border-radius:8px;">Tidak ada approval pending.</div>';
+      return;
+    }
+
+    pendingApplications.slice(0, 3).forEach((application) => {
+      const vacancy = data.vacancies.find((item) => item.id === application.vacancyId) || {};
+      const company = data.people.company;
+      const student = getApplicationStudent(application, data);
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;';
+      item.innerHTML = `
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">${simag_escapeHtml(student.initials || 'SM')}</div>
+        <div style="flex:1;min-width:0;">
+          <p style="font-size:13px;font-weight:500;">${simag_escapeHtml(student.name)}</p>
+          <p style="font-size:11px;color:rgba(255,255,255,0.35);">${simag_escapeHtml(company.name)} - ${simag_escapeHtml(application.position || vacancy.title || 'Magang')}</p>
+        </div>
+        <button data-approve style="padding:5px 10px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;">Approve</button>
+      `;
+      item.querySelector('[data-approve]').onclick = () => approveApplication(application.id);
+      pendingList.appendChild(item);
+    });
+  }
+
+  renderAdminDashboard();
 </script>
 </body>
 </html>

@@ -78,33 +78,78 @@
     <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">Jadwal & Agenda</h1>
     <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:28px;">Daftar kegiatan, meeting, dan tenggat waktu logbook.</p>
 
-    <div class="glass-card" style="padding:20px;border-radius:12px;">
-        <div style="padding:12px;background:rgba(255,255,255,0.05);border-left:4px solid #818cf8;border-radius:8px;margin-bottom:12px;">
-            <p style="font-size:14px;font-weight:600;">Weekly Sync dengan Supervisor</p>
-            <p style="font-size:12px;color:rgba(255,255,255,0.5);">Jumat, 10 Juni 2025 • 14:00 WIB</p>
-        </div>
-        <div style="padding:12px;background:rgba(255,255,255,0.05);border-left:4px solid #fbbf24;border-radius:8px;">
-            <p style="font-size:14px;font-weight:600;">Deadline Laporan Bulanan</p>
-            <p style="font-size:12px;color:rgba(255,255,255,0.5);">Sabtu, 15 Juni 2025 • 23:59 WIB</p>
-        </div>
-    </div>
+    <div id="schedule-list" class="glass-card" style="padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:12px;"></div>
 </div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   // Guard: hanya mahasiswa yang boleh akses halaman ini
   simag_requireAuth('mahasiswa');
+  const DOSPEM_SCHEDULE_KEY = 'simag_dospem_schedules_v1';
 
-  // Tampilkan nama dari sesi
-  const { user } = simag_getSession();
-  if (user) {
-    const firstName = user.name.split(' ')[0];
-    document.getElementById('sidebar-name').textContent = user.name;
-    document.getElementById('header-name').textContent  = firstName;
+  function readDospemSchedules() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(DOSPEM_SCHEDULE_KEY) || '[]');
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      localStorage.removeItem(DOSPEM_SCHEDULE_KEY);
+      return [];
+    }
   }
+
+  function formatScheduleDate(value, time) {
+    const date = new Intl.DateTimeFormat('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(`${value}T00:00:00`));
+    return `${date} - ${time} WIB`;
+  }
+
+  function renderSchedule() {
+    const summary = SIMAG_DATA.getDashboardSummary();
+    const list = document.getElementById('schedule-list');
+    document.getElementById('sidebar-name').textContent = summary.student.name;
+    const dospemSchedules = readDospemSchedules()
+      .filter((schedule) => schedule.studentId === summary.intern.id)
+      .map((schedule) => ({
+        title: `Bimbingan: ${schedule.topic}`,
+        time: formatScheduleDate(schedule.date, schedule.time),
+        color: '#a855f7'
+      }));
+
+    const schedules = [
+      {
+        title: `Weekly Sync dengan ${summary.intern.mentor}`,
+        time: 'Jumat, 19 Juni 2026 - 14:00 WIB',
+        color: '#818cf8'
+      },
+      ...(dospemSchedules.length ? dospemSchedules : [{
+        title: `Bimbingan progres bersama ${summary.lecturer.name}`,
+        time: 'Senin, 22 Juni 2026 - 10:00 WIB',
+        color: '#22d3ee'
+      }]),
+      {
+        title: 'Deadline laporan bulanan magang',
+        time: 'Selasa, 30 Juni 2026 - 23:59 WIB',
+        color: '#fbbf24'
+      }
+    ];
+
+    list.innerHTML = schedules.map((schedule) => `
+      <div style="padding:12px;background:rgba(255,255,255,0.05);border-left:4px solid ${schedule.color};border-radius:8px;">
+        <p style="font-size:14px;font-weight:600;">${simag_escapeHtml(schedule.title)}</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.5);">${simag_escapeHtml(schedule.time)}</p>
+      </div>
+    `).join('');
+  }
+
+  renderSchedule();
 </script>
 </body>
 </html>

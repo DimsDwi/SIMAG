@@ -79,10 +79,10 @@
     <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:28px;">Kelola informasi pribadi dan pengaturan akun.</p>
 
     <div class="glass-card" style="padding:32px;border-radius:12px;display:flex;gap:32px;align-items:flex-start;">
-        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;">RA</div>
+        <div id="profile-avatar" style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;flex-shrink:0;">RA</div>
         <div style="flex:1;">
-            <h2 style="font-size:20px;font-weight:600;margin-bottom:4px;">Raka Aditya</h2>
-            <p style="color:rgba(255,255,255,0.5);margin-bottom:16px;">NIM: 23.11.5508 • Teknik Informatika</p>
+            <h2 id="profile-name" style="font-size:20px;font-weight:600;margin-bottom:4px;">Raka Aditya</h2>
+            <p id="profile-meta" style="color:rgba(255,255,255,0.5);margin-bottom:16px;">NIM: 23.11.5508 - S1 Informatika</p>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div>
@@ -107,17 +107,20 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   // Guard: hanya mahasiswa yang boleh akses halaman ini
   simag_requireAuth('mahasiswa');
 
-  // Tampilkan nama dari sesi
-  const { user } = simag_getSession();
-  if (user) {
-    const firstName = user.name.split(' ')[0];
-    document.getElementById('sidebar-name').textContent = user.name;
-    document.getElementById('header-name').textContent  = firstName;
+  function renderProfile() {
+    const summary = SIMAG_DATA.getDashboardSummary();
+    document.getElementById('sidebar-name').textContent = summary.student.name;
+    document.getElementById('profile-avatar').textContent = summary.student.initials;
+    document.getElementById('profile-name').textContent = summary.student.name;
+    document.getElementById('profile-meta').textContent = `NIM: ${summary.student.nim} - ${summary.student.studyProgram}`;
   }
+
+  renderProfile();
 </script>
 </body>
 </html>

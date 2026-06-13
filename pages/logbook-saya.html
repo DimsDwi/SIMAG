@@ -96,20 +96,7 @@
                   <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
               </tr>
             </thead>
-            <tbody id="logbook-table-body">
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:12px;">5 Juni 2025</td>
-                <td style="padding:12px;">Slicing UI Homepage</td>
-                <td style="padding:12px;"><span class="badge badge-warning">Pending</span></td>
-                <td style="padding:12px;"><button style="color:#818cf8;background:none;border:none;">Edit</button></td>
-            </tr>
-            <tr>
-                <td style="padding:12px;">4 Juni 2025</td>
-                <td style="padding:12px;">Meeting Sprint Planning</td>
-                <td style="padding:12px;"><span class="badge badge-success">Approved</span></td>
-                <td style="padding:12px;"><button style="color:#818cf8;background:none;border:none;">Lihat</button></td>
-            </tr>
-            </tbody>
+            <tbody id="logbook-table-body"></tbody>
         </table>
         </div>
     </div>
@@ -119,6 +106,7 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   // Guard: hanya mahasiswa yang boleh akses halaman ini
   simag_requireAuth('mahasiswa');
@@ -131,6 +119,7 @@
 
   const params = new URLSearchParams(window.location.search);
   if (params.get('created') === '1') {
+    document.getElementById('success-message').textContent = 'Logbook baru berhasil dikirim dengan status Submitted dan sudah masuk ke dashboard dosen, mitra, dan admin.';
     document.getElementById('success-message').style.display = 'block';
     window.history.replaceState({}, document.title, 'logbook-saya.html');
   }
@@ -144,16 +133,11 @@
   }
 
   function renderSavedLogbooks() {
-    let logbooks = [];
-    try {
-      const savedLogbooks = JSON.parse(localStorage.getItem('simag_logbooks') || '[]');
-      logbooks = Array.isArray(savedLogbooks) ? savedLogbooks : [];
-    } catch (error) {
-      logbooks = [];
-    }
+    const logbooks = SIMAG_DATA.getDashboardSummary().logbooks;
     const tableBody = document.getElementById('logbook-table-body');
+    tableBody.innerHTML = '';
 
-    [...logbooks].reverse().forEach((logbook) => {
+    logbooks.forEach((logbook) => {
       const row = document.createElement('tr');
       row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
 
@@ -168,8 +152,8 @@
       const statusCell = document.createElement('td');
       statusCell.style.padding = '12px';
       const badge = document.createElement('span');
-      badge.className = 'badge badge-warning';
-      badge.textContent = logbook.status;
+      badge.className = `badge ${SIMAG_DATA.statusBadge(logbook.status)}`;
+      badge.textContent = SIMAG_DATA.statusLabel(logbook.status);
       statusCell.appendChild(badge);
 
       const actionCell = document.createElement('td');
@@ -179,15 +163,12 @@
       actionButton.textContent = 'Lihat';
       actionButton.style.cssText = 'color:#818cf8;background:none;border:none;cursor:pointer;';
       actionButton.onclick = () => {
-        alert(
-          `${logbook.activity}\n\nWaktu: ${logbook.startTime} - ${logbook.endTime}\n\nHasil:\n${logbook.result}` +
-          (logbook.obstacle ? `\n\nKendala dan Solusi:\n${logbook.obstacle}` : '')
-        );
+        window.location.href = `detail-logbook.html?id=${encodeURIComponent(logbook.id)}&role=mahasiswa`;
       };
       actionCell.appendChild(actionButton);
 
       row.append(dateCell, activityCell, statusCell, actionCell);
-      tableBody.prepend(row);
+      tableBody.appendChild(row);
     });
   }
 
