@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riwayat SKS - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+<div style="display:flex;min-height:100vh;">
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div style="overflow:hidden;">
+        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+      </div>
+    </div>
+    <nav>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik & Laporan</div>
+      <div class="sidebar-item active" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">Riwayat SKS</div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+      <div>
+        <a href="dashboard-admin.html" style="display:inline-block;margin-bottom:12px;color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Kembali ke dashboard</a>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Riwayat SKS</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Catatan konversi SKS mahasiswa yang sudah diproses admin prodi.</p>
+      </div>
+      <button type="button" onclick="window.location.href='konversi-sks.html'" class="btn-primary" style="padding:10px 18px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Kelola Konversi</button>
+    </div>
+
+    <div class="dashboard-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+      <div class="glass-card" style="border-radius:12px;padding:18px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Riwayat</p>
+        <p id="history-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:18px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Selesai</p>
+        <p id="completed-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:18px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total SKS</p>
+        <p id="total-sks" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:18px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Menunggu</p>
+        <p id="pending-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0</p>
+      </div>
+    </div>
+
+    <div class="glass-card" style="padding:24px;border-radius:14px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <h2 style="font-size:16px;font-weight:700;">Daftar Riwayat Konversi</h2>
+        <span id="history-summary" class="badge badge-info">Data dimuat</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:820px;border-collapse:collapse;text-align:left;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Tanggal</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Perusahaan</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">SKS</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="glass-card" style="padding:24px;border-radius:14px;">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas SKS Terbaru</h2>
+      <div id="sks-activity-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  simag_requireAuth('adminprodi');
+
+  function getInitials(name) {
+    return String(name || 'Admin Prodi')
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join('') || 'AP';
+  }
+
+  function formatDateTime(value) {
+    if (!value) return '-';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  function getStudentProfile(data, studentId) {
+    const intern = data.interns.find((item) => item.id === studentId);
+    if (intern) return intern;
+
+    const application = data.applications.find((item) => item.studentId === studentId);
+    if (application) {
+      return {
+        id: application.studentId,
+        initials: application.initials || getInitials(application.name),
+        name: application.name || 'Mahasiswa',
+        nim: application.nim || '-',
+        studyProgram: application.studyProgram || 'S1 Informatika',
+        company: application.company || data.people.company.name,
+        position: application.position || 'Magang'
+      };
+    }
+
+    return {
+      ...data.people.student,
+      company: data.people.company.name,
+      position: 'Magang'
+    };
+  }
+
+  function renderHistory() {
+    const data = SIMAG_DATA.getData();
+    const conversions = [...data.sksConversions].sort((a, b) => {
+      return new Date(b.convertedAt || 0) - new Date(a.convertedAt || 0);
+    });
+    const completedCount = conversions.filter((item) => item.status === 'Completed').length;
+    const totalSks = conversions.reduce((total, item) => total + Number(item.sks || 0), 0);
+    const pendingCount = data.interns.filter((intern) => {
+      const conversion = conversions.find((item) => item.studentId === intern.id);
+      return !conversion || conversion.status !== 'Completed';
+    }).length;
+    const admin = data.people.admin || {};
+
+    document.getElementById('sidebar-name').textContent = admin.name || 'Admin Prodi FIKOM';
+    document.getElementById('admin-initials').textContent = admin.initials || getInitials(admin.name);
+    document.getElementById('history-count').textContent = conversions.length;
+    document.getElementById('completed-count').textContent = completedCount;
+    document.getElementById('total-sks').textContent = totalSks;
+    document.getElementById('pending-count').textContent = pendingCount;
+    document.getElementById('history-summary').textContent = `${totalSks} SKS dari ${conversions.length} riwayat`;
+
+    const body = document.getElementById('history-body');
+    body.innerHTML = '';
+
+    if (!conversions.length) {
+      body.innerHTML = '<tr><td colspan="5" style="padding:22px;text-align:center;color:rgba(255,255,255,0.45);">Belum ada riwayat konversi SKS.</td></tr>';
+    }
+
+    conversions.forEach((conversion) => {
+      const student = getStudentProfile(data, conversion.studentId);
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      row.innerHTML = `
+        <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.55);">${simag_escapeHtml(formatDateTime(conversion.convertedAt))}</td>
+        <td style="padding:12px;">
+          <strong style="display:block;font-size:13px;">${simag_escapeHtml(student.name)}</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.nim || '-')} - ${simag_escapeHtml(student.studyProgram || 'S1 Informatika')}</span>
+        </td>
+        <td style="padding:12px;">
+          <strong style="display:block;font-size:13px;font-weight:600;">${simag_escapeHtml(student.company || data.people.company.name)}</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.position || 'Magang')}</span>
+        </td>
+        <td style="padding:12px;font-weight:700;color:#22d3ee;">${Number(conversion.sks || 0)}/${Number(conversion.target || 20)} SKS</td>
+        <td style="padding:12px;"><span class="badge ${SIMAG_DATA.statusBadge(conversion.status)}">${simag_escapeHtml(conversion.status || 'Pending')}</span></td>
+      `;
+      body.appendChild(row);
+    });
+
+    const activityList = document.getElementById('sks-activity-list');
+    const activities = data.activities.filter((activity) => activity.type === 'sks').slice(0, 5);
+    activityList.innerHTML = '';
+
+    if (!activities.length) {
+      activityList.innerHTML = '<div style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;background:rgba(255,255,255,0.03);border-radius:8px;">Belum ada aktivitas SKS terbaru.</div>';
+      return;
+    }
+
+    activities.forEach((activity) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;gap:10px;align-items:flex-start;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;';
+      item.innerHTML = `
+        <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,211,238,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#22d3ee;">${simag_escapeHtml(activity.icon || 'SK')}</div>
+        <div>
+          <p style="font-size:13px;font-weight:600;">${simag_escapeHtml(activity.title)}</p>
+          <p style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(activity.meta || 'Baru saja')}</p>
+        </div>
+      `;
+      activityList.appendChild(item);
+    });
+  }
+
+  renderHistory();
+</script>
+</body>
+</html>

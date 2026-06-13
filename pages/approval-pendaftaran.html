@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approval Pendaftaran - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+<div style="display:flex;min-height:100vh;">
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div style="overflow:hidden;">
+        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+      </div>
+    </div>
+    <nav>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
+      <div class="sidebar-item active" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik & Laporan</div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+      <div>
+        <a href="dashboard-admin.html" style="display:inline-block;margin-bottom:12px;color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Kembali ke dashboard</a>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Approval Pendaftaran Magang</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Setujui pendaftaran agar mahasiswa muncul di dashboard Mitra dan Dosen.</p>
+      </div>
+      <span id="approval-summary" class="badge badge-info">0 pending</span>
+    </div>
+
+    <div class="glass-card" style="padding:24px;border-radius:14px;">
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:860px;border-collapse:collapse;text-align:left;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Perusahaan</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Posisi</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Dosen</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status Admin</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status Mitra</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="approval-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  simag_requireAuth('adminprodi');
+
+  function getStudent(application, data) {
+    if (application.studentId === data.people.student.id) return data.people.student;
+    return {
+      name: application.name || 'Mahasiswa',
+      nim: application.nim || '-',
+      studyProgram: application.studyProgram || 'S1 Informatika',
+      initials: application.initials || 'SM'
+    };
+  }
+
+  function renderApprovals() {
+    const data = SIMAG_DATA.getData();
+    const pendingCount = data.applications.filter((item) => item.adminStatus === 'Pending').length;
+    const body = document.getElementById('approval-body');
+    document.getElementById('sidebar-name').textContent = data.people.admin.name;
+    document.getElementById('approval-summary').textContent = `${pendingCount} pending`;
+    body.innerHTML = '';
+
+    data.applications.forEach((application) => {
+      const student = getStudent(application, data);
+      const vacancy = data.vacancies.find((item) => item.id === application.vacancyId) || {};
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      row.innerHTML = `
+        <td style="padding:12px;">
+          <strong style="display:block;font-size:13px;">${simag_escapeHtml(student.name)}</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.nim)} - ${simag_escapeHtml(student.studyProgram)}</span>
+        </td>
+        <td style="padding:12px;font-size:13px;">${simag_escapeHtml(data.people.company.name)}</td>
+        <td style="padding:12px;font-size:13px;">${simag_escapeHtml(application.position || vacancy.title || 'Magang')}</td>
+        <td style="padding:12px;font-size:13px;">${simag_escapeHtml(data.people.lecturer.name)}</td>
+        <td style="padding:12px;"><span class="badge ${application.adminStatus === 'Approved' ? 'badge-success' : 'badge-warning'}">${simag_escapeHtml(application.adminStatus)}</span></td>
+        <td style="padding:12px;"><span class="badge ${SIMAG_DATA.statusBadge(application.partnerStatus)}">${simag_escapeHtml(application.partnerStatus || application.status)}</span></td>
+        <td style="padding:12px;"></td>
+      `;
+      const actionCell = row.lastElementChild;
+      if (application.adminStatus === 'Approved') {
+        actionCell.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.4);">Sudah disetujui</span>';
+      } else {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = 'Approve';
+        button.className = 'btn-primary';
+        button.style.cssText = 'padding:7px 14px;border-radius:8px;color:#fff;font-size:12px;font-weight:600;';
+        button.onclick = () => {
+          SIMAG_DATA.approveApplication(application.id);
+          renderApprovals();
+        };
+        actionCell.appendChild(button);
+      }
+      body.appendChild(row);
+    });
+  }
+
+  renderApprovals();
+</script>
+</body>
+</html>

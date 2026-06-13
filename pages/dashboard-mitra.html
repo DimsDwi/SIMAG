@@ -10,6 +10,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    .mitra-stat-card {
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .mitra-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(129,140,248,0.3);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .intern-row {
+      transition: background 0.2s ease;
+    }
+
+    .intern-row:hover {
+      background: rgba(255,255,255,0.025);
+    }
+
+    @media (max-width: 768px) {
+      aside { display: none; }
+      main { padding: 20px !important; }
+      .mitra-header { align-items: flex-start !important; gap: 16px; flex-direction: column; }
+      .intern-table-header { align-items: flex-start !important; flex-direction: column; }
+      #search-intern { width: 100% !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -41,13 +69,13 @@
   <div class="sidebar-item" onclick="window.location.href='intern-aktif.html'" style="cursor:pointer;">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
     Intern Aktif
-    <span class="badge badge-info" style="margin-left:auto;">12</span>
+    <span id="sidebar-intern-count" class="badge badge-info" style="margin-left:auto;">0</span>
   </div>
 
   <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-    Review Logbook
-    <span class="badge badge-warning" style="margin-left:auto;">5</span>
+    Monitoring Logbook
+    <span id="sidebar-logbook-count" class="badge badge-warning" style="margin-left:auto;">0</span>
   </div>
 
   <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -77,43 +105,46 @@
   <main style="flex:1;padding:32px;overflow-x:hidden;">
 
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div class="mitra-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
       <div>
         <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Portal Mitra 🏢</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);" id="header-company">PT. Bank Mandiri — Jakarta Pusat</p>
       </div>
-      <button class="btn-primary" onclick="window.location.href='lowongan-aktif.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">+ Post Lowongan</button>
+      <button type="button" class="btn-primary" onclick="window.location.href='lowongan-baru.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">+ Post Lowongan</button>
     </div>
 
     <!-- Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card mitra-stat-card" role="link" tabindex="0" onclick="window.location.href='intern-aktif.html'" onkeydown="openOnEnter(event, 'intern-aktif.html')" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Intern Aktif</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">12</p>
+        <p id="stat-intern-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
         <p style="font-size:11px;color:#4ade80;margin-top:4px;">↑ 2 bulan ini</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Pending</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">5</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Menunggu review</p>
+      <div class="glass-card mitra-stat-card" role="link" tabindex="0" onclick="window.location.href='review-logbook.html'" onkeydown="openOnEnter(event, 'review-logbook.html')" style="border-radius:12px;padding:20px;">
+        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Submitted</p>
+        <p id="stat-logbook-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Monitoring dosen</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card mitra-stat-card" role="link" tabindex="0" onclick="window.location.href='lowongan-aktif.html'" onkeydown="openOnEnter(event, 'lowongan-aktif.html')" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Lowongan Aktif</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">3</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">47 pelamar total</p>
+        <p id="stat-vacancy-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0</p>
+        <p id="stat-applicant-count" style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">0 pelamar total</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card mitra-stat-card" role="link" tabindex="0" onclick="window.location.href='intern-aktif.html'" onkeydown="openOnEnter(event, 'intern-aktif.html')" style="border-radius:12px;padding:20px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Avg. Progress Intern</p>
-        <p style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">76%</p>
+        <p id="stat-average-progress" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0%</p>
       </div>
     </div>
 
     <!-- Intern Table -->
     <div class="glass-card" style="border-radius:14px;padding:24px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 style="font-size:16px;font-weight:700;">Daftar Intern Aktif</h3>
+      <div class="intern-table-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:16px;">
+        <div>
+          <h3 style="font-size:16px;font-weight:700;">Daftar Intern Aktif</h3>
+          <p id="intern-result-summary" style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;">Menampilkan 3 mahasiswa</p>
+        </div>
         <div style="display:flex;gap:8px;">
-          <input type="text" class="form-input" placeholder="Cari mahasiswa..." style="width:200px;padding:8px 12px;font-size:13px;" />
+          <input type="search" id="search-intern" class="form-input" oninput="filterMahasiswa()" placeholder="Cari nama atau posisi..." aria-label="Cari nama atau posisi intern" style="width:220px;padding:8px 12px;font-size:13px;" />
         </div>
       </div>
       <div style="overflow-x:auto;">
@@ -124,66 +155,12 @@
               <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Posisi</th>
               <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Progress</th>
               <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Logbook</th>
+              <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Logbook Terbaru</th>
               <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Status</th>
               <th style="text-align:left;padding:10px 12px;color:rgba(255,255,255,0.35);font-weight:500;">Aksi</th>
             </tr>
           </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">RA</div>
-                  Raka Aditya
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">Software Engineer</td>
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:87%;"></div></div>
-                  <span style="color:rgba(255,255,255,0.5);">87%</span>
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">131/150</td>
-              <td style="padding:12px;"><span class="badge badge-success">Aktif</span></td>
-              <td style="padding:12px;"><button style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Detail</button></td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#f97316);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">DS</div>
-                  Dinda Sari
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">Data Analyst</td>
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:72%;"></div></div>
-                  <span style="color:rgba(255,255,255,0.5);">72%</span>
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">108/150</td>
-              <td style="padding:12px;"><span class="badge badge-success">Aktif</span></td>
-              <td style="padding:12px;"><button style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Detail</button></td>
-            </tr>
-            <tr style="cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">AF</div>
-                  Ahmad Faiz
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">UI/UX Designer</td>
-              <td style="padding:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:55%;"></div></div>
-                  <span style="color:rgba(255,255,255,0.5);">55%</span>
-                </div>
-              </td>
-              <td style="padding:12px;color:rgba(255,255,255,0.6);">83/150</td>
-              <td style="padding:12px;"><span class="badge badge-warning">Review</span></td>
-              <td style="padding:12px;"><button style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Detail</button></td>
-            </tr>
-          </tbody>
+          <tbody id="intern-table-body"></tbody>
         </table>
       </div>
     </div>
@@ -192,60 +169,89 @@
   </div>
 
   <script src="../shared/utils.js"></script>
+  <script src="../shared/mitra-data.js"></script>
   <script>
     simag_requireAuth('mitra');
 
     const { user } = simag_getSession();
-    if (user) {
-      document.getElementById('sidebar-name').textContent = user.name;
+    const activeCompany = SIMAG_DATA.getCompany();
+    document.getElementById('sidebar-name').textContent = activeCompany.shortName || activeCompany.name;
+    document.getElementById('header-company').textContent = `${activeCompany.name} — ${activeCompany.location}`;
+
+    function openOnEnter(event, destination) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        window.location.href = destination;
+      }
     }
 
-    // Ini fungsi yang tadi ditambahkan agar pencarian berfungsi
+    function openInternDetail(internId) {
+      window.location.href = `detail-intern.html?intern=${encodeURIComponent(internId)}`;
+    }
+
+    function renderDashboard() {
+      const interns = SIMAG_MITRA.getInterns();
+      const pendingLogbooks = SIMAG_MITRA.getLogbooks().filter((item) => ['submitted', 'pending', 'revision'].includes(item.status));
+      const activeVacancies = SIMAG_MITRA.getVacancies().filter((item) => item.status === 'active');
+      const applicants = SIMAG_MITRA.getApplicants();
+      const averageProgress = interns.length
+        ? Math.round(interns.reduce((total, intern) => total + intern.progress, 0) / interns.length)
+        : 0;
+
+      document.getElementById('sidebar-intern-count').textContent = interns.length;
+      document.getElementById('sidebar-logbook-count').textContent = pendingLogbooks.length;
+      document.getElementById('stat-intern-count').textContent = interns.length;
+      document.getElementById('stat-logbook-count').textContent = pendingLogbooks.length;
+      document.getElementById('stat-vacancy-count').textContent = activeVacancies.length;
+      document.getElementById('stat-applicant-count').textContent = `${applicants.length} pelamar total`;
+      document.getElementById('stat-average-progress').textContent = `${averageProgress}%`;
+      filterMahasiswa();
+    }
+
     function filterMahasiswa() {
       const input = document.getElementById('search-intern');
-      const filter = input.value.toLowerCase();
-      const table = document.querySelector('table');
-      const tr = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+      const keyword = input.value.trim().toLowerCase();
+      const sksConversions = SIMAG_DATA.getSksConversions();
+      const interns = SIMAG_MITRA.getInterns().filter((intern) =>
+        `${intern.name} ${intern.position}`.toLowerCase().includes(keyword)
+      );
+      const tableBody = document.getElementById('intern-table-body');
+      tableBody.innerHTML = '';
+      document.getElementById('intern-result-summary').textContent =
+        `Menampilkan ${interns.length} mahasiswa`;
 
-      for (let i = 0; i < tr.length; i++) {
-        if (tr[i].id === 'no-records') continue;
-
-        const tdNama = tr[i].getElementsByTagName('td')[0];
-        const tdPosisi = tr[i].getElementsByTagName('td')[1];
-
-        if (tdNama || tdPosisi) {
-          const txtNama = tdNama.textContent || tdNama.innerText;
-          const txtPosisi = tdPosisi.textContent || tdPosisi.innerText;
-
-          if (txtNama.toLowerCase().indexOf(filter) > -1 || txtPosisi.toLowerCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }
+      if (!interns.length) {
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:28px;color:rgba(255,255,255,0.4);">Mahasiswa tidak ditemukan.</td></tr>';
+        return;
       }
 
-      let visibleRows = 0;
-      for (let i = 0; i < tr.length; i++) {
-        if (tr[i].id !== 'no-records' && tr[i].style.display !== 'none') {
-          visibleRows++;
-        }
-      }
-
-      let noRecordsRow = document.getElementById('no-records');
-      if (visibleRows === 0) {
-        if (!noRecordsRow) {
-          noRecordsRow = document.createElement('tr');
-          noRecordsRow.id = 'no-records';
-          noRecordsRow.innerHTML = `<td colspan="6" style="text-align:center;padding:24px;color:rgba(255,255,255,0.4);">Mahasiswa tidak ditemukan</td>`;
-          table.getElementsByTagName('tbody')[0].appendChild(noRecordsRow);
-        } else {
-          noRecordsRow.style.display = "";
-        }
-      } else if (noRecordsRow) {
-        noRecordsRow.style.display = "none";
-      }
+      interns.forEach((intern) => {
+        const sks = sksConversions.find((item) => item.studentId === intern.id) || { sks: 0, status: 'Pending' };
+        const latestLogbook = SIMAG_DATA.getLatestLogbookForIntern(intern.id);
+        const row = document.createElement('tr');
+        row.className = 'intern-row';
+        row.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+        const statusClass = ['Aktif', 'Accepted'].includes(intern.status) ? 'badge-success' : 'badge-warning';
+        row.innerHTML = `
+          <td style="padding:12px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${intern.initials}</div>${intern.name}</div></td>
+          <td style="padding:12px;color:rgba(255,255,255,0.6);">${intern.position}</td>
+          <td style="padding:12px;"><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:${intern.progress}%;"></div></div><span style="color:rgba(255,255,255,0.5);">${intern.progress}%</span></div></td>
+          <td style="padding:12px;color:rgba(255,255,255,0.6);">${intern.logbookCompleted}/${intern.logbookTarget}</td>
+          <td style="padding:12px;min-width:190px;">
+            ${latestLogbook ? `<div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;color:rgba(255,255,255,0.75);">${simag_escapeHtml(latestLogbook.title)}</span><span class="badge ${SIMAG_DATA.statusBadge(latestLogbook.status)}" style="width:max-content;">${SIMAG_DATA.statusLabel(latestLogbook.status)}</span></div>` : '<span style="font-size:12px;color:rgba(255,255,255,0.35);">Belum ada logbook</span>'}
+          </td>
+          <td style="padding:12px;"><span class="badge ${statusClass}">${intern.status}</span><span class="badge ${sks.status === 'Completed' ? 'badge-success' : 'badge-warning'}" style="margin-left:6px;">${sks.sks} SKS ${sks.status}</span></td>
+          <td style="padding:12px;"><div style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" data-action="detail" style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Detail</button><button type="button" data-action="evaluate" style="font-size:12px;color:#4ade80;background:none;border:none;cursor:pointer;">Nilai</button></div></td>
+        `;
+        row.querySelector('[data-action="detail"]').onclick = () => openInternDetail(intern.id);
+        row.querySelector('[data-action="evaluate"]').onclick = () => {
+          window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(intern.id)}`;
+        };
+        tableBody.appendChild(row);
+      });
     }
+
+    renderDashboard();
   </script>
 </body>
 </html>

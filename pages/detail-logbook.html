@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Logbook - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width: 768px) {
+      main { padding: 20px !important; }
+      .detail-grid { grid-template-columns: 1fr !important; }
+      .detail-actions { width: 100%; flex-direction: column; }
+      .detail-actions button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div style="min-height:100vh;">
+  <main style="padding:32px;overflow-x:hidden;">
+    <div style="max-width:1080px;margin:0 auto;">
+      <button id="back-button" type="button" class="btn-outline" style="padding:9px 14px;border-radius:9px;color:#fff;font-size:13px;margin-bottom:22px;">
+        Kembali
+      </button>
+
+      <div id="missing-state" class="glass-card" style="display:none;padding:30px;border-radius:14px;text-align:center;color:rgba(255,255,255,0.55);">
+        Logbook tidak ditemukan.
+      </div>
+
+      <section id="detail-state" style="display:none;">
+        <div class="glass-card" style="padding:28px;border-radius:16px;margin-bottom:22px;">
+          <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap;">
+            <div>
+              <p id="student-meta" style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:8px;"></p>
+              <h1 id="logbook-title" style="font-size:26px;font-weight:700;margin-bottom:10px;"></h1>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span id="logbook-status" class="badge badge-info"></span>
+                <span id="logbook-date" class="badge" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.65);"></span>
+              </div>
+            </div>
+            <div class="detail-actions" id="review-actions" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+          </div>
+        </div>
+
+        <div class="detail-grid" style="display:grid;grid-template-columns:2fr 1fr;gap:22px;align-items:start;">
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <article class="glass-card" style="padding:24px;border-radius:14px;">
+              <h2 style="font-size:16px;margin-bottom:12px;">Aktivitas</h2>
+              <p id="logbook-description" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
+            </article>
+            <article class="glass-card" style="padding:24px;border-radius:14px;">
+              <h2 style="font-size:16px;margin-bottom:12px;">Hasil Pekerjaan</h2>
+              <p id="logbook-result" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
+            </article>
+            <article class="glass-card" style="padding:24px;border-radius:14px;">
+              <h2 style="font-size:16px;margin-bottom:12px;">Kendala dan Catatan</h2>
+              <p id="logbook-obstacle" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
+              <div id="review-note-box" style="display:none;margin-top:16px;padding:14px;border-radius:10px;background:rgba(129,140,248,0.08);border:1px solid rgba(129,140,248,0.16);">
+                <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px;">Catatan Reviewer</p>
+                <p id="review-note" style="font-size:13px;color:#c4b5fd;"></p>
+              </div>
+            </article>
+          </div>
+
+          <aside class="glass-card" style="padding:24px;border-radius:14px;">
+            <h2 style="font-size:16px;margin-bottom:16px;">Ringkasan</h2>
+            <div style="display:flex;flex-direction:column;gap:13px;font-size:13px;">
+              <div>
+                <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Mahasiswa</span>
+                <strong id="summary-student"></strong>
+              </div>
+              <div>
+                <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Perusahaan</span>
+                <strong id="summary-company"></strong>
+              </div>
+              <div>
+                <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Dosen Pembimbing</span>
+                <strong id="summary-lecturer"></strong>
+              </div>
+              <div>
+                <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Jam Kegiatan</span>
+                <strong id="summary-time"></strong>
+              </div>
+              <div>
+                <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Reviewer</span>
+                <strong id="summary-reviewer"></strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  const session = simag_getSession();
+  const allowedRoles = ['mahasiswa', 'dospem', 'mitra'];
+  if (!session.token || !allowedRoles.includes(session.role)) {
+    window.location.href = '../login.html';
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const logbookId = params.get('id');
+  const role = params.get('role') || session.role;
+  let logbook = SIMAG_DATA.getLogbook(logbookId);
+
+  function formatDate(value) {
+    return new Intl.DateTimeFormat('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(`${value}T00:00:00`));
+  }
+
+  function getBackTarget() {
+    if (role === 'mahasiswa') {
+      return 'logbook-saya.html';
+    }
+    if (role === 'mitra') {
+      return logbook ? `review-logbook.html?intern=${encodeURIComponent(logbook.internId)}` : 'review-logbook.html';
+    }
+    return logbook ? `review-logbook-dospem.html?intern=${encodeURIComponent(logbook.internId)}` : 'review-logbook-dospem.html';
+  }
+
+  function renderActions() {
+    const actions = document.getElementById('review-actions');
+    actions.innerHTML = '';
+    if (role === 'mahasiswa') {
+      actions.innerHTML = '<span class="badge badge-info">Status Mahasiswa</span>';
+      return;
+    }
+    if (role === 'mitra') {
+      actions.innerHTML = '<span class="badge badge-info">Monitoring Mitra</span>';
+      return;
+    }
+    if (!['submitted', 'pending', 'revision'].includes(logbook.status)) {
+      actions.innerHTML = '<span class="badge badge-success">Review selesai</span>';
+      return;
+    }
+
+    const approveButton = document.createElement('button');
+    approveButton.type = 'button';
+    approveButton.textContent = 'Setujui Logbook';
+    approveButton.className = 'btn-primary';
+    approveButton.style.cssText = 'padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;font-weight:600;';
+    approveButton.onclick = () => {
+      SIMAG_DATA.approveLogbook(logbook.id);
+      logbook = SIMAG_DATA.getLogbook(logbook.id);
+      renderDetail();
+    };
+
+    const revisionButton = document.createElement('button');
+    revisionButton.type = 'button';
+    revisionButton.textContent = 'Beri Revisi';
+    revisionButton.className = 'btn-outline';
+    revisionButton.style.cssText = 'padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;';
+    revisionButton.onclick = () => {
+      const note = window.prompt('Catatan revisi untuk mahasiswa:', logbook.note || 'Lengkapi detail hasil implementasi dan bukti pengujian.');
+      if (!note) return;
+      SIMAG_DATA.requestLogbookRevision(logbook.id, note);
+      logbook = SIMAG_DATA.getLogbook(logbook.id);
+      renderDetail();
+    };
+
+    actions.append(approveButton, revisionButton);
+  }
+
+  function renderDetail() {
+    if (!logbook) {
+      document.getElementById('missing-state').style.display = 'block';
+      document.getElementById('detail-state').style.display = 'none';
+      return;
+    }
+
+    const data = SIMAG_DATA.getData();
+    const intern = data.interns.find((item) => item.id === logbook.internId) || data.interns[0];
+    const status = SIMAG_DATA.statusLabel(logbook.status);
+
+    document.title = `${logbook.title} - Detail Logbook SIMAG`;
+    document.getElementById('detail-state').style.display = 'block';
+    document.getElementById('missing-state').style.display = 'none';
+    document.getElementById('student-meta').textContent = `${intern.name} - ${intern.position}`;
+    document.getElementById('logbook-title').textContent = logbook.title;
+    const statusBadge = document.getElementById('logbook-status');
+    statusBadge.textContent = status;
+    statusBadge.className = `badge ${SIMAG_DATA.statusBadge(logbook.status)}`;
+    document.getElementById('logbook-date').textContent = formatDate(logbook.date);
+    document.getElementById('logbook-description').textContent = logbook.description || logbook.activity || '-';
+    document.getElementById('logbook-result').textContent = logbook.result || '-';
+    document.getElementById('logbook-obstacle').textContent = logbook.obstacle || 'Tidak ada kendala yang dilaporkan.';
+    document.getElementById('summary-student').textContent = `${intern.name} (${intern.nim})`;
+    document.getElementById('summary-company').textContent = intern.company || data.people.company.name;
+    document.getElementById('summary-lecturer').textContent = intern.lecturer || data.people.lecturer.name;
+    document.getElementById('summary-time').textContent = `${logbook.startTime || '-'} - ${logbook.endTime || '-'}`;
+    document.getElementById('summary-reviewer').textContent = logbook.reviewer || 'Belum direview';
+
+    const noteBox = document.getElementById('review-note-box');
+    if (logbook.note) {
+      document.getElementById('review-note').textContent = logbook.note;
+      noteBox.style.display = 'block';
+    } else {
+      noteBox.style.display = 'none';
+    }
+    renderActions();
+  }
+
+  document.getElementById('back-button').onclick = () => {
+    window.location.href = getBackTarget();
+  };
+
+  renderDetail();
+</script>
+</body>
+</html>

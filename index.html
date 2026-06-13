@@ -29,8 +29,8 @@
     }
     @media (max-width: 768px) {
       .roles-grid, .testi-grid, .hiw-grid { grid-template-columns: 1fr !important; }
-      .preview-role-tabs { display:flex !important; width:100%; }
-      .preview-role-tab { flex:1; padding:8px 10px !important; }
+      .preview-role-tabs { display:flex !important; flex-wrap:wrap; width:100%; border-radius:16px !important; }
+      .preview-role-tab { flex:1 1 calc(50% - 6px); padding:8px 10px !important; }
     }
     .preview-role-tab {
       padding:8px 24px;
@@ -186,25 +186,25 @@
         <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#818cf8);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">🎓</div>
         <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Mahasiswa FIKOM</h3>
         <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Eksplor lowongan, daftar, isi daily logbook dan lihat progres persetujuan secara instan.</p>
-        <a href="login.html" style="font-size:13px;color:#818cf8;text-decoration:none;font-weight:600;">Lihat panduan Maba →</a>
+        <a href="login.html" onclick="openRolePage(event, 'mahasiswa', 'pages/dashboard-mahasiswa.html')" style="font-size:13px;color:#818cf8;text-decoration:none;font-weight:600;">Buka dashboard mahasiswa →</a>
       </div>
       <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
         <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#a78bfa);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">👨‍💼</div>
         <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Admin Program Studi</h3>
         <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Kelola pendaftaran, verifikasi data, dan awasi seluruh pelaksanaan magang secara terpusat.</p>
-        <a href="login.html" style="font-size:13px;color:#a78bfa;text-decoration:none;font-weight:600;">Lihat dashboard admin →</a>
+        <a href="login.html" onclick="openRolePage(event, 'adminprodi', 'pages/dashboard-admin.html')" style="font-size:13px;color:#a78bfa;text-decoration:none;font-weight:600;">Lihat dashboard admin →</a>
       </div>
       <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
         <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">🏢</div>
         <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Perusahaan Mitra</h3>
         <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Buat lowongan, saring pelamar, beri approval, dan nilai performa anak magang.</p>
-        <a href="login.html" style="font-size:13px;color:#34d399;text-decoration:none;font-weight:600;">Mulai rekrut intern →</a>
+        <a href="login.html" onclick="openRolePage(event, 'mitra', 'pages/dashboard-mitra.html')" style="font-size:13px;color:#34d399;text-decoration:none;font-weight:600;">Buka dashboard mitra →</a>
       </div>
       <div class="glass-card" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px;">
         <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;">👨‍🏫</div>
         <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Dosen Pembimbing</h3>
         <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;">Pantau logbook bimbingan, berikan evaluasi, dan setujui konversi SKS akhir.</p>
-        <a href="login.html" style="font-size:13px;color:#fbbf24;text-decoration:none;font-weight:600;">Lihat panduan dosen →</a>
+        <a href="login.html" onclick="openRolePage(event, 'dospem', 'pages/dashboard-dospem.html')" style="font-size:13px;color:#fbbf24;text-decoration:none;font-weight:600;">Buka dashboard dosen →</a>
       </div>
     </div>
   </div>
@@ -260,6 +260,7 @@
     <div class="preview-role-tabs" role="tablist" aria-label="Pratinjau peran" style="display:inline-flex;background:rgba(255,255,255,0.05);border-radius:99px;padding:6px;margin-bottom:32px;">
       <button type="button" class="preview-role-tab active" role="tab" aria-selected="true" aria-controls="preview-mahasiswa" id="tab-preview-mahasiswa" onclick="switchPreviewRole('mahasiswa')">Mahasiswa</button>
       <button type="button" class="preview-role-tab" role="tab" aria-selected="false" aria-controls="preview-dospem" id="tab-preview-dospem" onclick="switchPreviewRole('dospem')">Dosen Pembimbing</button>
+      <button type="button" class="preview-role-tab" role="tab" aria-selected="false" aria-controls="preview-adminprodi" id="tab-preview-adminprodi" onclick="switchPreviewRole('adminprodi')">Admin Prodi</button>
       <button type="button" class="preview-role-tab" role="tab" aria-selected="false" aria-controls="preview-mitra" id="tab-preview-mitra" onclick="switchPreviewRole('mitra')">Mitra</button>
     </div>
 
@@ -302,6 +303,34 @@
             <p style="font-size:12px;color:rgba(255,255,255,0.4);">Logbook terbaru menunggu review dan persetujuan.</p>
           </div>
           <a href="login.html" onclick="openRolePage(event, 'dospem', 'pages/dashboard-dospem.html#review-logbook')" style="display:block;width:100%;box-sizing:border-box;background:#a855f7;color:#fff;padding:12px;border-radius:8px;font-family:inherit;font-weight:600;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;">Review Logbook</a>
+        </div>
+      </div>
+
+      <div id="preview-adminprodi" class="preview-role-panel" role="tabpanel" aria-labelledby="tab-preview-adminprodi">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;">
+          <div style="font-family:'Times New Roman', Times, serif;font-weight:700;font-size:18px;">Panel Admin Prodi</div>
+          <div style="font-size:12px;background:rgba(251,191,36,0.12);padding:6px 12px;border-radius:6px;color:#fbbf24;">Approval & SKS</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:24px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+            <div style="padding:14px;border-radius:10px;background:rgba(129,140,248,0.12);">
+              <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">Pendaftaran</p>
+              <strong style="font-size:24px;color:#818cf8;">2</strong>
+            </div>
+            <div style="padding:14px;border-radius:10px;background:rgba(34,211,238,0.1);">
+              <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">Mahasiswa Aktif</p>
+              <strong style="font-size:24px;color:#22d3ee;">1</strong>
+            </div>
+            <div style="padding:14px;border-radius:10px;background:rgba(74,222,128,0.1);">
+              <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">SKS</p>
+              <strong style="font-size:24px;color:#4ade80;">20</strong>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-left:3px solid #fbbf24;border-radius:8px;padding:14px;margin-bottom:20px;">
+            <p style="font-size:13px;font-weight:600;margin-bottom:4px;">Nadia Rahma - Data Analyst Intern</p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.4);">Menunggu approval admin sebelum masuk ke dashboard mitra dan dosen.</p>
+          </div>
+          <a href="login.html" onclick="openRolePage(event, 'adminprodi', 'pages/dashboard-admin.html')" style="display:block;width:100%;box-sizing:border-box;background:#f59e0b;color:#111827;padding:12px;border-radius:8px;font-family:inherit;font-weight:700;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;">Buka Panel Admin</a>
         </div>
       </div>
 
@@ -431,9 +460,13 @@
   function openRolePage(event, requiredRole, destination) {
     event.preventDefault();
     const { token, role } = simag_getSession();
-    window.location.href = token && role === requiredRole
-      ? destination
-      : 'login.html';
+    if (token && role === requiredRole) {
+      window.location.href = destination;
+      return;
+    }
+
+    simag_setPostLoginRedirect(requiredRole, destination);
+    window.location.href = `login.html?role=${encodeURIComponent(requiredRole)}`;
   }
 </script>
 </body>

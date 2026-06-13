@@ -10,6 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width: 768px) {
+      aside { display:none; }
+      main { padding:20px !important; }
+      .vacancy-header { align-items:flex-start !important; flex-direction:column; }
+      #vacancy-grid { grid-template-columns:1fr !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -42,7 +50,7 @@
       </div>
       <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item active" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -70,68 +78,22 @@
   <!-- ── Main Content ───────────────────────────────────────── -->
   <main style="flex:1;padding:32px;overflow-x:hidden;">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div class="vacancy-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;">
       <div>
         <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Lowongan Aktif</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Kelola publikasi lowongan magang untuk perusahaan Anda.</p>
       </div>
-      <button class="btn-primary" onclick="window.location.href='lowongan-baru.html' "style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">+ Buat Lowongan Baru</button>
+      <button type="button" class="btn-primary" onclick="window.location.href='lowongan-baru.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">+ Buat Lowongan Baru</button>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-      <div class="glass-card" style="padding:24px;border-radius:12px;">
-        <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
-          <h3 style="font-size:18px;font-weight:600;">Backend Developer Intern</h3>
-          <span class="badge badge-success">Terpublikasi</span>
-        </div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:16px;">Yogyakarta (Hybrid) • Kuota: 3 Orang</p>
-
-        <div style="background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;margin-bottom:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Pelamar</span>
-            <span style="font-size:14px;font-weight:700;color:#22d3ee;">24 Orang</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Batas Waktu</span>
-            <span style="font-size:12px;color:#fbbf24;">15 Agustus 2025</span>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;">
-          <button style="flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;cursor:pointer;border:none;">Lihat Pelamar</button>
-          <button style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;cursor:pointer;">Tutup Lowongan</button>
-        </div>
-      </div>
-
-      <div class="glass-card" style="padding:24px;border-radius:12px;">
-        <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
-          <h3 style="font-size:18px;font-weight:600;">Data Analyst Intern</h3>
-          <span class="badge badge-success">Terpublikasi</span>
-        </div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:16px;">Jakarta Pusat (WFO) • Kuota: 2 Orang</p>
-
-        <div style="background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;margin-bottom:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Pelamar</span>
-            <span style="font-size:14px;font-weight:700;color:#22d3ee;">15 Orang</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Batas Waktu</span>
-            <span style="font-size:12px;color:#fbbf24;">30 Juli 2025</span>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;">
-          <button style="flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;cursor:pointer;border:none;">Lihat Pelamar</button>
-          <button style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;cursor:pointer;">Tutup Lowongan</button>
-        </div>
-      </div>
-    </div>
+    <div id="vacancy-summary" style="margin-bottom:14px;color:rgba(255,255,255,0.4);font-size:12px;"></div>
+    <div id="vacancy-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"></div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
@@ -139,6 +101,81 @@
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function formatDeadline(value) {
+    return new Intl.DateTimeFormat('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(`${value}T00:00:00`));
+  }
+
+  function renderVacancies() {
+    const vacancies = SIMAG_MITRA.getVacancies();
+    const applicants = SIMAG_MITRA.getApplicants();
+    const activeCount = vacancies.filter((item) => item.status === 'active').length;
+    const grid = document.getElementById('vacancy-grid');
+    grid.innerHTML = '';
+    document.getElementById('vacancy-summary').textContent =
+      `${activeCount} lowongan aktif dari ${vacancies.length} lowongan`;
+
+    if (vacancies.length === 0) {
+      grid.innerHTML = '<div class="glass-card" style="grid-column:1/-1;padding:32px;border-radius:12px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada lowongan.</div>';
+      return;
+    }
+
+    vacancies.forEach((vacancy) => {
+      const applicantCount = applicants.filter((item) => item.vacancyId === vacancy.id).length;
+      const isActive = vacancy.status === 'active';
+      const card = document.createElement('article');
+      card.className = 'glass-card';
+      card.style.cssText = `padding:24px;border-radius:12px;opacity:${isActive ? '1' : '0.7'};`;
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;gap:16px;margin-bottom:16px;">
+          <h3 style="font-size:18px;font-weight:600;">${simag_escapeHtml(vacancy.title)}</h3>
+          <span class="badge ${isActive ? 'badge-success' : 'badge-warning'}">${isActive ? 'Terpublikasi' : 'Ditutup'}</span>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:16px;">${simag_escapeHtml(vacancy.location)} (${simag_escapeHtml(vacancy.workModel)}) • Kuota: ${vacancy.quota} Orang</p>
+        <div style="background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Pelamar</span>
+            <span style="font-size:14px;font-weight:700;color:#22d3ee;">${applicantCount} Orang</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Batas Waktu</span>
+            <span style="font-size:12px;color:#fbbf24;">${formatDeadline(vacancy.deadline)}</span>
+          </div>
+        </div>
+        <div class="vacancy-actions" style="display:flex;gap:12px;"></div>
+      `;
+
+      const actions = card.querySelector('.vacancy-actions');
+      const applicantsButton = document.createElement('button');
+      applicantsButton.type = 'button';
+      applicantsButton.textContent = 'Lihat Pelamar';
+      applicantsButton.style.cssText = 'flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;cursor:pointer;border:none;';
+      applicantsButton.onclick = () => {
+        window.location.href = `pelamar-lowongan.html?vacancy=${encodeURIComponent(vacancy.id)}`;
+      };
+
+      const statusButton = document.createElement('button');
+      statusButton.type = 'button';
+      statusButton.textContent = isActive ? 'Tutup Lowongan' : 'Buka Kembali';
+      statusButton.style.cssText = 'flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;cursor:pointer;';
+      statusButton.onclick = () => toggleVacancyStatus(vacancy.id, isActive);
+      actions.append(applicantsButton, statusButton);
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleVacancyStatus(vacancyId, isActive) {
+    const action = isActive ? 'menutup' : 'membuka kembali';
+    if (!window.confirm(`Yakin ingin ${action} lowongan ini?`)) return;
+    SIMAG_MITRA.updateVacancy(vacancyId, { status: isActive ? 'closed' : 'active' });
+    renderVacancies();
+  }
+
+  renderVacancies();
 </script>
 </body>
 </html>

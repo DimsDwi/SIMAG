@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Review Logbook Dosen - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+<div style="display:flex;min-height:100vh;">
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a></div>
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div id="lecturer-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AF</div>
+      <div style="overflow:hidden;"><p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dr. Ahmad Fauzi</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
+    </div>
+    <nav>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">Dashboard</div>
+      <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">Mahasiswa Bimbingan</div>
+      <div class="sidebar-item active" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">Review Logbook</div>
+      <div class="sidebar-item" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">Penilaian &amp; Evaluasi</div>
+      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">Jadwal Bimbingan</div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">Pengaturan</div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
+      <div>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Review Logbook</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Setujui logbook atau kirim catatan revisi untuk mahasiswa bimbingan.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input id="review-search" type="search" oninput="renderLogbooks()" class="form-input" placeholder="Cari mahasiswa atau aktivitas..." style="width:240px;padding:9px 12px;font-size:13px;">
+        <select id="review-status" onchange="renderLogbooks()" class="form-input" style="width:170px;padding:9px 12px;font-size:13px;">
+          <option value="submitted">Submitted</option>
+          <option value="">Semua Status</option>
+          <option value="approved">Approved</option>
+          <option value="revision">Revision</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="review-summary" style="margin-bottom:14px;color:rgba(255,255,255,0.4);font-size:12px;"></div>
+    <div id="logbook-list" style="display:flex;flex-direction:column;gap:16px;"></div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  simag_requireAuth('dospem');
+
+  function formatDate(value) {
+    return new Intl.DateTimeFormat('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(`${value}T00:00:00`));
+  }
+
+  function renderShell(data) {
+    document.getElementById('sidebar-name').textContent = data.people.lecturer.name;
+    document.getElementById('lecturer-initials').textContent = data.people.lecturer.initials || 'DP';
+  }
+
+  function renderLogbooks() {
+    const data = SIMAG_DATA.getData();
+    renderShell(data);
+    const keyword = document.getElementById('review-search').value.trim().toLowerCase();
+    const statusFilter = document.getElementById('review-status').value;
+    const selectedIntern = new URLSearchParams(window.location.search).get('intern');
+    const logbooks = data.logbooks.filter((logbook) => {
+      const intern = data.interns.find((item) => item.id === logbook.internId);
+      const haystack = `${intern ? intern.name : ''} ${intern ? intern.position : ''} ${logbook.title} ${logbook.description}`.toLowerCase();
+      return haystack.includes(keyword) && (!statusFilter || logbook.status === statusFilter) && (!selectedIntern || logbook.internId === selectedIntern);
+    });
+
+    const list = document.getElementById('logbook-list');
+    list.innerHTML = '';
+    document.getElementById('review-summary').textContent = `Menampilkan ${logbooks.length} dari ${data.logbooks.length} logbook`;
+
+    if (!logbooks.length) {
+      list.innerHTML = '<div class="glass-card" style="padding:32px;border-radius:12px;text-align:center;color:rgba(255,255,255,0.4);">Tidak ada logbook yang sesuai filter.</div>';
+      return;
+    }
+
+    logbooks.forEach((logbook) => {
+      const intern = data.interns.find((item) => item.id === logbook.internId) || data.interns[0];
+      const card = document.createElement('article');
+      card.className = 'glass-card';
+      card.style.cssText = 'padding:20px;border-radius:12px;border-left:4px solid #a855f7;';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:12px;">
+          <div>
+            <h3 style="font-size:16px;font-weight:600;">${simag_escapeHtml(logbook.title)}</h3>
+            <p style="font-size:12px;color:rgba(255,255,255,0.5);">${simag_escapeHtml(intern.name)} - ${formatDate(logbook.date)}</p>
+          </div>
+          <span class="badge ${SIMAG_DATA.statusBadge(logbook.status)}">${SIMAG_DATA.statusLabel(logbook.status)}</span>
+        </div>
+        <p style="font-size:14px;line-height:1.6;margin-bottom:12px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;">${simag_escapeHtml(logbook.description || logbook.activity || '-')}</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:16px;"><strong style="color:rgba(255,255,255,0.65);">Hasil:</strong> ${simag_escapeHtml(logbook.result || '-')}</p>
+        ${logbook.note ? `<p style="font-size:12px;color:#c4b5fd;margin-bottom:16px;"><strong>Catatan:</strong> ${simag_escapeHtml(logbook.note)}</p>` : ''}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+      `;
+      const actions = card.lastElementChild;
+
+      const detailButton = document.createElement('button');
+      detailButton.type = 'button';
+      detailButton.textContent = 'Detail';
+      detailButton.className = 'btn-outline';
+      detailButton.style.cssText = 'padding:8px 14px;border-radius:8px;color:#fff;font-size:12px;';
+      detailButton.onclick = () => {
+        window.location.href = `detail-logbook.html?id=${encodeURIComponent(logbook.id)}&role=dospem`;
+      };
+
+      const approveButton = document.createElement('button');
+      approveButton.type = 'button';
+      approveButton.textContent = 'Setujui';
+      approveButton.className = 'btn-primary';
+      approveButton.style.cssText = 'padding:8px 14px;border-radius:8px;color:#fff;font-size:12px;';
+      approveButton.disabled = logbook.status === 'approved';
+      approveButton.style.opacity = logbook.status === 'approved' ? '0.45' : '1';
+      approveButton.onclick = () => {
+        SIMAG_DATA.approveLogbook(logbook.id);
+        renderLogbooks();
+      };
+
+      const revisionButton = document.createElement('button');
+      revisionButton.type = 'button';
+      revisionButton.textContent = 'Beri Revisi';
+      revisionButton.className = 'btn-outline';
+      revisionButton.style.cssText = 'padding:8px 14px;border-radius:8px;color:#fff;font-size:12px;';
+      revisionButton.onclick = () => {
+        const note = window.prompt('Catatan revisi untuk mahasiswa:', logbook.note || 'Lengkapi bukti kegiatan dan hasil pekerjaan.');
+        if (!note) return;
+        SIMAG_DATA.requestLogbookRevision(logbook.id, note);
+        renderLogbooks();
+      };
+
+      const studentButton = document.createElement('button');
+      studentButton.type = 'button';
+      studentButton.textContent = 'Mahasiswa';
+      studentButton.style.cssText = 'padding:8px 14px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:12px;cursor:pointer;';
+      studentButton.onclick = () => {
+        window.location.href = `detail-intern.html?intern=${encodeURIComponent(logbook.internId)}&role=dospem`;
+      };
+
+      actions.append(detailButton, approveButton, revisionButton, studentButton);
+      list.appendChild(card);
+    });
+  }
+
+  renderLogbooks();
+</script>
+</body>
+</html>

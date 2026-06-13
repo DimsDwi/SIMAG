@@ -42,7 +42,7 @@
       </div>
       <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item active" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -140,6 +140,7 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
@@ -151,10 +152,26 @@
   function handleCreateLowongan(event) {
     event.preventDefault();
 
-    // Simulasi penambahan sukses
+    const title = document.getElementById('judul').value.trim();
+    SIMAG_MITRA.addVacancy({
+      id: `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now()}`,
+      title,
+      workModel: document.getElementById('model_kerja').value,
+      location: document.getElementById('lokasi').value.trim(),
+      quota: document.getElementById('kuota').value,
+      deadline: document.getElementById('batas_waktu').value,
+      description: document.getElementById('deskripsi').value.trim(),
+      qualifications: document.getElementById('kualifikasi').value.trim()
+    });
+
     alert('Sukses! Lowongan magang baru berhasil dipublikasikan.');
     window.location.href = 'lowongan-aktif.html';
   }
+
+  const today = new Date();
+  document.getElementById('batas_waktu').min = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+  ).toISOString().slice(0, 10);
 </script>
 </body>
 </html>

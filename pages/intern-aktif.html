@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width: 768px) {
+      aside { display: none; }
+      main { padding:20px !important; }
+      .intern-header { align-items:flex-start !important; flex-direction:column; }
+      .intern-controls { width:100%; flex-direction:column; }
+      .intern-controls input, .intern-controls select { width:100% !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -42,7 +51,7 @@
       </div>
       <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -70,73 +79,45 @@
   <!-- ── Main Content ───────────────────────────────────────── -->
   <main style="flex:1;padding:32px;overflow-x:hidden;">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div class="intern-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:18px;">
       <div>
         <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Intern Aktif</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Daftar mahasiswa yang sedang melaksanakan magang di perusahaan Anda.</p>
       </div>
-      <div style="display:flex;gap:12px;">
-        <input type="text" placeholder="Cari nama intern..." style="padding:10px 16px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;">
+      <div class="intern-controls" style="display:flex;gap:10px;">
+        <input id="intern-search" type="search" oninput="renderInterns()" placeholder="Cari nama atau posisi..." style="width:220px;padding:10px 16px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;">
+        <select id="intern-status-filter" onchange="renderInterns()" class="form-input" style="width:150px;padding:10px 12px;font-size:13px;">
+          <option value="">Semua Status</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Aktif">Aktif</option>
+          <option value="Perlu Review">Perlu Review</option>
+        </select>
       </div>
     </div>
 
     <div class="glass-card" style="border-radius:14px;padding:24px;">
-      <table style="width:100%;text-align:left;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama & Institusi</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Posisi</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Progress</th>
-          <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
-        </tr>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-          <td style="padding:12px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">RA</div>
-              <div>
-                <p style="font-size:13px;font-weight:600;">Raka Aditya</p>
-                <p style="font-size:11px;color:rgba(255,255,255,0.4);">S1 Informatika - Amikom</p>
-              </div>
-            </div>
-          </td>
-          <td style="padding:12px;font-size:13px;">Software Engineer</td>
-          <td style="padding:12px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-bar" style="width:80px;height:6px;"><div class="progress-fill" style="width:87%;background:#4ade80;"></div></div>
-              <span style="font-size:12px;color:rgba(255,255,255,0.6);">87%</span>
-            </div>
-          </td>
-          <td style="padding:12px;">
-            <button style= "padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:11px;cursor:pointer;">Lihat Detail</button>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:12px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">AF</div>
-              <div>
-                <p style="font-size:13px;font-weight:600;">Ahmad Faiz</p>
-                <p style="font-size:11px;color:rgba(255,255,255,0.4);">S1 Informatika - Amikom</p>
-              </div>
-            </div>
-          </td>
-          <td style="padding:12px;font-size:13px;">UI/UX Designer</td>
-          <td style="padding:12px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-bar" style="width:80px;height:6px;"><div class="progress-fill" style="width:55%;background:#22d3ee;"></div></div>
-              <span style="font-size:12px;color:rgba(255,255,255,0.6);">55%</span>
-            </div>
-          </td>
-          <td style="padding:12px;">
-            <button  onclick="window.location.href='detail-intern.html'" style="padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:11px;cursor:pointer;">Lihat Detail</button>
-          </td>
-        </tr>
-      </table>
+      <p id="intern-count" style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;"></p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:680px;text-align:left;border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama & Institusi</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Posisi</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Progress</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="intern-table-body"></tbody>
+        </table>
+      </div>
     </div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
@@ -144,6 +125,64 @@
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function renderInterns() {
+    const keyword = document.getElementById('intern-search').value.trim().toLowerCase();
+    const statusFilter = document.getElementById('intern-status-filter').value;
+    const sksConversions = SIMAG_DATA.getSksConversions();
+    const interns = SIMAG_MITRA.getInterns().filter((intern) => {
+      const matchesKeyword = `${intern.name} ${intern.position} ${intern.institution}`
+        .toLowerCase()
+        .includes(keyword);
+      const matchesStatus = !statusFilter || intern.status === statusFilter;
+      return matchesKeyword && matchesStatus;
+    });
+
+    const tableBody = document.getElementById('intern-table-body');
+    tableBody.innerHTML = '';
+    document.getElementById('intern-count').textContent =
+      `Menampilkan ${interns.length} dari ${SIMAG_MITRA.getInterns().length} intern`;
+
+    if (interns.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="5" style="padding:30px;text-align:center;color:rgba(255,255,255,0.4);">Intern tidak ditemukan.</td></tr>';
+      return;
+    }
+
+    interns.forEach((intern) => {
+      const sks = sksConversions.find((item) => item.studentId === intern.id) || { sks: 0, status: 'Pending' };
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      const statusClass = ['Aktif', 'Accepted'].includes(intern.status) ? 'badge-success' : 'badge-warning';
+      row.innerHTML = `
+        <td style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${intern.initials}</div>
+            <div>
+              <p style="font-size:13px;font-weight:600;">${intern.name}</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.4);">${intern.institution}</p>
+            </div>
+          </div>
+        </td>
+        <td style="padding:12px;font-size:13px;">${intern.position}</td>
+        <td style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="progress-bar" style="width:80px;height:6px;"><div class="progress-fill" style="width:${intern.progress}%;background:#22d3ee;"></div></div>
+            <span style="font-size:12px;color:rgba(255,255,255,0.6);">${intern.progress}%</span>
+          </div>
+        </td>
+        <td style="padding:12px;"><span class="badge ${statusClass}">${intern.status}</span><span class="badge ${sks.status === 'Completed' ? 'badge-success' : 'badge-warning'}" style="margin-left:6px;">${sks.sks} SKS ${sks.status}</span></td>
+        <td style="padding:12px;">
+          <button type="button" data-intern-id="${intern.id}" style="padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:11px;cursor:pointer;">Lihat Detail</button>
+        </td>
+      `;
+      row.querySelector('button').onclick = () => {
+        window.location.href = `detail-intern.html?intern=${encodeURIComponent(intern.id)}`;
+      };
+      tableBody.appendChild(row);
+    });
+  }
+
+  renderInterns();
 </script>
 </body>
 </html>
