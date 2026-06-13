@@ -81,10 +81,11 @@
     <div class="glass-card" style="padding:24px;border-radius:12px;margin-bottom:24px;">
         <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">Total SKS Terkonversi</h3>
         <div style="display:flex;align-items:center;gap:16px;">
-            <div style="font-size:36px;font-weight:700;color:#22d3ee;">16</div>
+            <div id="sks-total" style="font-size:36px;font-weight:700;color:#22d3ee;">0</div>
             <div style="flex:1;">
-                <div class="progress-bar" style="height:12px;border-radius:6px;"><div class="progress-fill" style="width:80%;border-radius:6px;"></div></div>
-                <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:8px;">Target: 20 SKS</p>
+                <div class="progress-bar" style="height:12px;border-radius:6px;"><div id="sks-progress-fill" class="progress-fill" style="width:0%;border-radius:6px;"></div></div>
+                <p id="sks-target" style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:8px;">Target: 20 SKS</p>
+                <p id="sks-status" style="font-size:12px;color:#4ade80;margin-top:6px;">Status: Pending</p>
             </div>
         </div>
     </div>
@@ -94,6 +95,7 @@
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   // Guard: hanya mahasiswa yang boleh akses halaman ini
   simag_requireAuth('mahasiswa');
@@ -101,10 +103,16 @@
   // Tampilkan nama dari sesi
   const { user } = simag_getSession();
   if (user) {
-    const firstName = user.name.split(' ')[0];
     document.getElementById('sidebar-name').textContent = user.name;
-    document.getElementById('header-name').textContent  = firstName;
   }
+
+  const summary = SIMAG_DATA.getDashboardSummary();
+  const percent = Math.min(100, Math.round((summary.sks.sks / summary.sks.target) * 100));
+  document.getElementById('sidebar-name').textContent = summary.student.name;
+  document.getElementById('sks-total').textContent = summary.sks.sks;
+  document.getElementById('sks-progress-fill').style.width = `${percent}%`;
+  document.getElementById('sks-target').textContent = `Target: ${summary.sks.target} SKS`;
+  document.getElementById('sks-status').textContent = `Status: ${summary.sks.status}`;
 </script>
 </body>
 </html>

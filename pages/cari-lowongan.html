@@ -83,26 +83,15 @@
         <button class="btn-primary" onclick="filterLowongan()" style="padding:0 24px;border-radius:10px;font-weight:600;cursor:pointer;">Cari</button>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="glass-card" style="padding:20px;border-radius:12px;">
-            <h3 style="font-size:16px;font-weight:600;">Frontend Developer Intern</h3>
-            <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:12px;">PT. GoTo Gojek Tokopedia • Jakarta (WFO)</p>
-            <span class="badge badge-success">Sesuai Jurusan</span>
-            <button class="btn-outline" onclick="window.location.href='detail-lowongan.html?id=frontend-goto'" style="width:100%;margin-top:16px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Lihat Detail</button>
-        </div>
-        <div class="glass-card" style="padding:20px;border-radius:12px;">
-            <h3 style="font-size:16px;font-weight:600;">UI/UX Researcher</h3>
-            <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:12px;">Traveloka • Yogyakarta (Hybrid)</p>
-            <span class="badge badge-info">Terbuka</span>
-           <button class="btn-outline" onclick="window.location.href='detail-lowongan.html?id=uiux-traveloka'" style="width:100%;margin-top:16px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Lihat Detail</button>
-        </div>
-    </div>
+    <div id="vacancy-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"></div>
+    <div id="no-result-msg" style="display:none;text-align:center;padding:40px;color:rgba(255,255,255,0.5);">Lowongan yang kamu cari tidak ditemukan.</div>
 </div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   // Guard: hanya mahasiswa yang boleh akses halaman ini
   simag_requireAuth('mahasiswa');
@@ -118,46 +107,44 @@
   function filterLowongan() {
     const input = document.getElementById('search-input');
     const filter = input.value.toLowerCase();
-
-    // Find all the cards inside the grid
-    const cards = document.querySelectorAll('.glass-card');
+    const cards = document.querySelectorAll('[data-vacancy-card]');
     let hasResult = false;
 
     cards.forEach(card => {
-      // Find title (h3) and company/location (p)
-      const title = card.querySelector('h3');
-      const company = card.querySelector('p');
-
-      if (title && company) {
-        const textTitle = title.textContent || title.innerText;
-        const textCompany = company.textContent || company.innerText;
-
-        if (textTitle.toLowerCase().indexOf(filter) > -1 || textCompany.toLowerCase().indexOf(filter) > -1) {
-          card.style.display = "";
-          hasResult = true;
-        } else {
-          card.style.display = "none";
-        }
+      if (card.dataset.searchText.includes(filter)) {
+        card.style.display = '';
+        hasResult = true;
+      } else {
+        card.style.display = 'none';
       }
     });
 
-    // Handle empty state (optional, you can add an element with id="no-result")
-    let noResultMsg = document.getElementById('no-result-msg');
-    if (!hasResult) {
-      if (!noResultMsg) {
-        const grid = document.querySelector('div[style*="grid-template-columns"]');
-        noResultMsg = document.createElement('div');
-        noResultMsg.id = 'no-result-msg';
-        noResultMsg.style = 'grid-column: 1 / -1; text-align: center; padding: 40px; color: rgba(255,255,255,0.5);';
-        noResultMsg.textContent = 'Lowongan yang kamu cari tidak ditemukan.';
-        grid.parentNode.insertBefore(noResultMsg, grid.nextSibling);
-      } else {
-        noResultMsg.style.display = 'block';
-      }
-    } else if (noResultMsg) {
-      noResultMsg.style.display = 'none';
-    }
+    document.getElementById('no-result-msg').style.display = hasResult ? 'none' : 'block';
   }
+
+  function renderLowongan() {
+    const grid = document.getElementById('vacancy-grid');
+    const vacancies = SIMAG_DATA.getVacancies().filter((vacancy) => vacancy.status === 'active');
+    grid.innerHTML = '';
+
+    vacancies.forEach((vacancy) => {
+      const card = document.createElement('div');
+      card.className = 'glass-card';
+      card.dataset.vacancyCard = vacancy.id;
+      card.dataset.searchText = `${vacancy.title} ${vacancy.company} ${vacancy.location} ${vacancy.workModel}`.toLowerCase();
+      card.style.cssText = 'padding:20px;border-radius:12px;';
+      card.innerHTML = `
+        <h3 style="font-size:16px;font-weight:600;">${simag_escapeHtml(vacancy.title)}</h3>
+        <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:12px;">${simag_escapeHtml(vacancy.company)} - ${simag_escapeHtml(vacancy.location)} (${simag_escapeHtml(vacancy.workModel)})</p>
+        <span class="badge ${vacancy.badge === 'Sesuai Jurusan' ? 'badge-success' : 'badge-info'}">${simag_escapeHtml(vacancy.badge || 'Terbuka')}</span>
+        <button class="btn-outline" onclick="window.location.href='detail-lowongan.html?id=${encodeURIComponent(vacancy.id)}'" style="width:100%;margin-top:16px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05);cursor:pointer;transition:all 0.2s;">Lihat Detail</button>
+      `;
+      grid.appendChild(card);
+    });
+    filterLowongan();
+  }
+
+  renderLowongan();
 </script>
 </body>
 

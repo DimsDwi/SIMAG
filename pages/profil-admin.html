@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Admin - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+<div style="display:flex;min-height:100vh;">
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div style="overflow:hidden;">
+        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+      </div>
+    </div>
+    <nav>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik &amp; Laporan</div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item active" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+    <div style="max-width:760px;">
+      <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Pengaturan Admin</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:24px;">Data ini dipakai di sidebar dan dashboard admin.</p>
+
+      <form class="glass-card" onsubmit="saveAdminProfile(event)" style="padding:26px;border-radius:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div>
+            <label for="admin-name" class="form-label">Nama Admin</label>
+            <input id="admin-name" class="form-input" required maxlength="80" />
+          </div>
+          <div>
+            <label for="admin-id" class="form-label">Kode Admin</label>
+            <input id="admin-id" class="form-input" required maxlength="40" />
+          </div>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label for="admin-email" class="form-label">Email</label>
+          <input id="admin-email" type="email" class="form-input" placeholder="admin.prodi@amikom.ac.id" />
+        </div>
+        <div id="save-message" style="display:none;margin-bottom:16px;padding:12px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;font-size:13px;"></div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button type="button" onclick="window.location.href='dashboard-admin.html'" class="btn-outline" style="padding:10px 18px;border-radius:9px;color:#fff;">Batal</button>
+          <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-weight:600;">Simpan Profil</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  simag_requireAuth('adminprodi');
+
+  function initialsFromName(name) {
+    return String(name)
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join('') || 'AP';
+  }
+
+  function loadAdminProfile() {
+    const admin = SIMAG_DATA.getData().people.admin;
+    document.getElementById('admin-name').value = admin.name || '';
+    document.getElementById('admin-id').value = admin.id || '';
+    document.getElementById('admin-email').value = admin.email || '';
+    document.getElementById('sidebar-name').textContent = admin.name || 'Admin Prodi';
+    document.getElementById('admin-initials').textContent = admin.initials || initialsFromName(admin.name);
+  }
+
+  function saveAdminProfile(event) {
+    event.preventDefault();
+    const name = document.getElementById('admin-name').value.trim();
+    const saved = SIMAG_DATA.saveRoleProfile('adminprodi', {
+      name,
+      id: document.getElementById('admin-id').value.trim(),
+      email: document.getElementById('admin-email').value.trim(),
+      initials: initialsFromName(name)
+    });
+
+    const session = simag_getSession();
+    if (session.user && saved) {
+      session.user.name = saved.name;
+      simag_saveSession(session);
+    }
+
+    loadAdminProfile();
+    const message = document.getElementById('save-message');
+    message.textContent = 'Profil admin berhasil disimpan.';
+    message.style.display = 'block';
+  }
+
+  loadAdminProfile();
+</script>
+</body>
+</html>

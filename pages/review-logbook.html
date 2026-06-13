@@ -3,13 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Review Logbook — SIMAG</title>
+  <title>Monitoring Logbook — SIMAG</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../shared/styles.css" />
+  <style>
+    @media (max-width: 768px) {
+      aside { display:none; }
+      main { padding:20px !important; }
+      .review-header { align-items:flex-start !important; flex-direction:column; }
+      .review-controls { width:100%; flex-direction:column; }
+      .review-controls input, .review-controls select { width:100% !important; }
+      .review-actions { flex-direction:column; }
+      .review-actions button { width:100%; }
+    }
+  </style>
 </head>
 <body>
 
@@ -42,7 +53,7 @@
       </div>
       <div class="sidebar-item active" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Review Logbook
+        Monitoring Logbook
         <span class="badge badge-warning" style="margin-left:auto;">5</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
@@ -70,53 +81,30 @@
   <!-- ── Main Content ───────────────────────────────────────── -->
   <main style="flex:1;padding:32px;overflow-x:hidden;">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div class="review-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:18px;">
       <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Review Logbook Harian</h1>
-        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Periksa dan setujui laporan harian kegiatan mahasiswa magang.</p>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Monitoring Logbook Mahasiswa</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Pantau laporan harian mahasiswa magang. Approval dan revisi dilakukan oleh dosen pembimbing.</p>
+      </div>
+      <div class="review-controls" style="display:flex;gap:10px;">
+        <input id="review-search" type="search" oninput="renderLogbooks()" class="form-input" placeholder="Cari mahasiswa..." style="width:200px;padding:9px 12px;font-size:13px;">
+        <select id="review-status" onchange="renderLogbooks()" class="form-input" style="width:170px;padding:9px 12px;font-size:13px;">
+          <option value="submitted">Submitted</option>
+          <option value="">Semua Status</option>
+          <option value="approved">Disetujui</option>
+          <option value="revision">Perlu Revisi</option>
+        </select>
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="glass-card" style="padding:20px;border-radius:12px;border-left:4px solid #fbbf24;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
-          <div>
-            <h3 style="font-size:16px;font-weight:600;">Raka Aditya (Software Engineer)</h3>
-            <p style="font-size:12px;color:rgba(255,255,255,0.5);">Jumat, 6 Juni 2025</p>
-          </div>
-          <span class="badge badge-warning">Menunggu Review</span>
-        </div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:16px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;">
-          Melakukan integrasi API pembayaran untuk modul checkout. Menemukan bug pada response handling saat timeout dan telah diperbaiki.
-        </p>
-        <div style="display:flex;gap:12px;">
-          <button style="padding:8px 16px;border-radius:8px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:13px;cursor:pointer;font-weight:600;">Setujui Logbook</button>
-          <button style="padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;cursor:pointer;">Tolak / Revisi</button>
-        </div>
-      </div>
-
-      <div class="glass-card" style="padding:20px;border-radius:12px;border-left:4px solid #fbbf24;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
-          <div>
-            <h3 style="font-size:16px;font-weight:600;">Ahmad Faiz (UI/UX Designer)</h3>
-            <p style="font-size:12px;color:rgba(255,255,255,0.5);">Kamis, 5 Juni 2025</p>
-          </div>
-          <span class="badge badge-warning">Menunggu Review</span>
-        </div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:16px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;">
-          Menyelesaikan desain hi-fi untuk halaman dashboard user dan melakukan usability testing internal dengan 3 orang tim product.
-        </p>
-        <div style="display:flex;gap:12px;">
-          <button style="padding:8px 16px;border-radius:8px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:13px;cursor:pointer;font-weight:600;">Setujui Logbook</button>
-          <button style="padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;cursor:pointer;">Tolak / Revisi</button>
-        </div>
-      </div>
-    </div>
+    <div id="review-summary" style="margin-bottom:14px;color:rgba(255,255,255,0.4);font-size:12px;"></div>
+    <div id="logbook-list" style="display:flex;flex-direction:column;gap:16px;"></div>
 
 </main>
 </div>
 
 <script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
 <script>
   simag_requireAuth('mitra');
 
@@ -124,6 +112,96 @@
   if (user) {
     document.getElementById('sidebar-name').textContent = user.name;
   }
+
+  function getStatusMeta(status) {
+    const statusMap = {
+      pending: { label: 'Menunggu Review', badge: 'badge-warning', color: '#fbbf24' },
+      submitted: { label: 'Submitted', badge: 'badge-info', color: '#818cf8' },
+      approved: { label: 'Disetujui', badge: 'badge-success', color: '#4ade80' },
+      revision: { label: 'Perlu Revisi', badge: 'badge-warning', color: '#fbbf24' }
+    };
+    return statusMap[status] || statusMap.pending;
+  }
+
+  function formatDate(dateValue) {
+    return new Intl.DateTimeFormat('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(`${dateValue}T00:00:00`));
+  }
+
+  function renderLogbooks() {
+    const keyword = document.getElementById('review-search').value.trim().toLowerCase();
+    const statusFilter = document.getElementById('review-status').value;
+    const selectedIntern = new URLSearchParams(window.location.search).get('intern');
+    const interns = SIMAG_MITRA.getInterns();
+    const logbooks = SIMAG_MITRA.getLogbooks().filter((logbook) => {
+      const intern = interns.find((item) => item.id === logbook.internId);
+      const matchesKeyword = intern && `${intern.name} ${intern.position} ${logbook.activity}`
+        .toLowerCase()
+        .includes(keyword);
+      const matchesStatus = !statusFilter || logbook.status === statusFilter;
+      const matchesIntern = !selectedIntern || logbook.internId === selectedIntern;
+      return matchesKeyword && matchesStatus && matchesIntern;
+    });
+
+    const list = document.getElementById('logbook-list');
+    list.innerHTML = '';
+    document.getElementById('review-summary').textContent =
+      `Menampilkan ${logbooks.length} dari ${SIMAG_MITRA.getLogbooks().length} logbook`;
+
+    if (logbooks.length === 0) {
+      list.innerHTML = '<div class="glass-card" style="padding:32px;border-radius:12px;text-align:center;color:rgba(255,255,255,0.4);">Tidak ada logbook yang sesuai filter.</div>';
+      return;
+    }
+
+    logbooks.forEach((logbook) => {
+      const intern = interns.find((item) => item.id === logbook.internId);
+      const status = getStatusMeta(logbook.status);
+      const card = document.createElement('article');
+      card.className = 'glass-card';
+      card.style.cssText = `padding:20px;border-radius:12px;border-left:4px solid ${status.color};`;
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:12px;">
+          <div>
+            <h3 style="font-size:16px;font-weight:600;">${simag_escapeHtml(intern.name)} (${simag_escapeHtml(intern.position)})</h3>
+            <p style="font-size:12px;color:rgba(255,255,255,0.5);">${formatDate(logbook.date)}</p>
+          </div>
+          <span class="badge ${status.badge}">${status.label}</span>
+        </div>
+        <h4 style="font-size:13px;color:#fff;margin-bottom:7px;">${simag_escapeHtml(logbook.activity)}</h4>
+        <p style="font-size:14px;line-height:1.6;margin-bottom:12px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;">${simag_escapeHtml(logbook.description)}</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:16px;"><strong style="color:rgba(255,255,255,0.65);">Hasil:</strong> ${simag_escapeHtml(logbook.result)}</p>
+        ${logbook.note ? `<p style="font-size:12px;color:#a5b4fc;margin-bottom:16px;"><strong>Catatan:</strong> ${simag_escapeHtml(logbook.note)}</p>` : ''}
+        <div class="review-actions" style="display:flex;gap:12px;"></div>
+      `;
+
+      const actions = card.querySelector('.review-actions');
+      const detailButton = document.createElement('button');
+      detailButton.type = 'button';
+      detailButton.textContent = 'Lihat Detail';
+      detailButton.style.cssText = 'padding:8px 16px;border-radius:8px;background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.3);color:#c4b5fd;font-size:13px;cursor:pointer;font-weight:600;';
+      detailButton.onclick = () => {
+        window.location.href = `detail-logbook.html?id=${encodeURIComponent(logbook.id)}&role=mitra`;
+      };
+
+      const internButton = document.createElement('button');
+      internButton.type = 'button';
+      internButton.textContent = 'Detail Mahasiswa';
+      internButton.style.cssText = 'padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;cursor:pointer;';
+      internButton.onclick = () => {
+        window.location.href = `detail-intern.html?intern=${encodeURIComponent(logbook.internId)}`;
+      };
+
+      actions.append(detailButton, internButton);
+
+      list.appendChild(card);
+    });
+  }
+
+  renderLogbooks();
 </script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mahasiswa Bimbingan - SIMAG</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/styles.css" />
+</head>
+<body>
+<div style="display:flex;min-height:100vh;">
+  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a></div>
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+      <div id="lecturer-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AF</div>
+      <div style="overflow:hidden;"><p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dr. Ahmad Fauzi</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
+    </div>
+    <nav>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">Dashboard</div>
+      <div class="sidebar-item active" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">Mahasiswa Bimbingan</div>
+      <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">Review Logbook</div>
+      <div class="sidebar-item" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">Penilaian &amp; Evaluasi</div>
+      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">Jadwal Bimbingan</div>
+      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">Pengaturan</div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main style="flex:1;padding:32px;overflow-x:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
+      <div>
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Mahasiswa Bimbingan</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Pantau progress, logbook, nilai, dan konversi SKS mahasiswa magang.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input id="student-search" type="search" oninput="renderGuidance()" class="form-input" placeholder="Cari mahasiswa atau posisi..." style="width:240px;padding:9px 12px;font-size:13px;">
+        <select id="status-filter" onchange="renderGuidance()" class="form-input" style="width:160px;padding:9px 12px;font-size:13px;">
+          <option value="">Semua Status</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Approved">Approved</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="glass-card" style="border-radius:14px;padding:24px;">
+      <p id="student-count" style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;"></p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:850px;text-align:left;border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Magang</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Progress</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">SKS</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="guidance-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="../shared/mitra-data.js"></script>
+<script>
+  simag_requireAuth('dospem');
+
+  function renderShell(data) {
+    document.getElementById('sidebar-name').textContent = data.people.lecturer.name;
+    document.getElementById('lecturer-initials').textContent = data.people.lecturer.initials || 'DP';
+  }
+
+  function renderGuidance() {
+    const data = SIMAG_DATA.getData();
+    renderShell(data);
+    const keyword = document.getElementById('student-search').value.trim().toLowerCase();
+    const status = document.getElementById('status-filter').value;
+    const sksConversions = data.sksConversions;
+    const students = data.interns.filter((intern) => {
+      const haystack = `${intern.name} ${intern.position} ${intern.company} ${intern.nim}`.toLowerCase();
+      return haystack.includes(keyword) && (!status || intern.status === status);
+    });
+
+    document.getElementById('student-count').textContent = `Menampilkan ${students.length} dari ${data.interns.length} mahasiswa`;
+    const body = document.getElementById('guidance-body');
+    body.innerHTML = '';
+    if (!students.length) {
+      body.innerHTML = '<tr><td colspan="6" style="padding:30px;text-align:center;color:rgba(255,255,255,0.4);">Mahasiswa tidak ditemukan.</td></tr>';
+      return;
+    }
+
+    students.forEach((intern) => {
+      const latestLogbook = SIMAG_DATA.getLatestLogbookForIntern(intern.id);
+      const pendingLogbook = SIMAG_DATA.getPendingLogbookForIntern(intern.id);
+      const sks = sksConversions.find((item) => item.studentId === intern.id) || { sks: 0, target: 20, status: 'Pending' };
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      row.innerHTML = `
+        <td style="padding:12px;"><strong style="display:block;font-size:13px;">${simag_escapeHtml(intern.name)}</strong><span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(intern.nim)} - ${simag_escapeHtml(intern.studyProgram)}</span></td>
+        <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.7);">${simag_escapeHtml(intern.company)}<span style="display:block;color:rgba(255,255,255,0.4);font-size:11px;margin-top:3px;">${simag_escapeHtml(intern.position)}</span></td>
+        <td style="padding:12px;"><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:88px;"><div class="progress-fill" style="width:${intern.progress}%;background:#a855f7;"></div></div><span style="font-size:12px;color:rgba(255,255,255,0.6);">${intern.progress}%</span></div></td>
+        <td style="padding:12px;font-size:12px;color:rgba(255,255,255,0.6);">${latestLogbook ? `${simag_escapeHtml(latestLogbook.title)}<span class="badge ${SIMAG_DATA.statusBadge(latestLogbook.status)}" style="display:inline-block;margin-left:6px;">${SIMAG_DATA.statusLabel(latestLogbook.status)}</span>` : 'Belum ada logbook'}</td>
+        <td style="padding:12px;"><span class="badge ${SIMAG_DATA.statusBadge(sks.status)}">${sks.sks}/${sks.target} SKS</span></td>
+        <td style="padding:12px;"><div style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" data-action="detail" class="btn-outline" style="padding:7px 12px;border-radius:7px;color:#fff;font-size:12px;">Detail</button><button type="button" data-action="review" class="btn-primary" style="padding:7px 12px;border-radius:7px;color:#fff;font-size:12px;">Review</button></div></td>
+      `;
+      row.querySelector('[data-action="detail"]').onclick = () => {
+        window.location.href = `detail-intern.html?intern=${encodeURIComponent(intern.id)}&role=dospem`;
+      };
+      row.querySelector('[data-action="review"]').onclick = () => {
+        if (pendingLogbook) {
+          window.location.href = `detail-logbook.html?id=${encodeURIComponent(pendingLogbook.id)}&role=dospem`;
+        } else {
+          window.location.href = `review-logbook-dospem.html?intern=${encodeURIComponent(intern.id)}`;
+        }
+      };
+      body.appendChild(row);
+    });
+  }
+
+  renderGuidance();
+</script>
+</body>
+</html>

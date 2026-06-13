@@ -133,6 +133,15 @@
 'use strict';
 
 let currentRole = 'mahasiswa';
+const loginRoles = ['mahasiswa', 'adminprodi', 'mitra', 'dospem'];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const requestedRole = params.get('role') || sessionStorage.getItem('simag_next_role');
+  if (loginRoles.includes(requestedRole)) {
+    switchTab(requestedRole);
+  }
+});
 
 function switchTab(role) {
   currentRole = role;

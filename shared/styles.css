@@ -131,6 +131,7 @@
   .badge-success { background: rgba(34,197,94,0.15); color: #4ade80; }
   .badge-warning { background: rgba(251,191,36,0.15); color: #fbbf24; }
   .badge-info    { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .badge-danger  { background: rgba(248,113,113,0.13); color: #fca5a5; }
 
   /* ── Timeline ────────────────────────────────────────────── */
   .timeline-line {
@@ -175,13 +176,104 @@
   }
   .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* Mobile dashboard shell */
+  .simag-mobile-menu-button {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 90;
+    width: 42px;
+    height: 42px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(15,15,26,0.82);
+    color: #fff;
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+  }
+
+  .simag-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 98;
+    display: none;
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(4px);
+  }
+
+  .simag-mobile-overlay.open { display: block; }
+
+  .simag-mobile-drawer {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 99;
+    width: min(82vw, 280px);
+    min-height: 100vh;
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    background: #111120;
+    box-shadow: 18px 0 40px rgba(0,0,0,0.35);
+    overflow-y: auto;
+  }
+
+  .simag-mobile-drawer.open { transform: translateX(0); }
+
+  .simag-mobile-drawer aside {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh;
+    border-right: none !important;
+  }
+
   /* ── Responsive ──────────────────────────────────────────── */
   @media (max-width: 768px) {
+    body { padding-top: 58px; }
+    .simag-mobile-menu-button { display: flex; }
+    body.simag-no-mobile-shell { padding-top: 0; }
     .hero-grid, .hiw-grid  { grid-template-columns: 1fr !important; }
-    .stats-grid             { grid-template-columns: repeat(2, 1fr) !important; }
+    .stats-grid             { grid-template-columns: 1fr !important; }
     .roles-grid             { grid-template-columns: repeat(2, 1fr) !important; }
     .testi-grid             { grid-template-columns: 1fr !important; }
     .footer-grid            { grid-template-columns: 1fr 1fr !important; }
-    .dashboard-stats        { grid-template-columns: repeat(2, 1fr) !important; }
+    .dashboard-stats        { grid-template-columns: 1fr !important; }
     .login-left             { display: none !important; }
+    main                    { padding: 20px !important; }
+  }
+
+  @media (max-width: 1024px) {
+    .dashboard-two-col,
+    .detail-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    button,
+    a,
+    input,
+    select,
+    textarea {
+      max-width: 100%;
+    }
+
+    .student-evaluation-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    #vacancy-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    main > div[style*="padding: 32px"] {
+      padding: 0 !important;
+    }
+
+    .glass-card[style*="display:flex"] {
+      min-width: 0;
+    }
   }
