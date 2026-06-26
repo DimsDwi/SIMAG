@@ -125,11 +125,11 @@
         <!-- Company Initials -->
         <div style="display:flex;align-items:flex-start;gap:12px;">
           <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(6,182,212,0.3));border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#c4b5fd;flex-shrink:0;">
-            {{ getCompanyInitials(vacancy.company) }}
+            {{ getCompanyInitials(vacancy.company.name || vacancy.company) }}
           </div>
           <div style="flex:1;min-width:0;">
             <h3 style="font-size:15px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ vacancy.title }}</h3>
-            <p style="color:rgba(255,255,255,0.5);font-size:13px;">{{ vacancy.company }}</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:13px;">{{ vacancy.company.name || vacancy.company }}</p>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ createApp({
       if (!this.searchQuery.trim()) return this.vacancies;
       const q = this.searchQuery.toLowerCase();
       return this.vacancies.filter(v =>
-        `${v.title} ${v.company} ${v.location} ${v.workModel}`.toLowerCase().includes(q)
+        `${v.title} ${(v.company && v.company.name) || v.company} ${v.location} ${v.workModel}`.toLowerCase().includes(q)
       );
     }
   },
