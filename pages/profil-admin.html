@@ -4,61 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profil Admin - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323821" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
       <div style="overflow:hidden;">
-        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin</p>
       </div>
     </div>
     <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
-      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
-      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik &amp; Laporan</div>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Approve Pendaftaran
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Konversi SKS
+        <span id="admin-sks-pending-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="pendingSks"></span></span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analitik &amp; Laporan
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Riwayat SKS
+      </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item active" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+        <div class="sidebar-item active" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
       </div>
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="max-width:760px;">
-      <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Pengaturan Admin</h1>
+      <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Pengaturan Admin</h1>
       <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:24px;">Data ini dipakai di sidebar dan dashboard admin.</p>
 
-      <form class="glass-card" onsubmit="saveAdminProfile(event)" style="padding:26px;border-radius:14px;">
+      <form class="glass-card" @submit.prevent="saveProfile" style="padding:26px;border-radius:14px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
           <div>
             <label for="admin-name" class="form-label">Nama Admin</label>
-            <input id="admin-name" class="form-input" required maxlength="80" />
+            <input id="admin-name" v-model="form.name" class="form-input" required maxlength="80" />
           </div>
           <div>
             <label for="admin-id" class="form-label">Kode Admin</label>
-            <input id="admin-id" class="form-input" required maxlength="40" />
+            <input id="admin-id" v-model="form.id" class="form-input" required maxlength="40" />
           </div>
         </div>
         <div style="margin-bottom:18px;">
           <label for="admin-email" class="form-label">Email</label>
-          <input id="admin-email" type="email" class="form-input" placeholder="admin.prodi@amikom.ac.id" />
+          <input id="admin-email" v-model="form.email" type="email" class="form-input" placeholder="admin.prodi@amikom.ac.id" />
         </div>
-        <div id="save-message" style="display:none;margin-bottom:16px;padding:12px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;font-size:13px;"></div>
+        <div v-if="saveMessage" style="margin-bottom:16px;padding:12px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;font-size:13px;">{{ saveMessage }}</div>
         <div style="display:flex;justify-content:flex-end;gap:10px;">
-          <button type="button" onclick="window.location.href='dashboard-admin.html'" class="btn-outline" style="padding:10px 18px;border-radius:9px;color:#fff;">Batal</button>
-          <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-weight:600;">Simpan Profil</button>
+          <button type="button" onclick="window.location.href='dashboard-admin.html'" class="btn-outline" style="padding:10px 18px;border-radius:9px;color:#fff;cursor:pointer;">Batal</button>
+          <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-weight:600;border:none;cursor:pointer;">Simpan Profil</button>
         </div>
       </form>
     </div>
@@ -66,51 +106,46 @@
 </div>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('adminprodi');
-
-  function initialsFromName(name) {
-    return String(name)
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part.charAt(0).toUpperCase())
-      .join('') || 'AP';
-  }
-
-  function loadAdminProfile() {
-    const admin = SIMAG_DATA.getData().people.admin;
-    document.getElementById('admin-name').value = admin.name || '';
-    document.getElementById('admin-id').value = admin.id || '';
-    document.getElementById('admin-email').value = admin.email || '';
-    document.getElementById('sidebar-name').textContent = admin.name || 'Admin Prodi';
-    document.getElementById('admin-initials').textContent = admin.initials || initialsFromName(admin.name);
-  }
-
-  function saveAdminProfile(event) {
-    event.preventDefault();
-    const name = document.getElementById('admin-name').value.trim();
-    const saved = SIMAG_DATA.saveRoleProfile('adminprodi', {
-      name,
-      id: document.getElementById('admin-id').value.trim(),
-      email: document.getElementById('admin-email').value.trim(),
-      initials: initialsFromName(name)
-    });
-
-    const session = simag_getSession();
-    if (session.user && saved) {
-      session.user.name = saved.name;
-      simag_saveSession(session);
+'use strict';
+simag_requireAuth('adminprodi');
+const { createApp } = Vue;
+createApp({
+  data() {
+    return { form: { name: '', id: '', email: '' }, saveMessage: '' };
+  },
+  computed: {
+    initials() { return (this.form.name||'').split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'AP'; }
+  },
+  methods: {
+    async loadProfile() {
+      try {
+        const data = await SIMAG_DATA.getData().catch(() => ({ people: { admin: { name: '', id: '', email: '' } } }));
+        const globalAdmin = data.people?.admin || {};
+        const { user } = simag_getSession();
+        const local = JSON.parse(localStorage.getItem('simag_custom_profile_' + (user?.id || 'default')));
+        const admin = local || { name: user?.name || globalAdmin.name, id: globalAdmin.id, email: user?.identifier || globalAdmin.email };
+        this.form = { name: admin.name || '', id: admin.id || '', email: admin.email || '' };
+      } catch (e) {
+        console.error('Gagal memuat profil:', e);
+      }
+    },
+    async saveProfile() {
+      const saved = await SIMAG_DATA.saveRoleProfile('adminprodi', { name: this.form.name.trim(), id: this.form.id.trim(), email: this.form.email.trim(), initials: this.initials });
+      const session = simag_getSession();
+      if (session.user && saved) {
+        session.user.name = saved.name;
+        simag_saveSession(session);
+        if(typeof simag_updateSidebarName === 'function') simag_updateSidebarName();
+        localStorage.setItem('simag_custom_profile_' + session.user.id, JSON.stringify({ name: saved.name, id: saved.id, email: saved.email, initials: saved.initials }));
+      }
+      await this.loadProfile();
+      this.saveMessage = 'Profil admin berhasil disimpan.';
     }
-
-    loadAdminProfile();
-    const message = document.getElementById('save-message');
-    message.textContent = 'Profil admin berhasil disimpan.';
-    message.style.display = 'block';
-  }
-
-  loadAdminProfile();
+  },
+  async mounted() { await this.loadProfile(); }
+}).mount('#app');
 </script>
 </body>
 </html>
