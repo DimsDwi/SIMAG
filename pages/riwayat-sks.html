@@ -4,218 +4,245 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Riwayat SKS - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323829" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
       <div style="overflow:hidden;">
-        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin</p>
       </div>
     </div>
     <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
-      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
-      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik & Laporan</div>
-      <div class="sidebar-item active" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">Riwayat SKS</div>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Approve Pendaftaran
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Konversi SKS
+        <span id="admin-sks-pending-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="pendingSks"></span></span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analitik &amp; Laporan
+      </div>
+      <div class="sidebar-item active" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Riwayat SKS
+      </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
       </div>
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <!-- Main -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
       <div>
         <a href="dashboard-admin.html" style="display:inline-block;margin-bottom:12px;color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Kembali ke dashboard</a>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Riwayat SKS</h1>
+        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Riwayat SKS</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Catatan konversi SKS mahasiswa yang sudah diproses admin prodi.</p>
       </div>
-      <button type="button" onclick="window.location.href='konversi-sks.html'" class="btn-primary" style="padding:10px 18px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">Kelola Konversi</button>
+      <button type="button" onclick="window.location.href='konversi-sks.html'" class="btn-primary" style="padding:10px 18px;border-radius:9px;font-size:13px;color:#fff;font-weight:600;">Kelola Konversi</button>
     </div>
 
-    <div class="dashboard-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
-      <div class="glass-card" style="border-radius:12px;padding:18px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Riwayat</p>
-        <p id="history-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:18px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Selesai</p>
-        <p id="completed-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:18px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total SKS</p>
-        <p id="total-sks" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:18px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Menunggu</p>
-        <p id="pending-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0</p>
-      </div>
+    <!-- Loading -->
+    <div v-if="loading" style="padding:60px;text-align:center;">
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(251,191,36,0.2);border-top-color:#fbbf24;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat data riwayat...</p>
     </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:14px;margin-bottom:20px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-        <h2 style="font-size:16px;font-weight:700;">Daftar Riwayat Konversi</h2>
-        <span id="history-summary" class="badge badge-info">Data dimuat</span>
+    <template v-else>
+      <div class="dashboard-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div class="glass-card" style="border-radius:12px;padding:18px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Riwayat</p>
+          <p style="font-size:28px;font-weight:700;color:#818cf8;">{{ conversions.length }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:18px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Selesai</p>
+          <p style="font-size:28px;font-weight:700;color:#4ade80;">{{ completedCount }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:18px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total SKS</p>
+          <p style="font-size:28px;font-weight:700;color:#22d3ee;">{{ totalSks }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:18px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Menunggu</p>
+          <p style="font-size:28px;font-weight:700;color:#fbbf24;">{{ pendingCount }}</p>
+        </div>
       </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;min-width:820px;border-collapse:collapse;text-align:left;">
-          <thead>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Tanggal</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Perusahaan</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">SKS</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
-            </tr>
-          </thead>
-          <tbody id="history-body"></tbody>
-        </table>
-      </div>
-    </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:14px;">
-      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas SKS Terbaru</h2>
-      <div id="sks-activity-list" style="display:flex;flex-direction:column;gap:10px;"></div>
-    </div>
+      <div class="glass-card" style="padding:24px;border-radius:14px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <h2 style="font-size:16px;font-weight:700;">Daftar Riwayat Konversi</h2>
+          <span class="badge badge-info">{{ totalSks }} SKS dari {{ conversions.length }} riwayat</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;min-width:820px;border-collapse:collapse;text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Tanggal</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Perusahaan</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">SKS</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!conversions.length">
+                <td colspan="5" style="padding:22px;text-align:center;color:rgba(255,255,255,0.45);">Belum ada riwayat konversi SKS.</td>
+              </tr>
+              <tr v-for="c in conversions" :key="c.id" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.55);">{{ formatDateTime(c.convertedAt) }}</td>
+                <td style="padding:12px;">
+                  <strong style="display:block;font-size:13px;">{{ getStudentProfile(c.studentId).name }}</strong>
+                  <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ getStudentProfile(c.studentId).nim || '-' }} - {{ getStudentProfile(c.studentId).studyProgram || '...' }}</span>
+                </td>
+                <td style="padding:12px;">
+                  <strong style="display:block;font-size:13px;font-weight:600;">{{ getStudentProfile(c.studentId).company || 'Perusahaan Mitra' }}</strong>
+                  <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ getStudentProfile(c.studentId).position || 'Magang' }}</span>
+                </td>
+                <td style="padding:12px;font-weight:700;color:#22d3ee;">{{ Number(c.sks || 0) }}/{{ Number(c.target || 20) }} SKS</td>
+                <td style="padding:12px;"><span class="badge" :class="getStatusBadge(c.status)">{{ c.status || 'Pending' }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding:24px;border-radius:14px;">
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas SKS Terbaru</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div v-if="!activities.length" style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;background:rgba(255,255,255,0.03);border-radius:8px;">Belum ada aktivitas SKS terbaru.</div>
+          <div v-for="act in activities" :key="act.id" style="display:flex;gap:10px;align-items:flex-start;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,211,238,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#22d3ee;">{{ act.icon || 'SK' }}</div>
+            <div>
+              <p style="font-size:13px;font-weight:600;">{{ act.title }}</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.4);">{{ act.meta || 'Baru saja' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </main>
 </div>
 
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('adminprodi');
-
-  function getInitials(name) {
-    return String(name || 'Admin Prodi')
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part.charAt(0).toUpperCase())
-      .join('') || 'AP';
-  }
-
-  function formatDateTime(value) {
-    if (!value) return '-';
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return '-';
-    return date.toLocaleString('id-ID', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
-
-  function getStudentProfile(data, studentId) {
-    const intern = data.interns.find((item) => item.id === studentId);
-    if (intern) return intern;
-
-    const application = data.applications.find((item) => item.studentId === studentId);
-    if (application) {
-      return {
-        id: application.studentId,
-        initials: application.initials || getInitials(application.name),
-        name: application.name || 'Mahasiswa',
-        nim: application.nim || '-',
-        studyProgram: application.studyProgram || 'S1 Informatika',
-        company: application.company || data.people.company.name,
-        position: application.position || 'Magang'
-      };
-    }
-
+'use strict';
+simag_requireAuth('adminprodi');
+const { createApp } = Vue;
+createApp({
+  data() {
+    const { user } = simag_getSession();
     return {
-      ...data.people.student,
-      company: data.people.company.name,
-      position: 'Magang'
+      loading: true, userName: user ? user.name : '...',
+      conversions: [], activities: [], interns: [], db: null
     };
-  }
-
-  function renderHistory() {
-    const data = SIMAG_DATA.getData();
-    const conversions = [...data.sksConversions].sort((a, b) => {
-      return new Date(b.convertedAt || 0) - new Date(a.convertedAt || 0);
-    });
-    const completedCount = conversions.filter((item) => item.status === 'Completed').length;
-    const totalSks = conversions.reduce((total, item) => total + Number(item.sks || 0), 0);
-    const pendingCount = data.interns.filter((intern) => {
-      const conversion = conversions.find((item) => item.studentId === intern.id);
-      return !conversion || conversion.status !== 'Completed';
-    }).length;
-    const admin = data.people.admin || {};
-
-    document.getElementById('sidebar-name').textContent = admin.name || 'Admin Prodi FIKOM';
-    document.getElementById('admin-initials').textContent = admin.initials || getInitials(admin.name);
-    document.getElementById('history-count').textContent = conversions.length;
-    document.getElementById('completed-count').textContent = completedCount;
-    document.getElementById('total-sks').textContent = totalSks;
-    document.getElementById('pending-count').textContent = pendingCount;
-    document.getElementById('history-summary').textContent = `${totalSks} SKS dari ${conversions.length} riwayat`;
-
-    const body = document.getElementById('history-body');
-    body.innerHTML = '';
-
-    if (!conversions.length) {
-      body.innerHTML = '<tr><td colspan="5" style="padding:22px;text-align:center;color:rgba(255,255,255,0.45);">Belum ada riwayat konversi SKS.</td></tr>';
+  },
+  computed: {
+    initials() { return simag_initialsFromName(this.userName, 'AP'); },
+    completedCount() { return this.conversions.filter(c => c.status === 'Completed').length; },
+    totalSks() { return this.conversions.reduce((t, c) => t + Number(c.sks || 0), 0); },
+    pendingCount() {
+      if(!this.db) return 0;
+      return this.db.interns.filter(i => {
+        const c = this.conversions.find(x => x.studentId === i.id);
+        return !c || c.status !== 'Completed';
+      }).length;
     }
-
-    conversions.forEach((conversion) => {
-      const student = getStudentProfile(data, conversion.studentId);
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      row.innerHTML = `
-        <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.55);">${simag_escapeHtml(formatDateTime(conversion.convertedAt))}</td>
-        <td style="padding:12px;">
-          <strong style="display:block;font-size:13px;">${simag_escapeHtml(student.name)}</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.nim || '-')} - ${simag_escapeHtml(student.studyProgram || 'S1 Informatika')}</span>
-        </td>
-        <td style="padding:12px;">
-          <strong style="display:block;font-size:13px;font-weight:600;">${simag_escapeHtml(student.company || data.people.company.name)}</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.position || 'Magang')}</span>
-        </td>
-        <td style="padding:12px;font-weight:700;color:#22d3ee;">${Number(conversion.sks || 0)}/${Number(conversion.target || 20)} SKS</td>
-        <td style="padding:12px;"><span class="badge ${SIMAG_DATA.statusBadge(conversion.status)}">${simag_escapeHtml(conversion.status || 'Pending')}</span></td>
-      `;
-      body.appendChild(row);
-    });
-
-    const activityList = document.getElementById('sks-activity-list');
-    const activities = data.activities.filter((activity) => activity.type === 'sks').slice(0, 5);
-    activityList.innerHTML = '';
-
-    if (!activities.length) {
-      activityList.innerHTML = '<div style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;background:rgba(255,255,255,0.03);border-radius:8px;">Belum ada aktivitas SKS terbaru.</div>';
-      return;
+  },
+  methods: {
+    getStatusBadge(s) { return SIMAG_DATA.statusBadge(s); },
+    formatDateTime(value) {
+      if (!value) return '-';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '-';
+      return date.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    },
+    getStudentProfile(studentId) {
+      if(!this.db) return { name: 'Mahasiswa' };
+      const intern = this.db.interns.find(i => i.id === studentId);
+      if (intern) return intern;
+      
+      const app = this.db.applications.find(a => a.studentId === studentId);
+      let sName = 'Mahasiswa', sNim = '-', sProg = 'S1 Informatika', cName = this.db.people.company.name, pos = 'Magang';
+      
+      if(app) {
+        const u = this.db.users.find(x => x.linkedId === app.studentId || x.id === app.studentId);
+        if(u) { sName = u.name; sNim = u.identifier; sProg = app.studyProgram||sProg; }
+        else if(app.name) { sName = app.name; sNim = app.nim||'-'; sProg = app.studyProgram||sProg; }
+        
+        const cu = this.db.users.find(x => x.linkedId === app.companyId || x.id === app.companyId);
+        if(cu) cName = cu.name; else if(app.company) cName = app.company;
+        
+        const v = this.db.vacancies.find(x => x.id === app.vacancyId) || {};
+        pos = app.position || v.title || pos;
+      } else if (studentId === this.db.people.student.id) {
+        sName = this.db.people.student.name;
+        sNim = this.db.people.student.nim;
+        sProg = this.db.people.student.studyProgram;
+      }
+      return { id: studentId, name: sName, nim: sNim, studyProgram: sProg, company: cName, position: pos };
+    },
+    async loadData() {
+      try {
+        this.db = await SIMAG_DATA.getData().catch(() => ({ interns: [], sksConversions: [], activities: [], applications: [], users: [], vacancies: [], people: { student: {} } }));
+        this.interns = this.db.interns || [];
+        this.conversions = [...(this.db.sksConversions || [])].sort((a,b) => new Date(b.convertedAt||0) - new Date(a.convertedAt||0));
+        this.activities = (this.db.activities || []).filter(a => a.type === 'sks').slice(0, 5);
+      } catch (e) {
+        console.error('Gagal memuat data:', e);
+      } finally {
+        this.loading = false;
+      }
     }
-
-    activities.forEach((activity) => {
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;gap:10px;align-items:flex-start;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;';
-      item.innerHTML = `
-        <div style="width:32px;height:32px;border-radius:8px;background:rgba(34,211,238,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#22d3ee;">${simag_escapeHtml(activity.icon || 'SK')}</div>
-        <div>
-          <p style="font-size:13px;font-weight:600;">${simag_escapeHtml(activity.title)}</p>
-          <p style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(activity.meta || 'Baru saja')}</p>
-        </div>
-      `;
-      activityList.appendChild(item);
-    });
-  }
-
-  renderHistory();
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

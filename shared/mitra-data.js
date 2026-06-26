@@ -1,6 +1,6 @@
 'use strict';
 
-(function initSimagData(global) {
+(async function initSimagData(global) {
   const STORAGE_KEY = 'simag_dummy_data_v3';
   const LEGACY_KEY = 'simag_mitra_data_v1';
 
@@ -383,7 +383,7 @@
     return data.interns.find((intern) => intern.id === data.people.student.id) || data.interns[0];
   }
 
-  function initialsFromName(name) {
+  async function initialsFromName(name) {
     return String(name)
       .split(/\s+/)
       .filter(Boolean)
@@ -726,7 +726,7 @@
     return clone(nextConversion);
   }
 
-  function saveEvaluation(evaluation) {
+  async function saveEvaluation(evaluation) {
     const data = read();
     const existingIndex = data.evaluations.findIndex(
       (item) => item.candidateId === evaluation.candidateId
@@ -765,7 +765,7 @@
     ) || null;
   }
 
-  function saveCompanyProfile(changes) {
+  async function saveCompanyProfile(changes) {
     const data = read();
     data.companyProfile = { ...data.companyProfile, ...changes };
     data.people.company.name = data.companyProfile.name;
@@ -779,7 +779,7 @@
     return clone(data.companyProfile);
   }
 
-  function saveRoleProfile(role, changes) {
+  async function saveRoleProfile(role, changes) {
     const data = read();
     const roleMap = {
       mahasiswa: 'student',

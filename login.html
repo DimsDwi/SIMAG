@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,321 +8,610 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles.css" />
+    <!-- Modern Fonts for Premium Aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="shared/styles.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>
+    :root {
+      --primary-font: 'Plus Jakarta Sans', sans-serif;
+      --heading-font: 'Outfit', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #09090e;
+      color: #f8fafc;
+      font-family: var(--primary-font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .brand-font {
+      font-family: var(--heading-font);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Animated Background */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float 20s infinite ease-in-out alternate;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(99, 102, 241, 0.35);
+      top: -15%;
+      left: -15%;
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(168, 85, 247, 0.25);
+      bottom: -10%;
+      right: -10%;
+      animation-delay: -7s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: rgba(14, 165, 233, 0.2);
+      top: 50%;
+      left: 60%;
+      animation-delay: -12s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(30px, -40px) scale(1.05);
+      }
+
+      100% {
+        transform: translate(-20px, 30px) scale(0.95);
+      }
+    }
+
+    /* Layout */
+    .login-container {
+      display: flex;
+      align-items: stretch;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-left::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 10%;
+      bottom: 10%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.3), transparent);
+    }
+
+    .login-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+    }
+
+    /* Feature Pills */
+    .feature-pill {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-pill:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(99, 102, 241, 0.2);
+      transform: translateX(4px);
+    }
+
+    .feature-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    /* Tabs */
+    .role-tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 5px;
+      margin-bottom: 32px;
+    }
+
+    .role-tab {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: var(--primary-font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .role-tab:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .role-tab.active {
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Form Elements */
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: #f8fafc;
+      font-family: var(--primary-font);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .field-input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .field-input:focus {
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .field-input.error {
+      border-color: rgba(239, 68, 68, 0.5);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .error-text {
+      font-size: 12px;
+      color: #f87171;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4f46e5, #7e22ce);
+      color: #fff;
+      font-family: var(--primary-font);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(79, 70, 229, 0.5);
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Quick Login Cards */
+    .quick-login-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .quick-btn {
+      padding: 10px 8px;
+      border-radius: 10px;
+      border: 1px solid;
+      font-family: var(--primary-font);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .quick-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+
+      .login-left {
+        display: none;
+      }
+
+      .login-right {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
+
 <body>
 
-<div style="min-height:100vh;display:flex;align-items:stretch;">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
 
-  <!-- ── Left panel (branding) ─────────────────────────────── -->
-  <div class="login-left" style="flex:1;background:linear-gradient(135deg,rgba(79,70,229,0.15) 0%,rgba(6,182,212,0.08) 100%);border-right:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;padding:40px;">
-    <div>
-      <div style="margin-bottom:40px;">
-        <a href="index.html" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
-      </div>
-      <h2 style="font-size:32px;font-weight:700;line-height:1.2;margin-bottom:16px;">
-        Selamat datang kembali<br>di platform magang<br><span class="gradient-text">terpercaya Amikom</span>
-      </h2>
-      <p style="font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;max-width:340px;">
-        Kelola seluruh proses magang dari satu platform terintegrasi. Dari matching hingga sertifikasi, semua otomatis.
-      </p>
-      <div style="margin-top:40px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;gap:12px;align-items:center;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;"></div>
-          <span style="font-size:13px;color:rgba(255,255,255,0.5);">2,847+ mahasiswa aktif</span>
-        </div>
-        <div style="display:flex;gap:12px;align-items:center;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#818cf8;flex-shrink:0;"></div>
-          <span style="font-size:13px;color:rgba(255,255,255,0.5);">184 perusahaan mitra terverifikasi</span>
-        </div>
-        <div style="display:flex;gap:12px;align-items:center;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#22d3ee;flex-shrink:0;"></div>
-          <span style="font-size:13px;color:rgba(255,255,255,0.5);">96% tingkat kepuasan pengguna</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="app" v-cloak>
+    <div class="login-container">
+      <!-- Left Branding Panel -->
+      <div class="login-left">
+        <div style="max-width: 420px;">
+          <a href="index.html" class="brand-font"
+            style="font-size:26px;font-weight:800;color:#fff;text-decoration:none;display:inline-block;margin-bottom:48px;">SIMAG<span
+              style="color:#818cf8">.</span></a>
 
-  <!-- ── Right panel (form) ─────────────────────────────────── -->
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;">
-    <div style="width:100%;max-width:420px;">
-      <h3 style="font-size:26px;font-weight:700;margin-bottom:6px;">Masuk ke Akun</h3>
-      <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:32px;">Masukkan kredensial akun SIMAG Anda</p>
+          <h2 class="brand-font"
+            style="font-size:38px;font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:20px;">
+            Selamat datang<br>kembali di platform<br><span class="text-gradient">magang terpercaya</span>
+          </h2>
+          <p style="font-size:15px;color:rgba(255,255,255,0.45);line-height:1.7;max-width:360px;margin-bottom:48px;">
+            Kelola seluruh proses magang dari satu platform terintegrasi. Dari matching hingga sertifikasi, semua
+            otomatis.
+          </p>
 
-      <!-- Role Tabs -->
-      <div style="display:flex;gap:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:4px;margin-bottom:28px;">
-
-  <button class="tab-btn active"
-          id="tab-mahasiswa"
-          onclick="switchTab('mahasiswa')">
-      Mahasiswa
-  </button>
-
-  <button class="tab-btn"
-          id="tab-adminprodi"
-          onclick="switchTab('adminprodi')">
-      Admin Prodi
-  </button>
-
-  <button class="tab-btn"
-          id="tab-mitra"
-          onclick="switchTab('mitra')">
-      Mitra
-  </button>
-
-  <button class="tab-btn"
-          id="tab-dospem"
-          onclick="switchTab('dospem')">
-      Dospem
-  </button>
-
-</div>
-
-      <!-- Login Form -->
-      <form id="login-form" onsubmit="handleLogin(event)">
-        <div style="margin-bottom:18px;">
-          <label class="form-label" id="identifier-label">NIM / Username</label>
-          <input type="text" id="identifier" class="form-input" placeholder="Masukkan NIM atau username" />
-          <p class="error-msg" id="identifier-error" style="display:none;"></p>
-        </div>
-        <div style="margin-bottom:8px;">
-          <label class="form-label">Password</label>
-          <div style="position:relative;">
-            <input type="password" id="password" class="form-input" placeholder="Masukkan password" style="padding-right:44px;" />
-            <button type="button" onclick="togglePwd()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:18px;">👁</button>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="feature-pill">
+              <div class="feature-dot" style="background:#4ade80;color:#4ade80;"></div>
+              <span style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;">2,847+ mahasiswa aktif
+                terdaftar</span>
+            </div>
+            <div class="feature-pill">
+              <div class="feature-dot" style="background:#818cf8;color:#818cf8;"></div>
+              <span style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;">184 perusahaan mitra
+                terverifikasi</span>
+            </div>
+            <div class="feature-pill">
+              <div class="feature-dot" style="background:#22d3ee;color:#22d3ee;"></div>
+              <span style="font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;">96% tingkat kepuasan
+                pengguna</span>
+            </div>
           </div>
-          <p class="error-msg" id="password-error" style="display:none;"></p>
-        </div>
-        <div style="display:flex;justify-content:flex-end;margin-bottom:24px;">
-          <a href="#" style="font-size:12px;color:#818cf8;text-decoration:none;">Lupa Password?</a>
-        </div>
-
-        <p class="error-msg" id="form-error" style="display:none;margin-bottom:16px;font-size:13px;text-align:center;"></p>
-
-        <button type="submit" class="btn-primary" id="login-btn"
-          style="width:100%;padding:13px;border-radius:10px;font-size:15px;font-weight:700;color:#fff;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
-          <span id="btn-text">Masuk Sekarang</span>
-          <span id="btn-spinner" style="display:none;">⟳</span>
-        </button>
-      </form>
-
-      <!-- Demo quick-login -->
-      <div style="margin-top:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;text-align:center;">🔑 Demo Login Cepat</p>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
-          <button onclick="quickLogin('mahasiswa')" style="padding:7px 4px;border-radius:7px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.25);color:#818cf8;font-size:11px;font-weight:600;cursor:pointer;">Mahasiswa</button>
-          <button onclick="quickLogin('mitra')"     style="padding:7px 4px;border-radius:7px;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);color:#22d3ee;font-size:11px;font-weight:600;cursor:pointer;">Mitra</button>
-          <button onclick="quickLogin('adminprodi')" style="padding:7px 4px;border-radius:7px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:#fbbf24;font-size:11px;font-weight:600;cursor:pointer;">Admin Prodi</button>
-          <button onclick="quickLogin('dospem')"    style="padding:7px 4px;border-radius:7px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);color:#a855f7;font-size:11px;font-weight:600;cursor:pointer;">Dospem</button>
         </div>
       </div>
 
-      <p style="text-align:center;font-size:13px;color:rgba(255,255,255,0.4);margin-top:20px;">
-        Belum punya akun? <a href="register.html" style="color:#818cf8;text-decoration:none;">Daftar sekarang</a>
-      </p>
+      <!-- Right Form Panel -->
+      <div class="login-right">
+        <div style="width:100%;max-width:440px;animation: fadeIn 0.5s ease;">
+          <h3 class="brand-font" style="font-size:30px;font-weight:800;margin-bottom:8px;letter-spacing:-0.5px;">Masuk
+            ke Akun</h3>
+          <p style="font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:36px;">Masukkan kredensial akun SIMAG Anda
+          </p>
+
+          <!-- Role Tabs -->
+          <div class="role-tabs">
+            <button class="role-tab" :class="{ active: currentRole === 'mahasiswa' }"
+              @click="switchTab('mahasiswa')">Mahasiswa</button>
+            <button class="role-tab" :class="{ active: currentRole === 'adminprodi' }"
+              @click="switchTab('adminprodi')">Admin Prodi</button>
+            <button class="role-tab" :class="{ active: currentRole === 'mitra' }"
+              @click="switchTab('mitra')">Mitra</button>
+            <button class="role-tab" :class="{ active: currentRole === 'dospem' }"
+              @click="switchTab('dospem')">Dospem</button>
+          </div>
+
+          <!-- Login Form -->
+          <form @submit.prevent="handleLogin">
+            <div style="margin-bottom:20px;">
+              <label class="field-label">{{ identifierLabel }}</label>
+              <input type="text" v-model="identifier" autocomplete="off" class="field-input"
+                :class="{ error: identifierError }" :placeholder="identifierPlaceholder" />
+              <p class="error-text" v-if="identifierError">{{ identifierError }}</p>
+            </div>
+            <div style="margin-bottom:10px;">
+              <label class="field-label">Password</label>
+              <div style="position:relative;">
+                <input :type="showPassword ? 'text' : 'password'" v-model="password" autocomplete="new-password"
+                  class="field-input" :class="{ error: passwordError }" placeholder="Masukkan password"
+                  style="padding-right:48px;" />
+                <button type="button" @click="showPassword = !showPassword"
+                  style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:18px;transition:color 0.2s;"
+                  onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <p class="error-text" v-if="passwordError">{{ passwordError }}</p>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:28px;">
+              <a href="#"
+                style="font-size:13px;color:#818cf8;text-decoration:none;font-weight:500;transition:color 0.2s;"
+                onmouseover="this.style.color='#a5b4fc'" onmouseout="this.style.color='#818cf8'">Lupa Password?</a>
+            </div>
+
+            <p class="error-text" v-if="formError" style="text-align:center;margin-bottom:16px;font-size:13px;">{{
+              formError }}</p>
+            <p v-if="formSuccess"
+              style="text-align:center;margin-bottom:16px;font-size:13px;color:#4ade80;font-weight:600;">{{ formSuccess
+              }}</p>
+
+            <button type="submit" class="btn-submit" :disabled="loading">
+              <span>{{ loading ? 'Memverifikasi...' : (formSuccess ? '✓ Berhasil!' : 'Masuk Sekarang') }}</span>
+              <span v-if="loading" style="display:inline-block;animation:spin 1s linear infinite;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+              </span>
+            </button>
+          </form>
+
+          <!-- Demo Quick Login -->
+          <div
+            style="margin-top:28px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:20px;">
+            <p
+              style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:14px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+              🔑 Demo Login Cepat</p>
+            <div class="quick-login-grid">
+              <button @click="quickLogin('mahasiswa')" class="quick-btn"
+                style="background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.2);color:#a5b4fc;">
+                Mahasiswa</button>
+              <button @click="quickLogin('mitra')" class="quick-btn"
+                style="background:rgba(20,184,166,0.08);border-color:rgba(20,184,166,0.2);color:#5eead4;">
+                Mitra</button>
+              <button @click="quickLogin('adminprodi')" class="quick-btn"
+                style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#fcd34d;"> Admin
+                Prodi</button>
+              <button @click="quickLogin('dospem')" class="quick-btn"
+                style="background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.2);color:#d8b4fe;">
+                Dospem</button>
+            </div>
+          </div>
+
+          <p style="text-align:center;font-size:14px;color:rgba(255,255,255,0.4);margin-top:28px;">
+            Belum punya akun? <a href="register.html"
+              style="color:#818cf8;text-decoration:none;font-weight:600;transition:color 0.2s;"
+              onmouseover="this.style.color='#a5b4fc'" onmouseout="this.style.color='#818cf8'">Daftar sekarang</a>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Shared utilities -->
-<script src="shared/utils.js"></script>
+  <script src="shared/utils.js"></script>
+  <script src="shared/api-client.js"></script>
+  <script>
+    'use strict';
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          currentRole: 'mahasiswa',
+          identifier: '',
+          password: '',
+          showPassword: false,
+          loading: false,
+          identifierError: '',
+          passwordError: '',
+          formError: '',
+          formSuccess: ''
+        };
+      },
+      computed: {
+        identifierLabel() {
+          if (this.currentRole === 'mahasiswa') return 'NIM';
+          if (this.currentRole === 'adminprodi') return 'Username Admin';
+          if (this.currentRole === 'mitra') return 'Email Perusahaan';
+          if (this.currentRole === 'dospem') return 'NIP Dosen';
+          return 'Identifier';
+        },
+        identifierPlaceholder() {
+          if (this.currentRole === 'mahasiswa') return 'Masukkan NIM';
+          if (this.currentRole === 'adminprodi') return 'Masukkan username admin';
+          if (this.currentRole === 'mitra') return 'Masukkan email perusahaan';
+          if (this.currentRole === 'dospem') return 'Masukkan NIP dosen';
+          return '';
+        }
+      },
+      methods: {
+        switchTab(role) {
+          this.currentRole = role;
+          this.clearErrors();
+        },
+        clearErrors() {
+          this.identifierError = '';
+          this.passwordError = '';
+          this.formError = '';
+          this.formSuccess = '';
+        },
+        validateForm() {
+          let valid = true;
+          this.clearErrors();
 
-<!-- Login-specific logic -->
-<script>
-'use strict';
+          if (!this.identifier || this.identifier.trim() === '') {
+            this.identifierError = this.currentRole === 'mahasiswa' ? 'NIM tidak boleh kosong.' : 'Identifier tidak boleh kosong.';
+            valid = false;
+          } else if (this.currentRole === 'mahasiswa' && !/^\d{2}\.\d{2}\.\d{4}$/.test(this.identifier) && this.identifier !== 'mahasiswa') {
+            this.identifierError = 'Format NIM tidak valid. Gunakan format: 23.11.5508';
+            valid = false;
+          } else if (this.currentRole === 'mitra' && this.identifier !== 'mitra' && !/\S+@\S+\.\S+/.test(this.identifier)) {
+            this.identifierError = 'Format email tidak valid.';
+            valid = false;
+          }
 
-let currentRole = 'mahasiswa';
-const loginRoles = ['mahasiswa', 'adminprodi', 'mitra', 'dospem'];
+          if (!this.password || this.password.length < 6) {
+            this.passwordError = 'Password minimal 6 karakter.';
+            valid = false;
+          }
+          return valid;
+        },
+        async handleLogin() {
+          if (!this.validateForm()) return;
+          this.loading = true;
 
-document.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const requestedRole = params.get('role') || sessionStorage.getItem('simag_next_role');
-  if (loginRoles.includes(requestedRole)) {
-    switchTab(requestedRole);
-  }
-});
-
-function switchTab(role) {
-  currentRole = role;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  const tab = document.getElementById('tab-' + role);
-  if (tab) tab.classList.add('active');
-  const label = document.getElementById('identifier-label');
-  if(role === 'mahasiswa'){
-    label.textContent = 'NIM';
-}
-else if(role === 'adminprodi'){
-    label.textContent = 'Username Admin';
-}
-else if(role === 'mitra'){
-    label.textContent = 'Email Perusahaan';
-}
-else if(role === 'dospem'){
-    label.textContent = 'NIP Dosen';
-}
-  clearErrors();
-}
-
-function clearErrors() {
-  ['identifier', 'password'].forEach(id => {
-    const input = document.getElementById(id);
-    const err   = document.getElementById(id + '-error');
-    if (input) { input.classList.remove('error'); input.value = ''; }
-    if (err)   { err.style.display = 'none'; err.textContent = ''; }
-  });
-  const fe = document.getElementById('form-error');
-  if (fe) { fe.style.display = 'none'; fe.textContent = ''; }
-}
-
-function validateForm(identifier, password) {
-  let valid = true;
-  const idInput = document.getElementById('identifier');
-  const pwInput = document.getElementById('password');
-  const idErr   = document.getElementById('identifier-error');
-  const pwErr   = document.getElementById('password-error');
-
-  if (!identifier || identifier.trim() === '') {
-    idInput.classList.add('error');
-    idErr.textContent  = currentRole === 'mahasiswa' ? 'NIM tidak boleh kosong.' : 'Email/NIP tidak boleh kosong.';
-    idErr.style.display = 'block';
-    valid = false;
-  } else if (currentRole === 'mahasiswa' && !/^\d{2}\.\d{2}\.\d{4}$/.test(identifier) && identifier !== 'mahasiswa') {
-    idInput.classList.add('error');
-    idErr.textContent  = 'Format NIM tidak valid. Gunakan format: 23.11.5508';
-    idErr.style.display = 'block';
-    valid = false;
-  } else if (currentRole === 'mitra' && identifier !== 'mitra' && !/\S+@\S+\.\S+/.test(identifier)) {
-    idInput.classList.add('error');
-    idErr.textContent  = 'Format email tidak valid.';
-    idErr.style.display = 'block';
-    valid = false;
-  }
-
-  if (!password || password.length < 6) {
-    pwInput.classList.add('error');
-    pwErr.textContent  = 'Password minimal 6 karakter.';
-    pwErr.style.display = 'block';
-    valid = false;
-  }
-  return valid;
-}
-
-/** Simulasi panggilan API backend (ganti dengan fetch ke /api/auth/login di production) */
-async function callLoginAPI(identifier, password, role) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const demoAccounts = {
-        mahasiswa : [
-          '23.11.5508',
-          'mahasiswa'
-        ],
-        adminprodi : [
-          'adminprodi',
-          'admin'
-        ],
-        mitra : [
-          'hr@bankmandiri.co.id',
-          'mitra'
-        ],
-        dospem : [
-          '19880101',
-          'dospem'
-        ]
-      };
-
-      const validIds = demoAccounts[role] || [];
-      const matched  = validIds.includes(identifier.toLowerCase()) ||
-                       validIds.some(v => identifier.includes(v));
-
-      if (matched) {
-        resolve({
-          success : true,
-          token   : 'jwt_token_' + role + '_' + Date.now(),
-          role,
-          user    : {
-            name:
-              role === 'mahasiswa'
-              ? 'Raka Aditya'
-              : role === 'adminprodi'
-              ? 'Admin Prodi FIKOM'
-              : role === 'mitra'
-              ? 'PT. Bank Mandiri'
-              : role === 'dospem'
-              ? 'Dr. Ahmad Fauzi'
-              : 'Pengguna Umum' // Fallback jika role tidak dikenali
-          },
-        });
-      } else {
-        resolve({ success: false, message: 'Kredensial tidak valid. Coba mode demo untuk akses cepat.' });
+          try {
+            const res = await SIMAG_DATA.login(this.identifier.trim(), this.password, this.currentRole);
+            if (res.success) {
+              simag_saveSession(res);
+              this.formSuccess = '✓ Berhasil!';
+              setTimeout(() => simag_redirectToDashboard(res.role), 600);
+            } else {
+              this.formError = res.message;
+              this.loading = false;
+            }
+          } catch (err) {
+            this.formError = 'Error: ' + (err.message || err.toString());
+            this.loading = false;
+          }
+        },
+        quickLogin(role) {
+          this.switchTab(role);
+          const idMap = { mahasiswa: '23.11.5508', adminprodi: 'adminprodi', mitra: 'hr@mitrademo.com', dospem: '19800101' };
+          const passMap = { mahasiswa: 'budi1234', adminprodi: 'admin123', mitra: 'mitra123', dospem: 'dosen123' };
+          this.identifier = idMap[role] || '';
+          this.password = passMap[role] || 'demo123';
+          setTimeout(() => this.handleLogin(), 100);
+        }
+      },
+      mounted() {
+        const session = simag_getSession();
+        if (session && session.token && session.role) {
+          simag_redirectToDashboard(session.role);
+          return;
+        }
+        const params = new URLSearchParams(window.location.search);
+        const requestedRole = params.get('role') || sessionStorage.getItem('simag_next_role');
+        if (['mahasiswa', 'adminprodi', 'mitra', 'dospem'].includes(requestedRole)) {
+          this.switchTab(requestedRole);
+        }
       }
-    }, 1200);
-  });
-}
-
-async function handleLogin(e) {
-  e.preventDefault();
-  const identifier = document.getElementById('identifier').value.trim();
-  const password   = document.getElementById('password').value;
-  if (!validateForm(identifier, password)) return;
-
-  const btn       = document.getElementById('login-btn');
-  const btnText   = document.getElementById('btn-text');
-  const btnSpinner = document.getElementById('btn-spinner');
-  const formError = document.getElementById('form-error');
-
-  btn.disabled          = true;
-  btnText.textContent   = 'Memverifikasi...';
-  btnSpinner.style.display   = 'inline';
-  btnSpinner.style.animation = 'spin 1s linear infinite';
-
-  try {
-    /* Production: const res = await fetch('/api/auth/login', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ identifier, password, role: currentRole })
-       }).then(r => r.json()); */
-    const res = await callLoginAPI(identifier, password, currentRole);
-
-    if (res.success) {
-      simag_saveSession(res);
-      btnText.textContent = '✓ Berhasil!';
-      setTimeout(() => simag_redirectToDashboard(res.role), 600);
-    } else {
-      formError.textContent   = res.message;
-      formError.style.display = 'block';
-      btn.disabled            = false;
-      btnText.textContent     = 'Masuk Sekarang';
-      btnSpinner.style.display = 'none';
-    }
-  } catch (err) {
-    formError.textContent   = 'Koneksi gagal. Periksa jaringan Anda dan coba lagi.';
-    formError.style.display = 'block';
-    btn.disabled            = false;
-    btnText.textContent     = 'Masuk Sekarang';
-    btnSpinner.style.display = 'none';
-  }
-}
-
-function quickLogin(role) {
-  currentRole = role;
-  switchTab(role);
-  const idMap = {
-  mahasiswa : '23.11.5508',
-  adminprodi : 'adminprodi',
-  mitra : 'hr@bankmandiri.co.id',
-  dospem : '19880101'
-};
-  document.getElementById('identifier').value = idMap[role] || '';
-  document.getElementById('password').value   = 'demo123';
-  setTimeout(() => document.getElementById('login-form').dispatchEvent(new Event('submit')), 100);
-}
-
-function togglePwd() {
-  const input = document.getElementById('password');
-  input.type  = input.type === 'password' ? 'text' : 'password';
-}
-</script>
+    }).mount('#app');
+  </script>
 </body>
+
 </html>

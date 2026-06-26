@@ -5,31 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logbook Saya — SIMAG</title>
 
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323815" />
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
 
   <!-- ── Sidebar ────────────────────────────────────────────── -->
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
-
-    <!-- User Info -->
     <div id="sidebar-user" style="display:flex;align-items:center;gap:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">RA</div>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span id="sidebar-initials"><span class="simag-user-initials"></span></span></div>
       <div style="overflow:hidden;">
-        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Raka Aditya</p>
+        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Mahasiswa • S1 IF</p>
       </div>
     </div>
-
     <nav>
       <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
       <div class="sidebar-item" onclick="window.location.href='dashboard-mahasiswa.html'" style="cursor:pointer;">
@@ -43,7 +58,6 @@
       <div class="sidebar-item active" onclick="window.location.href='logbook-saya.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Logbook Saya
-        <span class="badge badge-warning" style="margin-left:auto;">2</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='progress-sks.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -56,7 +70,6 @@
       <div class="sidebar-item" onclick="window.location.href='notifikasi.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
         Notifikasi
-        <span class="badge badge-info" style="margin-left:auto;">3</span>
       </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
         <div class="sidebar-item" onclick="window.location.href='profil.html'" style="cursor:pointer;">
@@ -72,107 +85,122 @@
   </aside>
 
   <!-- ── Main Content ───────────────────────────────────────── -->
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
-
-<div style="padding: 32px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
+    <div style="padding:0 0 32px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
         <div>
-            <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">Logbook Magang</h1>
-            <p style="font-size:14px;color:rgba(255,255,255,0.45);">Catat dan pantau aktivitas harian magangmu.</p>
+          <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;">Logbook Magang</h1>
+          <p style="font-size:14px;color:rgba(255,255,255,0.45);">Catat dan pantau aktivitas harian magangmu.</p>
         </div>
-        <button class="btn-primary" onclick="window.location.href='isi-logbook.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;color:#fff;">+ Isi Logbook Baru</button>
-    </div>
-    <div id="success-message" style="display:none;margin-bottom:18px;padding:12px 16px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);color:#86efac;font-size:13px;">
-        Logbook baru berhasil dikirim dan sedang menunggu review.
-    </div>
-    <div class="glass-card" style="padding:20px;border-radius:12px;">
-        <div style="overflow-x:auto;">
-        <table style="width:100%;min-width:620px;text-align:left;border-collapse:collapse;">
+        <button class="btn-primary" onclick="window.location.href='isi-logbook.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;">+ Isi Logbook Baru</button>
+      </div>
+
+      <!-- Success message -->
+      <div v-if="successMsg" style="margin-bottom:18px;padding:12px 16px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);color:#86efac;font-size:13px;">
+        {{ successMsg }}
+      </div>
+
+      <!-- Table -->
+      <div class="glass-card" style="padding:20px;border-radius:12px;">
+        <!-- Loading -->
+        <div v-if="loading" style="padding:40px;text-align:center;">
+          <div style="width:32px;height:32px;border-radius:50%;border:3px solid rgba(99,102,241,0.2);border-top-color:#818cf8;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+          <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat logbook...</p>
+        </div>
+
+        <div v-else style="overflow-x:auto;">
+          <table style="width:100%;min-width:620px;text-align:left;border-collapse:collapse;">
             <thead>
               <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                  <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Tanggal</th>
-                  <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Kegiatan</th>
-                  <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
-                  <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Tanggal</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Kegiatan</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
               </tr>
             </thead>
-            <tbody id="logbook-table-body"></tbody>
-        </table>
+            <tbody>
+              <tr v-if="!logbooks.length">
+                <td colspan="4" style="padding:28px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada logbook. Klik "+ Isi Logbook Baru" untuk mulai mencatat kegiatan magang.</td>
+              </tr>
+              <tr v-for="lb in logbooks" :key="lb.id" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:12px;">{{ formatDate(lb.date) }}</td>
+                <td style="padding:12px;">{{ lb.activity || lb.title || '-' }}</td>
+                <td style="padding:12px;">
+                  <span class="badge" :class="getStatusBadge(lb.status)">{{ getStatusLabel(lb.status) }}</span>
+                </td>
+                <td style="padding:12px;">
+                  <button type="button" style="color:#818cf8;background:none;border:none;cursor:pointer;" @click="goDetail(lb.id)">Lihat</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </main>
 </div>
 
-</main>
-</div>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  // Guard: hanya mahasiswa yang boleh akses halaman ini
-  simag_requireAuth('mahasiswa');
+'use strict';
+simag_requireAuth('mahasiswa');
 
-  // Tampilkan nama dari sesi
-  const { user } = simag_getSession();
-  if (user) {
-    document.getElementById('sidebar-name').textContent = user.name;
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    // Check for ?created=1 param
+    const params = new URLSearchParams(window.location.search);
+    const successMsg = params.get('created') === '1'
+      ? 'Logbook baru berhasil dikirim dengan status Submitted dan sudah masuk ke dashboard dosen, mitra, dan admin.'
+      : '';
+    if (params.get('created') === '1') {
+      window.history.replaceState({}, document.title, 'logbook-saya.html');
+    }
+    return {
+      loading: true,
+      userName: user ? user.name : '...',
+      logbooks: [],
+      successMsg
+    };
+  },
+  computed: {
+    initials() {
+      return (this.userName || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || '-';
+    }
+  },
+  methods: {
+    formatDate(value) {
+      if (!value) return '-';
+      try { return new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${value}T00:00:00`)); }
+      catch { return value; }
+    },
+    getStatusLabel(status) { return SIMAG_DATA.statusLabel(status); },
+    getStatusBadge(status) { return SIMAG_DATA.statusBadge(status); },
+    goDetail(id) {
+      window.location.href = `detail-logbook.html?id=${encodeURIComponent(id)}&role=mahasiswa`;
+    },
+    async loadLogbooks() {
+      try {
+        const summary = await SIMAG_DATA.getDashboardSummary();
+        this.logbooks = summary.logbooks || [];
+      } catch (e) {
+        console.error('Gagal memuat logbook:', e);
+      } finally {
+        this.loading = false;
+      }
+    }
+  },
+  async mounted() {
+    await this.loadLogbooks();
   }
-
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('created') === '1') {
-    document.getElementById('success-message').textContent = 'Logbook baru berhasil dikirim dengan status Submitted dan sudah masuk ke dashboard dosen, mitra, dan admin.';
-    document.getElementById('success-message').style.display = 'block';
-    window.history.replaceState({}, document.title, 'logbook-saya.html');
-  }
-
-  function formatLogbookDate(value) {
-    return new Intl.DateTimeFormat('id-ID', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(new Date(`${value}T00:00:00`));
-  }
-
-  function renderSavedLogbooks() {
-    const logbooks = SIMAG_DATA.getDashboardSummary().logbooks;
-    const tableBody = document.getElementById('logbook-table-body');
-    tableBody.innerHTML = '';
-
-    logbooks.forEach((logbook) => {
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-
-      const dateCell = document.createElement('td');
-      dateCell.style.padding = '12px';
-      dateCell.textContent = formatLogbookDate(logbook.date);
-
-      const activityCell = document.createElement('td');
-      activityCell.style.padding = '12px';
-      activityCell.textContent = logbook.activity;
-
-      const statusCell = document.createElement('td');
-      statusCell.style.padding = '12px';
-      const badge = document.createElement('span');
-      badge.className = `badge ${SIMAG_DATA.statusBadge(logbook.status)}`;
-      badge.textContent = SIMAG_DATA.statusLabel(logbook.status);
-      statusCell.appendChild(badge);
-
-      const actionCell = document.createElement('td');
-      actionCell.style.padding = '12px';
-      const actionButton = document.createElement('button');
-      actionButton.type = 'button';
-      actionButton.textContent = 'Lihat';
-      actionButton.style.cssText = 'color:#818cf8;background:none;border:none;cursor:pointer;';
-      actionButton.onclick = () => {
-        window.location.href = `detail-logbook.html?id=${encodeURIComponent(logbook.id)}&role=mahasiswa`;
-      };
-      actionCell.appendChild(actionButton);
-
-      row.append(dateCell, activityCell, statusCell, actionCell);
-      tableBody.appendChild(row);
-    });
-  }
-
-  renderSavedLogbooks();
+}).mount('#app');
 </script>
 </body>
 </html>

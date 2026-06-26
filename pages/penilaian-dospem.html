@@ -4,115 +4,188 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Penilaian Dosen - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323821" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
-    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a></div>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
+    </div>
     <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div id="lecturer-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AF</div>
-      <div style="overflow:hidden;"><p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dr. Ahmad Fauzi</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
+      <div id="sidebar-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
+      <div style="overflow:hidden;">
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p>
+      </div>
     </div>
     <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">Mahasiswa Bimbingan</div>
-      <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">Review Logbook</div>
-      <div class="sidebar-item active" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">Penilaian &amp; Evaluasi</div>
-      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">Jadwal Bimbingan</div>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Mahasiswa Bimbingan
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Review Logbook
+        <span id="dospem-review-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="reviewLogbooks"></span></span>
+      </div>
+      <div class="sidebar-item active" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Penilaian &amp; Evaluasi
+        <span id="dospem-evaluation-badge" class="badge badge-info" style="margin-left:auto;"><span class="simag-badge-value" data-key="waitingEvaluations"></span></span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Jadwal Bimbingan
+      </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">Pengaturan</div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+        <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
       </div>
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <!-- Main -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
       <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Penilaian &amp; Evaluasi</h1>
+        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Penilaian &amp; Evaluasi</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Kelola nilai akhir mahasiswa bimbingan dan pantau nilai dari mitra.</p>
       </div>
-      <span id="evaluation-summary" class="badge badge-info">0 mahasiswa</span>
+      <span class="badge badge-info">{{ candidates.length }} mahasiswa</span>
     </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:14px;margin-bottom:22px;">
-      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Mahasiswa Siap Dinilai</h2>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;min-width:760px;border-collapse:collapse;text-align:left;">
-          <thead>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Periode</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nilai</th>
-              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="evaluation-body"></tbody>
-        </table>
+    <!-- Loading -->
+    <div v-if="loading" style="padding:60px;text-align:center;">
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(168,85,247,0.2);border-top-color:#a855f7;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat data evaluasi...</p>
+    </div>
+
+    <template v-else>
+      <div class="glass-card" style="padding:24px;border-radius:14px;margin-bottom:22px;">
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Mahasiswa Siap Dinilai</h2>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;min-width:760px;border-collapse:collapse;text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Mahasiswa</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Periode</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nilai</th>
+                <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!candidates.length">
+                <td colspan="5" style="padding:28px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada mahasiswa yang perlu dinilai.</td>
+              </tr>
+              <tr v-for="c in candidates" :key="c.id" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:12px;">
+                  <strong style="display:block;font-size:13px;">{{ c.name }}</strong>
+                  <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ c.position }}</span>
+                </td>
+                <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.6);">{{ c.period }}</td>
+                <td style="padding:12px;color:#4ade80;">{{ c.logbookCompleted }}/{{ c.logbookTarget }}</td>
+                <td style="padding:12px;">
+                  <span class="badge" :class="getEval(c.id) ? 'badge-success' : 'badge-warning'">
+                    {{ getEval(c.id) ? `${getEval(c.id).finalScore} (${getEval(c.id).grade})` : 'Menunggu Nilai' }}
+                  </span>
+                </td>
+                <td style="padding:12px;">
+                  <button @click="goEval(c.id)" type="button" class="btn-primary" style="padding:8px 14px;border-radius:8px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;border:none;">
+                    {{ getEval(c.id) ? 'Ubah Nilai' : 'Isi Nilai' }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:14px;">
-      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Riwayat Nilai</h2>
-      <div id="evaluation-history" style="display:flex;flex-direction:column;gap:12px;"></div>
-    </div>
+      <div class="glass-card" style="padding:24px;border-radius:14px;">
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Riwayat Nilai</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <p v-if="!evaluations.length" style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada nilai yang disimpan.</p>
+          <div v-for="e in evaluations" :key="e.id" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.03);">
+            <div>
+              <p style="font-size:14px;font-weight:600;">{{ getCandidateName(e.candidateId) }}</p>
+              <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">{{ e.notes || '-' }}</p>
+            </div>
+            <strong style="font-size:24px;color:#4ade80;">{{ e.finalScore }}</strong>
+          </div>
+        </div>
+      </div>
+    </template>
   </main>
 </div>
 
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('dospem');
-
-  function renderEvaluations() {
-    const data = SIMAG_DATA.getData();
-    const candidates = SIMAG_DATA.getEvaluationCandidates();
-    const evaluations = SIMAG_DATA.getEvaluations();
-    document.getElementById('sidebar-name').textContent = data.people.lecturer.name;
-    document.getElementById('lecturer-initials').textContent = data.people.lecturer.initials || 'DP';
-    document.getElementById('evaluation-summary').textContent = `${candidates.length} mahasiswa`;
-
-    const body = document.getElementById('evaluation-body');
-    body.innerHTML = '';
-    candidates.forEach((candidate) => {
-      const evaluation = evaluations.find((item) => item.candidateId === candidate.id);
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      row.innerHTML = `
-        <td style="padding:12px;"><strong style="display:block;font-size:13px;">${simag_escapeHtml(candidate.name)}</strong><span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(candidate.position)}</span></td>
-        <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.6);">${simag_escapeHtml(candidate.period)}</td>
-        <td style="padding:12px;color:#4ade80;">${candidate.logbookCompleted}/${candidate.logbookTarget}</td>
-        <td style="padding:12px;"><span class="badge ${evaluation ? 'badge-success' : 'badge-warning'}">${evaluation ? `${evaluation.finalScore} (${evaluation.grade})` : 'Menunggu Nilai'}</span></td>
-        <td style="padding:12px;"><button type="button" class="btn-primary" style="padding:8px 14px;border-radius:8px;color:#fff;font-size:12px;font-weight:600;">${evaluation ? 'Ubah Nilai' : 'Isi Nilai'}</button></td>
-      `;
-      row.querySelector('button').onclick = () => {
-        window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(candidate.id)}&role=dospem`;
-      };
-      body.appendChild(row);
-    });
-
-    const history = document.getElementById('evaluation-history');
-    history.innerHTML = '';
-    if (!evaluations.length) {
-      history.innerHTML = '<p style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada nilai yang disimpan.</p>';
-      return;
+'use strict';
+simag_requireAuth('dospem');
+const { createApp } = Vue;
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true, userName: user ? user.name : '...',
+      candidates: [], evaluations: []
+    };
+  },
+  computed: {
+    initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'AF'; }
+  },
+  methods: {
+    getEval(id) { return this.evaluations.find(e => e.candidateId === id); },
+    getCandidateName(id) { const c = this.candidates.find(i => i.id === id); return c ? c.name : 'Mahasiswa'; },
+    goEval(id) { window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(id)}&role=dospem`; },
+    async loadData() {
+      try {
+        this.candidates = await SIMAG_DATA.getEvaluationCandidates().catch(() => []);
+        this.evaluations = await SIMAG_DATA.getEvaluations().catch(() => []);
+      } catch (e) {
+        console.error("Gagal memuat:", e);
+      } finally {
+        this.loading = false;
+      }
     }
-    evaluations.forEach((evaluation) => {
-      const candidate = candidates.find((item) => item.id === evaluation.candidateId);
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.03);';
-      item.innerHTML = `<div><p style="font-size:14px;font-weight:600;">${simag_escapeHtml(candidate ? candidate.name : 'Mahasiswa')}</p><p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">${simag_escapeHtml(evaluation.notes || '-')}</p></div><strong style="font-family:'Syne',sans-serif;font-size:24px;color:#4ade80;">${evaluation.finalScore}</strong>`;
-      history.appendChild(item);
-    });
-  }
-
-  renderEvaluations();
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

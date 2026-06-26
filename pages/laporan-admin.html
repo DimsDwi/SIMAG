@@ -4,161 +4,233 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Laporan Admin - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323813" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
     <div style="display:flex;align-items:center;gap:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AP</div>
+      <div id="admin-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
       <div style="overflow:hidden;">
-        <p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin Prodi FIKOM</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin Prodi</p>
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Admin</p>
       </div>
     </div>
     <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">Approve Pendaftaran</div>
-      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">Konversi SKS</div>
-      <div class="sidebar-item active" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">Analitik &amp; Laporan</div>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='approval-pendaftaran.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Approve Pendaftaran
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='konversi-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Konversi SKS
+        <span id="admin-sks-pending-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="pendingSks"></span></span>
+      </div>
+      <div class="sidebar-item active" onclick="window.location.href='laporan-admin.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analitik &amp; Laporan
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='riwayat-sks.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Riwayat SKS
+      </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">Pengaturan</div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+        <div class="sidebar-item" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
       </div>
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <!-- Main -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
       <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Analitik &amp; Laporan Admin</h1>
+        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Analitik &amp; Laporan Admin</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Ringkasan pendaftaran, logbook, evaluasi, dan konversi SKS lintas dashboard.</p>
       </div>
       <button type="button" onclick="window.print()" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-size:13px;font-weight:600;">Cetak Laporan</button>
     </div>
 
-    <div class="dashboard-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Pendaftaran</p>
-        <p id="stat-applications" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Pending Approval</p>
-        <p id="stat-pending" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Mahasiswa Magang</p>
-        <p id="stat-interns" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Rata-rata Nilai</p>
-        <p id="stat-score" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0</p>
-      </div>
+    <!-- Loading -->
+    <div v-if="loading" style="padding:60px;text-align:center;">
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(251,191,36,0.2);border-top-color:#fbbf24;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat data laporan...</p>
     </div>
 
-    <div class="dashboard-two-col" style="display:grid;grid-template-columns:1.35fr 1fr;gap:20px;margin-bottom:20px;">
+    <template v-else>
+      <div class="dashboard-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Total Pendaftaran</p>
+          <p style="font-size:28px;font-weight:700;color:#818cf8;">{{ stats.applications }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Pending Approval</p>
+          <p style="font-size:28px;font-weight:700;color:#fbbf24;">{{ stats.pending }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Mahasiswa Magang</p>
+          <p style="font-size:28px;font-weight:700;color:#22d3ee;">{{ stats.interns }}</p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Rata-rata Nilai</p>
+          <p style="font-size:28px;font-weight:700;color:#4ade80;">{{ stats.score }}</p>
+        </div>
+      </div>
+
+      <div class="dashboard-two-col" style="display:grid;grid-template-columns:1.35fr 1fr;gap:20px;margin-bottom:20px;">
+        <section class="glass-card" style="border-radius:14px;padding:24px;">
+          <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Status Pendaftaran</h2>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;min-width:720px;border-collapse:collapse;text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.09);">
+                  <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Mahasiswa</th>
+                  <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Posisi</th>
+                  <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Admin</th>
+                  <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Mitra</th>
+                  <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Final</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="!applications.length">
+                  <td colspan="5" style="padding:22px;text-align:center;color:rgba(255,255,255,0.45);">Belum ada pendaftaran mahasiswa.</td>
+                </tr>
+                <tr v-for="app in applications" :key="app.id" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:10px;">
+                    <strong style="display:block;font-size:13px;">{{ getStudentName(app) }}</strong>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ getStudentNim(app) }}</span>
+                  </td>
+                  <td style="padding:10px;font-size:13px;color:rgba(255,255,255,0.7);">{{ app.position || 'Magang' }}</td>
+                  <td style="padding:10px;"><span class="badge" :class="getStatusBadge(app.adminStatus)">{{ app.adminStatus }}</span></td>
+                  <td style="padding:10px;"><span class="badge" :class="getStatusBadge(app.partnerStatus)">{{ app.partnerStatus }}</span></td>
+                  <td style="padding:10px;"><span class="badge" :class="getStatusBadge(app.status)">{{ app.status }}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="glass-card" style="border-radius:14px;padding:24px;">
+          <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas Terbaru</h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div v-for="act in activities.slice(0,6)" :key="act.id" style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.03);">
+              <p style="font-size:13px;font-weight:600;">{{ act.title }}</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">{{ act.meta }}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
       <section class="glass-card" style="border-radius:14px;padding:24px;">
-        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Status Pendaftaran</h2>
-        <div style="overflow-x:auto;">
-          <table style="width:100%;min-width:720px;border-collapse:collapse;text-align:left;">
-            <thead>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.09);">
-                <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Mahasiswa</th>
-                <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Posisi</th>
-                <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Admin</th>
-                <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Mitra</th>
-                <th style="padding:10px;color:rgba(255,255,255,0.45);font-weight:500;">Final</th>
-              </tr>
-            </thead>
-            <tbody id="application-report"></tbody>
-          </table>
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Ringkasan Konversi SKS</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+          <div v-for="intern in interns" :key="intern.id" style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);">
+            <p style="font-size:13px;font-weight:700;margin-bottom:5px;">{{ intern.name }}</p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;">{{ intern.company }} - {{ intern.position }}</p>
+            <span class="badge" :class="getStatusBadge(getSks(intern.id).status)">{{ getSks(intern.id).sks }}/{{ getSks(intern.id).target }} SKS {{ getSks(intern.id).status }}</span>
+          </div>
         </div>
       </section>
-
-      <section class="glass-card" style="border-radius:14px;padding:24px;">
-        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Aktivitas Terbaru</h2>
-        <div id="activity-report" style="display:flex;flex-direction:column;gap:12px;"></div>
-      </section>
-    </div>
-
-    <section class="glass-card" style="border-radius:14px;padding:24px;">
-      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">Ringkasan Konversi SKS</h2>
-      <div id="sks-report" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;"></div>
-    </section>
+    </template>
   </main>
 </div>
 
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('adminprodi');
-
-  function getStudent(application, data) {
-    if (application.studentId === data.people.student.id) return data.people.student;
+'use strict';
+simag_requireAuth('adminprodi');
+const { createApp } = Vue;
+createApp({
+  data() {
+    const { user } = simag_getSession();
     return {
-      name: application.name || 'Mahasiswa',
-      nim: application.nim || '-'
+      loading: true, userName: user ? user.name : '...',
+      applications: [], activities: [], interns: [], sksConversions: [], stats: { applications: 0, pending: 0, interns: 0, score: 0 }, db: null
     };
-  }
-
-  function renderAdminReport() {
-    const data = SIMAG_DATA.getData();
-    const pending = data.applications.filter((item) => item.adminStatus === 'Pending');
-    const averageScore = data.evaluations.length
-      ? Math.round(data.evaluations.reduce((total, item) => total + Number(item.finalScore || 0), 0) / data.evaluations.length)
-      : 0;
-
-    document.getElementById('sidebar-name').textContent = data.people.admin.name;
-    document.getElementById('admin-initials').textContent = data.people.admin.initials || 'AP';
-    document.getElementById('stat-applications').textContent = data.applications.length;
-    document.getElementById('stat-pending').textContent = pending.length;
-    document.getElementById('stat-interns').textContent = data.interns.length;
-    document.getElementById('stat-score').textContent = averageScore;
-
-    const applicationBody = document.getElementById('application-report');
-    applicationBody.innerHTML = '';
-    data.applications.forEach((application) => {
-      const student = getStudent(application, data);
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      row.innerHTML = `
-        <td style="padding:10px;"><strong style="display:block;font-size:13px;">${simag_escapeHtml(student.name)}</strong><span style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(student.nim)}</span></td>
-        <td style="padding:10px;font-size:13px;color:rgba(255,255,255,0.7);">${simag_escapeHtml(application.position || 'Magang')}</td>
-        <td style="padding:10px;"><span class="badge ${SIMAG_DATA.statusBadge(application.adminStatus)}">${simag_escapeHtml(application.adminStatus)}</span></td>
-        <td style="padding:10px;"><span class="badge ${SIMAG_DATA.statusBadge(application.partnerStatus)}">${simag_escapeHtml(application.partnerStatus)}</span></td>
-        <td style="padding:10px;"><span class="badge ${SIMAG_DATA.statusBadge(application.status)}">${simag_escapeHtml(application.status)}</span></td>
-      `;
-      applicationBody.appendChild(row);
-    });
-
-    const activityReport = document.getElementById('activity-report');
-    activityReport.innerHTML = '';
-    data.activities.slice(0, 6).forEach((activity) => {
-      const item = document.createElement('div');
-      item.style.cssText = 'padding:12px;border-radius:10px;background:rgba(255,255,255,0.03);';
-      item.innerHTML = `<p style="font-size:13px;font-weight:600;">${simag_escapeHtml(activity.title)}</p><p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">${simag_escapeHtml(activity.meta)}</p>`;
-      activityReport.appendChild(item);
-    });
-
-    const sksReport = document.getElementById('sks-report');
-    sksReport.innerHTML = '';
-    data.interns.forEach((intern) => {
-      const sks = data.sksConversions.find((item) => item.studentId === intern.id) || { sks: 0, target: 20, status: 'Pending' };
-      const item = document.createElement('div');
-      item.style.cssText = 'padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);';
-      item.innerHTML = `<p style="font-size:13px;font-weight:700;margin-bottom:5px;">${simag_escapeHtml(intern.name)}</p><p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;">${simag_escapeHtml(intern.company)} - ${simag_escapeHtml(intern.position)}</p><span class="badge ${SIMAG_DATA.statusBadge(sks.status)}">${sks.sks}/${sks.target} SKS ${simag_escapeHtml(sks.status)}</span>`;
-      sksReport.appendChild(item);
-    });
-  }
-
-  renderAdminReport();
+  },
+  computed: {
+    initials() { return simag_initialsFromName(this.userName, 'AP'); }
+  },
+  methods: {
+    getStatusBadge(s) { return SIMAG_DATA.statusBadge(s); },
+    getSks(id) { return this.sksConversions.find(s => s.studentId === id) || { sks: 0, target: 20, status: 'Pending' }; },
+    getStudentName(app) {
+      if(!this.db) return app.name||'Mahasiswa';
+      const u = this.db.users.find(u => u.linkedId === app.studentId || u.id === app.studentId);
+      if(u) return u.name;
+      if(app.studentId === this.db.people.student.id) return this.db.people.student.name;
+      return app.name || 'Mahasiswa';
+    },
+    getStudentNim(app) {
+      if(!this.db) return app.nim||'-';
+      const u = this.db.users.find(u => u.linkedId === app.studentId || u.id === app.studentId);
+      if(u) return u.identifier;
+      if(app.studentId === this.db.people.student.id) return this.db.people.student.nim;
+      return app.nim || '-';
+    },
+    async loadData() {
+      try {
+        this.db = await SIMAG_DATA.getData().catch(() => ({ applications: [], activities: [], interns: [], sksConversions: [], evaluations: [], users: [], people: { student: {} } }));
+        this.applications = this.db.applications || [];
+        this.activities = this.db.activities || [];
+        this.interns = this.db.interns || [];
+        this.sksConversions = this.db.sksConversions || [];
+        
+        const pending = this.applications.filter(a => a.adminStatus === 'Pending');
+        const score = (this.db.evaluations || []).length ? Math.round((this.db.evaluations || []).reduce((t, i) => t + Number(i.finalScore || 0), 0) / this.db.evaluations.length) : 0;
+        
+        this.stats = {
+          applications: this.applications.length,
+          pending: pending.length,
+          interns: this.interns.length,
+          score
+        };
+      } catch (e) {
+        console.error('Gagal memuat data:', e);
+      } finally {
+        this.loading = false;
+      }
+    }
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

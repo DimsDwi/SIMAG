@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug/test scripts (one-off tooling)
+find_500.js
+get_stacktrace.js
+red_team.js
+load_test.js
+benchmark.js
+benchmark_raw.json
+benchmark_raw_slow3g.json
+profile.js
+profile_suite.html
+profiling_results.json
+summary_admin.json
+summary_dospem.json
+test-results/
+
+# One-off fix/migration scripts
+fix.js
+fix-flicker.js
+fix-loading.js
+fix-mount.js
+fix-sidebars.js
+fix-tailwind.js
+append-css.js
+change-fonts.js
+inject-tailwind.js
+remove-tailwind-link.js
+refactor-admin.js
+refactor-dospem.js
+refactor_summaries.js
+update-changelog.js
+upgrade-all-pages.js
+migrate_db.js
+db_alter.js
+
+# Temporary tailwind files
+shared/tailwind-dist.css
+shared/tailwind.css
+
+# Package lock (optional, depends on team policy)
+# package-lock.json
