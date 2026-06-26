@@ -4,28 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jadwal — SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323811" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
 
-  <!-- ── Sidebar ────────────────────────────────────────────── -->
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
 
     <!-- User Info -->
     <div id="sidebar-user" style="display:flex;align-items:center;gap:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">RA</div>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
       <div style="overflow:hidden;">
-        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Raka Aditya</p>
+        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><span class="simag-user-name"></span></p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Mahasiswa • S1 IF</p>
       </div>
     </div>
@@ -43,7 +59,6 @@
       <div class="sidebar-item" onclick="window.location.href='logbook-saya.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Logbook Saya
-        <span class="badge badge-warning" style="margin-left:auto;">2</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='progress-sks.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -56,7 +71,6 @@
       <div class="sidebar-item" onclick="window.location.href='notifikasi.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
         Notifikasi
-        <span class="badge badge-info" style="margin-left:auto;">3</span>
       </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
         <div class="sidebar-item" onclick="window.location.href='profil.html'" style="cursor:pointer;">
@@ -71,85 +85,170 @@
     </nav>
   </aside>
 
-  <!-- ── Main Content ───────────────────────────────────────── -->
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <!-- Main Content -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
+    <div style="padding: 32px;">
+      <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;">Jadwal & Agenda</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:28px;">Daftar kegiatan, meeting, dan tenggat waktu logbook.</p>
 
-<div style="padding: 32px;">
-    <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">Jadwal & Agenda</h1>
-    <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:28px;">Daftar kegiatan, meeting, dan tenggat waktu logbook.</p>
+      <div class="glass-card" style="padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:12px;">
+        <!-- Loading -->
+        <div v-if="loading" style="padding:18px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;">
+          <div style="width:24px;height:24px;border-radius:50%;border:2px solid rgba(99,102,241,0.2);border-top-color:#6366f1;animation:spin 0.8s linear infinite;margin:0 auto 8px;"></div>
+          Memuat jadwal...
+        </div>
 
-    <div id="schedule-list" class="glass-card" style="padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:12px;"></div>
-</div>
+        <div v-else-if="error" style="padding:18px;color:rgba(255,255,255,0.4);font-size:13px;">Gagal memuat jadwal. Coba refresh halaman.</div>
 
-</main>
+        <div v-else-if="schedules.length === 0" style="padding:24px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;">Belum ada jadwal. Daftarkan diri ke magang terlebih dahulu.</div>
+
+        <template v-else>
+          <div v-for="(s, idx) in schedules" :key="idx" :style="{ padding:'14px 16px', background:'rgba(255,255,255,0.04)', borderLeft:'4px solid ' + s.color, borderRadius:'8px', opacity: s.isPast ? '0.45' : '1' }">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <p style="font-size:14px;font-weight:600;">{{ s.title }}</p>
+              <span v-if="s.isPast" style="font-size:10px;background:rgba(248,113,113,0.15);color:#f87171;padding:2px 8px;border-radius:999px;">Lewat</span>
+              <span v-else style="font-size:10px;background:rgba(74,222,128,0.12);color:#4ade80;padding:2px 8px;border-radius:999px;">Mendatang</span>
+            </div>
+            <p style="font-size:12px;color:rgba(255,255,255,0.5);">{{ s.time }}</p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  // Guard: hanya mahasiswa yang boleh akses halaman ini
-  simag_requireAuth('mahasiswa');
-  const DOSPEM_SCHEDULE_KEY = 'simag_dospem_schedules_v1';
+'use strict';
+simag_requireAuth('mahasiswa');
+const { createApp } = Vue;
 
-  function readDospemSchedules() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(DOSPEM_SCHEDULE_KEY) || '[]');
-      return Array.isArray(saved) ? saved : [];
-    } catch (error) {
-      localStorage.removeItem(DOSPEM_SCHEDULE_KEY);
-      return [];
-    }
+const DOSPEM_SCHEDULE_KEY = 'simag_dospem_schedules_v1';
+
+function readDospemSchedules() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DOSPEM_SCHEDULE_KEY) || '[]');
+    return Array.isArray(saved) ? saved : [];
+  } catch (error) {
+    localStorage.removeItem(DOSPEM_SCHEDULE_KEY);
+    return [];
   }
+}
 
-  function formatScheduleDate(value, time) {
-    const date = new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(new Date(`${value}T00:00:00`));
-    return `${date} - ${time} WIB`;
-  }
+function formatDateObj(dateObj, time) {
+  const label = new Intl.DateTimeFormat('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  }).format(dateObj);
+  return time ? `${label} - ${time} WIB` : label;
+}
 
-  function renderSchedule() {
-    const summary = SIMAG_DATA.getDashboardSummary();
-    const list = document.getElementById('schedule-list');
-    document.getElementById('sidebar-name').textContent = summary.student.name;
-    const dospemSchedules = readDospemSchedules()
-      .filter((schedule) => schedule.studentId === summary.intern.id)
-      .map((schedule) => ({
-        title: `Bimbingan: ${schedule.topic}`,
-        time: formatScheduleDate(schedule.date, schedule.time),
-        color: '#a855f7'
-      }));
+function formatScheduleDate(value, time) {
+  return formatDateObj(new Date(`${value}T00:00:00`), time);
+}
 
-    const schedules = [
-      {
-        title: `Weekly Sync dengan ${summary.intern.mentor}`,
-        time: 'Jumat, 19 Juni 2026 - 14:00 WIB',
-        color: '#818cf8'
-      },
-      ...(dospemSchedules.length ? dospemSchedules : [{
-        title: `Bimbingan progres bersama ${summary.lecturer.name}`,
-        time: 'Senin, 22 Juni 2026 - 10:00 WIB',
-        color: '#22d3ee'
-      }]),
-      {
-        title: 'Deadline laporan bulanan magang',
-        time: 'Selasa, 30 Juni 2026 - 23:59 WIB',
-        color: '#fbbf24'
+function nextWeekday(dayOfWeek, baseDate = new Date()) {
+  const result = new Date(baseDate);
+  result.setHours(0, 0, 0, 0);
+  const diff = (dayOfWeek - result.getDay() + 7) % 7 || 7;
+  result.setDate(result.getDate() + diff);
+  return result;
+}
+
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true,
+      error: false,
+      userName: user ? user.name : '...',
+      schedules: []
+    };
+  },
+  computed: {
+    initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'M'; }
+  },
+  methods: {
+    async loadSchedule() {
+      try {
+        const summary = await SIMAG_DATA.getDashboardSummary();
+        if (!summary.intern) {
+          this.schedules = [];
+          this.loading = false;
+          return;
+        }
+
+        const intern = summary.intern;
+        const lecturer = summary.lecturer;
+        const scheds = [];
+
+        // 1. Weekly Sync → Jumat terdekat
+        scheds.push({
+          title: `Weekly Sync dengan ${intern.mentor || 'Mentor'}`,
+          time: formatDateObj(nextWeekday(5), '14:00'),
+          color: '#818cf8',
+          isPast: false
+        });
+
+        // 2. Jadwal bimbingan dospem
+        const dospemSchedules = readDospemSchedules().filter(s => s.studentId === intern.id);
+        if (dospemSchedules.length) {
+          dospemSchedules.forEach(s => {
+            const d = new Date(`${s.date}T00:00:00`);
+            scheds.push({
+              title: `Bimbingan Dospem: ${s.topic}`,
+              time: formatScheduleDate(s.date, s.time),
+              color: '#a855f7',
+              isPast: d < new Date()
+            });
+          });
+        } else {
+          scheds.push({
+            title: `Bimbingan progres bersama ${lecturer ? lecturer.name : 'Dosen Pembimbing'}`,
+            time: formatDateObj(nextWeekday(1), '10:00'),
+            color: '#22d3ee',
+            isPast: false
+          });
+        }
+
+        // 3. Deadline akhir magang
+        if (intern.endDate) {
+          const deadline = new Date(`${intern.endDate}T23:59:00`);
+          const isPast = deadline < new Date();
+          scheds.push({
+            title: 'Tenggat Akhir Periode Magang',
+            time: formatDateObj(deadline, '23:59'),
+            color: isPast ? 'rgba(248,113,113,0.8)' : '#fbbf24',
+            isPast
+          });
+        }
+
+        // 4. Deadline logbook mingguan
+        scheds.push({
+          title: 'Batas Isi Logbook Mingguan',
+          time: formatDateObj(nextWeekday(0), '23:59'),
+          color: '#4ade80',
+          isPast: false
+        });
+
+        // Sort by date
+        scheds.sort((a, b) => {
+          const getDate = s => {
+            const match = s.time.match(/(\d{1,2}) (\w+) (\d{4})/);
+            return match ? new Date(s.time.replace(/.*?(\d{1,2} \w+ \d{4}).*/, '$1')) : new Date();
+          };
+          return getDate(a) - getDate(b);
+        });
+
+        this.schedules = scheds;
+      } catch(e) {
+        this.error = true;
       }
-    ];
-
-    list.innerHTML = schedules.map((schedule) => `
-      <div style="padding:12px;background:rgba(255,255,255,0.05);border-left:4px solid ${schedule.color};border-radius:8px;">
-        <p style="font-size:14px;font-weight:600;">${simag_escapeHtml(schedule.title)}</p>
-        <p style="font-size:12px;color:rgba(255,255,255,0.5);">${simag_escapeHtml(schedule.time)}</p>
-      </div>
-    `).join('');
-  }
-
-  renderSchedule();
+      this.loading = false;
+    }
+  },
+  async mounted() { await this.loadSchedule(); }
+}).mount('#app');
 </script>
 </body>
 </html>

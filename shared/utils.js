@@ -12,27 +12,97 @@
  * @param {{ token: string, role: string, user: object }} sessionData
  */
 function simag_saveSession(sessionData) {
-  sessionStorage.setItem('simag_token', sessionData.token);
-  sessionStorage.setItem('simag_role',  sessionData.role);
-  sessionStorage.setItem('simag_user',  JSON.stringify(sessionData.user));
+  localStorage.setItem('simag_token', sessionData.token);
+  localStorage.setItem('simag_role',  sessionData.role);
+  localStorage.setItem('simag_user',  JSON.stringify(sessionData.user));
 }
+
+// SIMAG Global Badges & User Info (Eliminates flicker)
+function simag_renderGlobalBadges() {
+  try {
+    // 1. Render badges
+    const badges = JSON.parse(localStorage.getItem('simag_badges') || '{}');
+    document.querySelectorAll('.simag-badge-value').forEach(el => {
+      const key = el.getAttribute('data-key');
+      const val = parseInt(badges[key]) || 0;
+      if (val > 0) {
+        el.textContent = val;
+        if (el.parentElement.classList.contains('badge')) el.parentElement.style.display = 'inline-block';
+      } else {
+        el.textContent = '';
+        if (el.parentElement.classList.contains('badge')) el.parentElement.style.display = 'none';
+      }
+    });
+
+  } catch (e) {}
+
+  try {
+    const userStr = sessionStorage.getItem('simag_user') || localStorage.getItem('simag_user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      if (user && user.name) {
+        const name = user.name || 'User';
+        const initials = name.split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || 'U';
+        document.querySelectorAll('.simag-user-name').forEach(el => {
+          if (!el.closest('#app')) el.textContent = name;
+        });
+        document.querySelectorAll('.simag-user-initials').forEach(el => {
+          if (!el.closest('#app')) el.textContent = initials;
+        });
+      }
+    }
+  } catch(e) {}
+}
+document.addEventListener('DOMContentLoaded', simag_renderGlobalBadges);
+simag_renderGlobalBadges(); // Execute immediately to prevent flash
+// Expose for manual re-render after fetch
+window.simag_renderGlobalBadges = simag_renderGlobalBadges;
 
 /**
  * Baca sesi aktif.
  * @returns {{ token: string|null, role: string|null, user: object|null }}
  */
 function simag_getSession() {
+  let token = localStorage.getItem('simag_token');
+  let role  = localStorage.getItem('simag_role');
+  let userStr = localStorage.getItem('simag_user');
+
+  // Migrasi otomatis dari sessionStorage (jika ada sesi lama)
+  if (!token && sessionStorage.getItem('simag_token')) {
+    token = sessionStorage.getItem('simag_token');
+    role  = sessionStorage.getItem('simag_role');
+    userStr = sessionStorage.getItem('simag_user');
+    
+    localStorage.setItem('simag_token', token);
+    localStorage.setItem('simag_role', role);
+    localStorage.setItem('simag_user', userStr);
+  }
+
+  let parsedUser = null;
+  try {
+    if (userStr && userStr !== 'undefined' && userStr !== 'null') {
+      parsedUser = JSON.parse(userStr);
+    }
+  } catch (e) {
+    // Only warn if it looks like real data but failed to parse
+    if (userStr.startsWith('{')) console.warn('Failed to parse user session data');
+  }
+
   return {
-    token : sessionStorage.getItem('simag_token'),
-    role  : sessionStorage.getItem('simag_role'),
-    user  : JSON.parse(sessionStorage.getItem('simag_user') || 'null'),
+    token : token,
+    role  : role,
+    user  : parsedUser,
   };
 }
 
 /** Hapus sesi dan redirect ke halaman login. */
 function simag_logout() {
-  sessionStorage.clear();
-  window.location.href = '../login.html';
+  localStorage.removeItem('simag_token');
+  localStorage.removeItem('simag_role');
+  localStorage.removeItem('simag_user');
+  
+  const inPages = window.location.pathname.includes('/pages/');
+  window.location.href = inPages ? '../login.html' : 'login.html';
 }
 
 /* ── Route Guard ─────────────────────────────────────────── */
@@ -46,7 +116,8 @@ function simag_requireAuth(requiredRole) {
   const { token, role } = simag_getSession();
   const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
   if (!token || !allowedRoles.includes(role)) {
-    window.location.href = '../login.html';
+    const inPages = window.location.pathname.includes('/pages/');
+    window.location.href = inPages ? '../login.html' : 'login.html';
   }
 }
 
@@ -69,15 +140,15 @@ function simag_getDashboardPath(role) {
 function simag_setPostLoginRedirect(requiredRole, destination) {
   const target = String(destination || '');
   if (!requiredRole || !target.startsWith('pages/')) return;
-  sessionStorage.setItem('simag_next_role', requiredRole);
-  sessionStorage.setItem('simag_next_url', target);
+  localStorage.setItem('simag_next_role', requiredRole);
+  localStorage.setItem('simag_next_url', target);
 }
 
 function simag_consumePostLoginRedirect(role) {
-  const requiredRole = sessionStorage.getItem('simag_next_role');
-  const destination = sessionStorage.getItem('simag_next_url');
-  sessionStorage.removeItem('simag_next_role');
-  sessionStorage.removeItem('simag_next_url');
+  const requiredRole = localStorage.getItem('simag_next_role');
+  const destination = localStorage.getItem('simag_next_url');
+  localStorage.removeItem('simag_next_role');
+  localStorage.removeItem('simag_next_url');
 
   if (requiredRole === role && destination && destination.startsWith('pages/')) {
     return destination;
@@ -109,10 +180,10 @@ function simag_initialsFromName(name, fallback) {
     .join('') || fallback || 'AP';
 }
 
-function simag_getAdminPendingSks() {
+async function simag_getAdminPendingSks() {
   try {
     if (!window.SIMAG_DATA || typeof window.SIMAG_DATA.getData !== 'function') return 0;
-    const data = window.SIMAG_DATA.getData();
+    const data = await window.SIMAG_DATA.getData();
     return data.interns.filter((intern) => {
       const conversion = data.sksConversions.find((item) => item.studentId === intern.id);
       return !conversion || conversion.status !== 'Completed';
@@ -122,10 +193,14 @@ function simag_getAdminPendingSks() {
   }
 }
 
-function simag_getAdminProfile() {
+async function simag_getAdminProfile() {
+  const { user, role } = simag_getSession();
+  if (user && role === 'adminprodi') {
+    return user;
+  }
   try {
     if (window.SIMAG_DATA && typeof window.SIMAG_DATA.getData === 'function') {
-      return window.SIMAG_DATA.getData().people.admin || {};
+      return (await window.SIMAG_DATA.getData()).people.admin || {};
     }
   } catch (error) {
     return {};
@@ -147,18 +222,11 @@ function simag_adminIcon(name) {
 }
 
 function simag_initAdminSidebar() {
-  const currentPage = (window.location.pathname.split('/').pop() || '').toLowerCase();
-  const activeMap = {
-    'dashboard-admin.html': 'dashboard',
-    'approval-pendaftaran.html': 'approval',
-    'konversi-sks.html': 'sks',
-    'laporan-admin.html': 'report',
-    'riwayat-sks.html': 'history',
-    'profil-admin.html': 'settings'
-  };
-  const activeKey = activeMap[currentPage];
-  if (!activeKey) return;
+  const { role, user } = simag_getSession();
+  if (role !== 'adminprodi') return;
 
+  const currentPage = (window.location.pathname.split('/').pop() || '').toLowerCase();
+  
   const sidebar = document.querySelector('aside');
   const nav = sidebar ? sidebar.querySelector('nav') : null;
   if (!sidebar || !nav) return;
@@ -166,57 +234,78 @@ function simag_initAdminSidebar() {
   const brand = sidebar.querySelector('a[href="../index.html"], a[href$="index.html"]');
   if (brand) brand.textContent = 'SIMAG';
 
-  const admin = simag_getAdminProfile();
-  const adminName = admin.name || 'Admin Prodi FIKOM';
-  const sidebarName = sidebar.querySelector('#sidebar-name');
-  if (sidebarName) sidebarName.textContent = adminName;
+  // 1. Sync active class based on href in-place
+  const items = nav.querySelectorAll('.sidebar-item');
+  items.forEach(item => {
+    const onclickStr = item.getAttribute('onclick') || '';
+    const hrefMatch = onclickStr.match(/href='([^']+)'/);
+    if (hrefMatch && hrefMatch[1]) {
+      const targetPage = hrefMatch[1].toLowerCase();
+      if (targetPage === currentPage) {
+        item.classList.add('active');
+        item.setAttribute('aria-current', 'page');
+      } else {
+        item.classList.remove('active');
+        item.removeAttribute('aria-current');
+      }
+    }
+  });
 
-  const profileBox = nav.previousElementSibling;
-  const avatar = sidebar.querySelector('#admin-initials') || (profileBox ? profileBox.querySelector('div') : null);
-  if (avatar) {
-    avatar.id = 'admin-initials';
-    avatar.textContent = admin.initials || simag_initialsFromName(adminName, 'AP');
+  // 2. Sync admin profile name & avatar initials in-place
+  const adminName = (user && user.name) || 'Admin Prodi FIKOM';
+  const sidebarName = sidebar.querySelector('#sidebar-name');
+  if (sidebarName) {
+    const innerSpan = sidebarName.querySelector('span');
+    if (innerSpan) innerSpan.textContent = adminName;
+    else sidebarName.textContent = adminName;
   }
 
-  const pendingSks = simag_getAdminPendingSks();
-  const items = [
-    { key: 'dashboard', label: 'Dashboard', href: 'dashboard-admin.html', icon: 'dashboard' },
-    { key: 'approval', label: 'Approve Pendaftaran', href: 'approval-pendaftaran.html', icon: 'approval' },
-    { key: 'sks', label: 'Konversi SKS', href: 'konversi-sks.html', icon: 'sks', badge: pendingSks },
-    { key: 'report', label: 'Analitik & Laporan', href: 'laporan-admin.html', icon: 'report' },
-    { key: 'history', label: 'Riwayat SKS', href: 'riwayat-sks.html', icon: 'history' }
-  ];
+  const avatar = sidebar.querySelector('#admin-initials') || sidebar.querySelector('.simag-user-initials')?.parentElement;
+  if (avatar) {
+    const initials = simag_initialsFromName(adminName, 'AP');
+    const innerSpan = avatar.querySelector('span');
+    if (innerSpan) innerSpan.textContent = initials;
+    else avatar.textContent = initials;
+  }
 
-  const renderItem = (item) => {
-    const activeClass = item.key === activeKey ? ' active' : '';
-    const current = item.key === activeKey ? ' aria-current="page"' : '';
-    const badge = item.key === 'sks'
-      ? `<span id="admin-sks-pending-badge" class="badge badge-warning" style="margin-left:auto;">${Number(item.badge || 0)}</span>`
-      : '';
+  // 3. Update pending SKS badge count in-place from localStorage cache
+  const badges = JSON.parse(localStorage.getItem('simag_badges') || '{}');
+  const pendingSks = parseInt(badges.pendingSks) || 0;
+  const sksBadge = document.getElementById('admin-sks-pending-badge') || nav.querySelector('#admin-sks-pending-badge');
+  if (sksBadge) {
+    const badgeVal = sksBadge.querySelector('.simag-badge-value') || sksBadge;
+    if (pendingSks > 0) {
+      badgeVal.textContent = pendingSks;
+      sksBadge.style.display = 'inline-block';
+    } else {
+      badgeVal.textContent = '';
+      sksBadge.style.display = 'none';
+    }
+  }
+}
 
-    return `
-      <div class="sidebar-item${activeClass}" onclick="window.location.href='${item.href}'" style="cursor:pointer;"${current}>
-        ${simag_adminIcon(item.icon)}
-        <span>${simag_escapeHtml(item.label)}</span>
-        ${badge}
-      </div>
-    `;
-  };
+// Generic active state sync for sidebar menus
+function simag_initSidebarActiveState() {
+  const currentPage = (window.location.pathname.split('/').pop() || '').toLowerCase();
+  const sidebar = document.querySelector('aside');
+  const nav = sidebar ? sidebar.querySelector('nav') : null;
+  if (!sidebar || !nav) return;
 
-  const settingsActive = activeKey === 'settings' ? ' active' : '';
-  nav.innerHTML = `
-    ${items.map(renderItem).join('')}
-    <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-      <div class="sidebar-item${settingsActive}" onclick="window.location.href='profil-admin.html'" style="cursor:pointer;"${activeKey === 'settings' ? ' aria-current="page"' : ''}>
-        ${simag_adminIcon('settings')}
-        <span>Pengaturan</span>
-      </div>
-      <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
-        ${simag_adminIcon('logout')}
-        <span>Keluar</span>
-      </div>
-    </div>
-  `;
+  const items = nav.querySelectorAll('.sidebar-item');
+  items.forEach(item => {
+    const onclickStr = item.getAttribute('onclick') || '';
+    const hrefMatch = onclickStr.match(/href='([^']+)'/);
+    if (hrefMatch && hrefMatch[1]) {
+      const targetPage = hrefMatch[1].toLowerCase();
+      if (targetPage === currentPage) {
+        item.classList.add('active');
+        item.setAttribute('aria-current', 'page');
+      } else {
+        item.classList.remove('active');
+        item.removeAttribute('aria-current');
+      }
+    }
+  });
 }
 
 /* ── Scroll Reveal ───────────────────────────────────────── */
@@ -252,6 +341,15 @@ function simag_initMobileSidebar() {
   drawer.className = 'simag-mobile-drawer';
   drawer.appendChild(sidebar.cloneNode(true));
 
+  // Sync session user data into the cloned drawer sidebar
+  const { user: _drawerUser } = simag_getSession ? simag_getSession() : { user: null };
+  if (_drawerUser && _drawerUser.name) {
+    const drawerName = drawer.querySelector('#sidebar-name');
+    const drawerInit = drawer.querySelector('#sidebar-initials');
+    if (drawerName) drawerName.textContent = _drawerUser.name;
+    if (drawerInit) drawerInit.textContent = _drawerUser.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+  }
+
   const openDrawer = () => {
     overlay.classList.add('open');
     drawer.classList.add('open');
@@ -281,6 +379,16 @@ function simag_initMobileSidebar() {
 
 document.addEventListener('DOMContentLoaded', () => {
   simag_initScrollReveal();
+  simag_initSidebarActiveState();
   simag_initAdminSidebar();
   simag_initMobileSidebar();
+  
+  // Sync sidebar badges automatically across all pages (except dashboards, which sync via their main data fetch)
+  const isDashboard = window.location.pathname.includes('dashboard-');
+  if (!isDashboard && window.SIMAG_DATA && typeof SIMAG_DATA.syncSidebarBadges === 'function') {
+    const { user } = simag_getSession();
+    SIMAG_DATA.syncSidebarBadges(user ? user.id : null);
+  }
 });
+
+

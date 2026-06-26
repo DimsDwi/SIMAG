@@ -1,0 +1,243 @@
+{
+  "people": {
+    "student": {
+      "id": "mahasiswa-demo",
+      "initials": "MD",
+      "name": "Mahasiswa Demo",
+      "nim": "23.11.5508",
+      "studyProgram": "S1 Informatika",
+      "semester": 6
+    },
+    "lecturer": {
+      "id": "dospem-demo",
+      "initials": "DD",
+      "name": "Dosen Pembimbing Demo",
+      "faculty": "Fakultas Ilmu Komputer",
+      "email": "dosen@amikom.ac.id"
+    },
+    "admin": {
+      "id": "adminprodi-demo",
+      "initials": "AP",
+      "name": "Admin Prodi",
+      "email": "admin@amikom.ac.id"
+    },
+    "company": {
+      "id": "mitra-demo",
+      "initials": "MD",
+      "name": "Mitra Demo",
+      "shortName": "Mitra Demo",
+      "email": "hr@mitrademo.com",
+      "website": "https://mitrademo.com",
+      "industry": "Teknologi",
+      "address": "Yogyakarta",
+      "location": "Yogyakarta",
+      "tagline": "Tech Company",
+      "logo": ""
+    }
+  },
+  "applications": [
+    {
+      "id": "application-demo-mahasiswa",
+      "studentId": "mahasiswa-demo",
+      "vacancyId": "vacancy-demo-frontend",
+      "companyId": "mitra-demo",
+      "lecturerId": "dospem-demo",
+      "position": "Frontend Developer Intern",
+      "adminStatus": "Approved",
+      "partnerStatus": "Accepted",
+      "status": "Accepted",
+      "submittedAt": "2026-06-10T09:00:00.000Z",
+      "approvedAt": "2026-06-11T10:00:00.000Z"
+    }
+  ],
+  "interns": [
+    {
+      "id": "mahasiswa-demo",
+      "initials": "MD",
+      "name": "Mahasiswa Demo",
+      "nim": "23.11.5508",
+      "institution": "S1 Informatika - Universitas Amikom Yogyakarta",
+      "studyProgram": "S1 Informatika",
+      "companyId": "mitra-demo",
+      "company": "Mitra Demo",
+      "lecturerId": "dospem-demo",
+      "lecturer": "Dosen Pembimbing Demo",
+      "position": "Frontend Developer Intern",
+      "status": "Accepted",
+      "progress": 68,
+      "logbookCompleted": 3,
+      "logbookTarget": 150,
+      "period": "15 Jun 2026 - 15 Des 2026",
+      "startDate": "2026-06-15",
+      "endDate": "2026-12-15",
+      "mentor": "Budi Santoso",
+      "attendance": "0 / 0 Hari",
+      "logbookWeek": "Minggu ke-3"
+    }
+  ],
+  "logbooks": [
+    {
+      "id": "logbook-demo-3",
+      "internId": "mahasiswa-demo",
+      "week": "Minggu 3",
+      "date": "2026-06-22",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "title": "Implementasi Real-time Sync",
+      "activity": "Implementasi Real-time Sync",
+      "description": "Membuat seed data dan menguji login otomatis.",
+      "result": "Landing page sekarang sesuai dengan data sesi yang login.",
+      "obstacle": "Tidak ada kendala besar.",
+      "status": "submitted",
+      "note": "",
+      "submittedAt": "2026-06-22T16:05:00.000Z",
+      "reviewer": ""
+    },
+    {
+      "id": "logbook-demo-2",
+      "internId": "mahasiswa-demo",
+      "week": "Minggu 2",
+      "date": "2026-06-20",
+      "startTime": "09:00",
+      "endTime": "17:00",
+      "title": "Perbaikan Dashboard",
+      "activity": "Perbaikan Dashboard",
+      "description": "Menguji alur dashboard mahasiswa, mitra, admin, dan dospem.",
+      "result": "Dashboard lebih stabil untuk data demo.",
+      "obstacle": "Perlu validasi akhir lintas role.",
+      "status": "approved",
+      "note": "Terus tingkatkan testing.",
+      "submittedAt": "2026-06-20T17:10:00.000Z",
+      "reviewedAt": "2026-06-21T08:00:00.000Z",
+      "reviewer": "Dosen Pembimbing Demo"
+    },
+    {
+      "id": "logbook-demo-1",
+      "internId": "mahasiswa-demo",
+      "week": "Minggu 1",
+      "date": "2026-06-17",
+      "startTime": "09:00",
+      "endTime": "17:00",
+      "title": "Setup Project Frontend",
+      "activity": "Setup Project Frontend",
+      "description": "Clone repository, install dependency, dan memetakan struktur halaman.",
+      "result": "Project berhasil dijalankan dan halaman dashboard dapat dibuka.",
+      "obstacle": "Butuh sinkronisasi database lokal.",
+      "status": "approved",
+      "note": "Sudah baik.",
+      "submittedAt": "2026-06-17T17:05:00.000Z",
+      "reviewedAt": "2026-06-18T09:30:00.000Z",
+      "reviewer": "Dosen Pembimbing Demo"
+    }
+  ],
+  "vacancies": [
+    {
+      "id": "vacancy-demo-frontend",
+      "title": "Frontend Developer Intern",
+      "companyId": "mitra-demo",
+      "company": "Mitra Demo",
+      "location": "Yogyakarta",
+      "workModel": "Hybrid",
+      "quota": 3,
+      "deadline": "2026-08-15",
+      "description": "Membantu pengembangan antarmuka SIMAG dan dashboard operasional.",
+      "qualifications": [],
+      "responsibilities": [],
+      "status": "active",
+      "badge": "Terbuka"
+    },
+    {
+      "id": "vacancy-demo-uiux",
+      "title": "UI/UX Designer Intern",
+      "companyId": "mitra-demo",
+      "company": "Mitra Demo",
+      "location": "Remote",
+      "workModel": "WFH",
+      "quota": 2,
+      "deadline": "2026-08-30",
+      "description": "Membantu riset pengguna dan desain pengalaman dashboard magang.",
+      "qualifications": [],
+      "responsibilities": [],
+      "status": "active",
+      "badge": "Terbuka"
+    }
+  ],
+  "applicants": [
+    {
+      "id": "applicant-demo-mahasiswa",
+      "studentId": "mahasiswa-demo",
+      "vacancyId": "vacancy-demo-frontend",
+      "name": "Mahasiswa Demo",
+      "nim": "23.11.5508",
+      "studyProgram": "S1 Informatika",
+      "semester": 6,
+      "gpa": "3.82",
+      "skills": [],
+      "status": "Diterima"
+    }
+  ],
+  "evaluations": [
+    {
+      "id": "evaluation-demo-mahasiswa",
+      "candidateId": "mahasiswa-demo",
+      "status": "Completed",
+      "grade": "B+",
+      "scores": {},
+      "finalScore": 86,
+      "notes": "Progress baik, komunikasi aktif, dan perlu terus merapikan dokumentasi."
+    }
+  ],
+  "sksConversions": [
+    {
+      "id": "sks-demo-mahasiswa",
+      "studentId": "mahasiswa-demo",
+      "sks": 12,
+      "target": 20,
+      "status": "Completed",
+      "convertedAt": "2026-06-20T12:00:00.000Z"
+    }
+  ],
+  "activities": [],
+  "companyProfile": {
+    "name": "Mitra Demo",
+    "email": "hr@mitrademo.com",
+    "website": "https://mitrademo.com",
+    "address": "Yogyakarta",
+    "tagline": "Tech Company",
+    "logo": ""
+  },
+  "users": [
+    {
+      "id": "user-demo-mahasiswa",
+      "role": "mahasiswa",
+      "identifier": "23.11.5508",
+      "password": "budi",
+      "name": "Mahasiswa Demo",
+      "linkedId": "mahasiswa-demo"
+    },
+    {
+      "id": "user-demo-admin",
+      "role": "adminprodi",
+      "identifier": "admin",
+      "password": "admin",
+      "name": "Admin Prodi Demo",
+      "linkedId": "adminprodi-demo"
+    },
+    {
+      "id": "user-demo-mitra",
+      "role": "mitra",
+      "identifier": "mitra",
+      "password": "mitra",
+      "name": "Mitra Demo",
+      "linkedId": "mitra-demo"
+    },
+    {
+      "id": "user-demo-dosen",
+      "role": "dospem",
+      "identifier": "dosen",
+      "password": "dosen",
+      "name": "Dosen Pembimbing Demo",
+      "linkedId": "dospem-demo"
+    }
+  ]
+}

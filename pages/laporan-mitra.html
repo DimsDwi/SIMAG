@@ -4,165 +4,225 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Laporan Mitra — SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323814" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
     @media (max-width:768px) {
-      aside { display:none; }
+      /* aside display removed for mobile drawer */
       main { padding:20px !important; }
     }
   </style>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
 
-  <!-- ── Sidebar ────────────────────────────────────────────── -->
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
-    <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
-    </div>
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
 
-    <!-- Company Info -->
-    <div style="display:flex;align-items:center;gap:10px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">BM</div>
-      <div style="overflow:hidden;">
-        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">PT. Bank Mandiri</p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Perusahaan Mitra</p>
+  <!-- Sidebar -->
+  <aside id="simag-sidebar"
+      style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+      <div style="margin-bottom:28px;padding:0 8px;">
+        <a href="../index.html" class="brand-font"
+          style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span
+            style="color:#818cf8">.</span></a>
       </div>
-    </div>
-
-    <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-mitra.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Dashboard
-      </div>
-      <div class="sidebar-item" onclick="window.location.href='intern-aktif.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        Intern Aktif
-        <span class="badge badge-info" style="margin-left:auto;">12</span>
-      </div>
-      <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Monitoring Logbook
-        <span class="badge badge-warning" style="margin-left:auto;">5</span>
-      </div>
-      <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        Lowongan Aktif
-      </div>
-      <div class="sidebar-item active" onclick="window.location.href='laporan-mitra.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Laporan
-      </div>
-
-      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item" onclick="window.location.href='profil-mitra.html'" style="cursor:pointer;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          Pengaturan Profil
-        </div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Keluar
+      <div
+        style="display:flex;align-items:center;gap:10px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+        <div id="sidebar-initials"
+          style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">
+          <span class="simag-user-initials"></span></div>
+        <div style="overflow:hidden;">
+          <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+            id="sidebar-name"><span class="simag-user-name"></span></p>
+          <p style="font-size:11px;color:rgba(255,255,255,0.4);">Perusahaan Mitra</p>
         </div>
       </div>
-    </nav>
-  </aside>
+      <nav>
+        <p
+          style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
+          Menu</p>
+        <div class="sidebar-item" onclick="window.location.href='dashboard-mitra.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='intern-aktif.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          Intern Aktif
+          <span class="badge badge-info" style="margin-left:auto;"><span class="simag-badge-value" data-key="internCount"></span></span>
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Monitoring Logbook
+          <span class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="pendingLogbooks"></span></span>
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+          </svg>
+          Lowongan Aktif
+        </div>
+        <div class="sidebar-item active" onclick="window.location.href='laporan-mitra.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          Laporan
+        </div>
+        <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+          <div class="sidebar-item" onclick="window.location.href='profil-mitra.html'" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+            </svg>
+            Pengaturan Profil
+          </div>
+          <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Keluar
+          </div>
+        </div>
+      </nav>
+    </aside>
 
-  <!-- ── Main Content ───────────────────────────────────────── -->
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
-
+  <!-- Main -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
       <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Laporan & Evaluasi Akhir</h1>
+        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;">Laporan &amp; Evaluasi Akhir</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Formulir penilaian akhir kinerja mahasiswa magang.</p>
       </div>
     </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:12px;margin-bottom:24px;">
-      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Mahasiswa Siap Dievaluasi</h3>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;min-width:650px;text-align:left;border-collapse:collapse;">
-          <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama Intern</th>
-            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Durasi</th>
-            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook Selesai</th>
-            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
-            <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
-          </tr></thead>
-          <tbody id="evaluation-candidates"></tbody>
-        </table>
+    <!-- Loading -->
+    <div v-if="loading" style="padding:60px;text-align:center;">
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(34,211,238,0.2);border-top-color:#22d3ee;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat data evaluasi...</p>
+    </div>
+
+    <template v-else>
+      <div class="glass-card" style="padding:24px;border-radius:12px;margin-bottom:24px;">
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Mahasiswa Siap Dievaluasi</h3>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;min-width:650px;text-align:left;border-collapse:collapse;">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Nama Intern</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Durasi</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Logbook Selesai</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Status</th>
+              <th style="padding:12px;color:rgba(255,255,255,0.5);font-weight:500;">Aksi</th>
+            </tr></thead>
+            <tbody>
+              <tr v-if="!candidates.length">
+                <td colspan="5" style="padding:22px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada mahasiswa yang siap dievaluasi.</td>
+              </tr>
+              <tr v-for="c in candidates" :key="c.id" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:12px;font-weight:600;">
+                  {{ c.name }}
+                  <span style="display:block;color:rgba(255,255,255,0.4);font-size:11px;margin-top:3px;">{{ c.position }}</span>
+                </td>
+                <td style="padding:12px;color:rgba(255,255,255,0.6);font-size:13px;">{{ c.period }}</td>
+                <td style="padding:12px;color:#4ade80;">{{ c.logbookCompleted }}/{{ c.logbookTarget }}</td>
+                <td style="padding:12px;">
+                  <span class="badge" :class="getEval(c.id) ? 'badge-success' : 'badge-warning'">{{ getEval(c.id) ? 'Sudah Dinilai' : 'Menunggu Nilai' }}</span>
+                </td>
+                <td style="padding:12px;">
+                  <button @click="goEval(c.id)" type="button" class="btn-primary" style="padding:8px 16px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;border:none;cursor:pointer;">{{ getEval(c.id) ? 'Ubah Nilai' : 'Isi Nilai Evaluasi' }}</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <div class="glass-card" style="padding:24px;border-radius:12px;">
-      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Riwayat Evaluasi</h3>
-      <div id="evaluation-history"></div>
-    </div>
-
-</main>
+      <div class="glass-card" style="padding:24px;border-radius:12px;">
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Riwayat Evaluasi</h3>
+        <div style="display:flex;flex-direction:column;">
+          <p v-if="!evaluations.length" style="padding:22px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada evaluasi yang dikirim.</p>
+          <div v-for="e in evaluations" :key="e.id" style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <p style="font-size:14px;font-weight:600;">{{ getCandidateName(e.candidateId) }}</p>
+              <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Nilai dikirim {{ formatDate(e.submittedAt) }}</p>
+            </div>
+            <div style="text-align:right;">
+              <strong style="font-size:24px;color:#4ade80;">{{ e.finalScore }}</strong>
+              <span style="font-size:12px;color:rgba(255,255,255,0.4);"> / 100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </main>
 </div>
 
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('mitra');
-
-  const { user } = simag_getSession();
-  if (user) {
-    document.getElementById('sidebar-name').textContent = user.name;
-  }
-
-  function renderEvaluations() {
-    const candidates = SIMAG_MITRA.getEvaluationCandidates();
-    const evaluations = SIMAG_MITRA.getEvaluations();
-    const candidateBody = document.getElementById('evaluation-candidates');
-    const history = document.getElementById('evaluation-history');
-    candidateBody.innerHTML = '';
-    history.innerHTML = '';
-
-    candidates.forEach((candidate) => {
-      const evaluation = evaluations.find((item) => item.candidateId === candidate.id);
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      row.innerHTML = `
-        <td style="padding:12px;font-weight:600;">${candidate.name}<span style="display:block;color:rgba(255,255,255,0.4);font-size:11px;margin-top:3px;">${candidate.position}</span></td>
-        <td style="padding:12px;color:rgba(255,255,255,0.6);font-size:13px;">${candidate.period}</td>
-        <td style="padding:12px;color:#4ade80;">${candidate.logbookCompleted}/${candidate.logbookTarget}</td>
-        <td style="padding:12px;"><span class="badge ${evaluation ? 'badge-success' : 'badge-warning'}">${evaluation ? 'Sudah Dinilai' : 'Menunggu Nilai'}</span></td>
-        <td style="padding:12px;"><button type="button" class="btn-primary" style="padding:8px 16px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;">${evaluation ? 'Ubah Nilai' : 'Isi Nilai Evaluasi'}</button></td>
-      `;
-      row.querySelector('button').onclick = () => {
-        window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(candidate.id)}`;
-      };
-      candidateBody.appendChild(row);
-    });
-
-    if (!evaluations.length) {
-      history.innerHTML = '<p style="padding:22px;text-align:center;color:rgba(255,255,255,0.4);">Belum ada evaluasi yang dikirim.</p>';
-      return;
+'use strict';
+simag_requireAuth('mitra');
+const { createApp } = Vue;
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true, userName: user ? user.name : '...',
+      candidates: [], evaluations: []
+    };
+  },
+  computed: {
+    initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'BM'; }
+  },
+  methods: {
+    getEval(id) { return this.evaluations.find(e => e.candidateId === id); },
+    getCandidateName(id) { const c = this.candidates.find(x => x.id === id); return c ? c.name : 'Mahasiswa'; },
+    formatDate(d) { try { return new Intl.DateTimeFormat('id-ID',{dateStyle:'medium'}).format(new Date(d)); } catch { return d||'-'; } },
+    goEval(id) { window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(id)}`; },
+    async loadData() {
+      try {
+        this.candidates = await SIMAG_MITRA.getEvaluationCandidates().catch(() => []);
+        this.evaluations = await SIMAG_MITRA.getEvaluations().catch(() => []);
+      } catch (e) {
+        console.error('Gagal memuat data:', e);
+      } finally {
+        this.loading = false;
+      }
     }
-
-    evaluations.forEach((evaluation) => {
-      const candidate = candidates.find((item) => item.id === evaluation.candidateId);
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);';
-      item.innerHTML = `
-        <div>
-          <p style="font-size:14px;font-weight:600;">${candidate ? candidate.name : 'Mahasiswa'}</p>
-          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Nilai dikirim ${new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(evaluation.submittedAt))}</p>
-        </div>
-        <div style="text-align:right;"><strong style="font-family:'Syne',sans-serif;font-size:24px;color:#4ade80;">${evaluation.finalScore}</strong><span style="font-size:12px;color:rgba(255,255,255,0.4);"> / 100</span></div>
-      `;
-      history.appendChild(item);
-    });
-  }
-
-  renderEvaluations();
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

@@ -4,12 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Detail Logbook - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323805" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
     @media (max-width: 768px) {
       main { padding: 20px !important; }
@@ -17,32 +21,59 @@
       .detail-actions { width: 100%; flex-direction: column; }
       .detail-actions button { width: 100%; }
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="min-height:100vh;">
-  <main style="padding:32px;overflow-x:hidden;">
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <main id="app" style="padding:32px;overflow-x:hidden;" v-cloak>
     <div style="max-width:1080px;margin:0 auto;">
-      <button id="back-button" type="button" class="btn-outline" style="padding:9px 14px;border-radius:9px;color:#fff;font-size:13px;margin-bottom:22px;">
+      <button @click="goBack" type="button" class="btn-outline" style="padding:9px 14px;border-radius:9px;color:#fff;font-size:13px;margin-bottom:22px;cursor:pointer;">
         Kembali
       </button>
 
-      <div id="missing-state" class="glass-card" style="display:none;padding:30px;border-radius:14px;text-align:center;color:rgba(255,255,255,0.55);">
+      <!-- Loading -->
+      <div v-if="loading" style="padding:60px;text-align:center;">
+        <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(129,140,248,0.2);border-top-color:#818cf8;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat data logbook...</p>
+      </div>
+
+      <div v-else-if="!logbook" class="glass-card" style="padding:30px;border-radius:14px;text-align:center;color:rgba(255,255,255,0.55);">
         Logbook tidak ditemukan.
       </div>
 
-      <section id="detail-state" style="display:none;">
+      <section v-else>
         <div class="glass-card" style="padding:28px;border-radius:16px;margin-bottom:22px;">
           <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap;">
             <div>
-              <p id="student-meta" style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:8px;"></p>
-              <h1 id="logbook-title" style="font-size:26px;font-weight:700;margin-bottom:10px;"></h1>
+              <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:8px;">{{ studentMeta }}</p>
+              <h1 style="font-size:26px;font-weight:700;margin-bottom:10px;">{{ logbook.title }}</h1>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <span id="logbook-status" class="badge badge-info"></span>
-                <span id="logbook-date" class="badge" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.65);"></span>
+                <span class="badge" :class="statusBadge">{{ statusLabel }}</span>
+                <span class="badge" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.65);">{{ formatDate(logbook.date) }}</span>
               </div>
             </div>
-            <div class="detail-actions" id="review-actions" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+            
+            <div class="detail-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
+              <span v-if="role === 'mahasiswa'" class="badge badge-info">Status Mahasiswa</span>
+              <span v-else-if="role === 'mitra'" class="badge badge-info">Monitoring Mitra</span>
+              <span v-else-if="!isReviewable" class="badge badge-success">Review selesai</span>
+              <template v-else>
+                <button @click="approveLogbook" type="button" class="btn-primary" style="padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;">Setujui Logbook</button>
+                <button @click="requestRevision" type="button" class="btn-outline" style="padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;cursor:pointer;">Beri Revisi</button>
+              </template>
+            </div>
           </div>
         </div>
 
@@ -50,44 +81,45 @@
           <div style="display:flex;flex-direction:column;gap:18px;">
             <article class="glass-card" style="padding:24px;border-radius:14px;">
               <h2 style="font-size:16px;margin-bottom:12px;">Aktivitas</h2>
-              <p id="logbook-description" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
+              <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);">{{ logbook.description || logbook.activity || '-' }}</p>
             </article>
             <article class="glass-card" style="padding:24px;border-radius:14px;">
               <h2 style="font-size:16px;margin-bottom:12px;">Hasil Pekerjaan</h2>
-              <p id="logbook-result" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
+              <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);">{{ logbook.result || '-' }}</p>
             </article>
             <article class="glass-card" style="padding:24px;border-radius:14px;">
               <h2 style="font-size:16px;margin-bottom:12px;">Kendala dan Catatan</h2>
-              <p id="logbook-obstacle" style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);"></p>
-              <div id="review-note-box" style="display:none;margin-top:16px;padding:14px;border-radius:10px;background:rgba(129,140,248,0.08);border:1px solid rgba(129,140,248,0.16);">
+              <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.7);">{{ logbook.obstacle || 'Tidak ada kendala yang dilaporkan.' }}</p>
+              
+              <div v-if="logbook.note" style="margin-top:16px;padding:14px;border-radius:10px;background:rgba(129,140,248,0.08);border:1px solid rgba(129,140,248,0.16);">
                 <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px;">Catatan Reviewer</p>
-                <p id="review-note" style="font-size:13px;color:#c4b5fd;"></p>
+                <p style="font-size:13px;color:#c4b5fd;">{{ logbook.note }}</p>
               </div>
             </article>
           </div>
 
-          <aside class="glass-card" style="padding:24px;border-radius:14px;">
+          <aside id="simag-sidebar" class="glass-card" style="padding:24px;border-radius:14px;">
             <h2 style="font-size:16px;margin-bottom:16px;">Ringkasan</h2>
             <div style="display:flex;flex-direction:column;gap:13px;font-size:13px;">
               <div>
                 <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Mahasiswa</span>
-                <strong id="summary-student"></strong>
+                <strong>{{ summary.student }}</strong>
               </div>
               <div>
                 <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Perusahaan</span>
-                <strong id="summary-company"></strong>
+                <strong>{{ summary.company }}</strong>
               </div>
               <div>
                 <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Dosen Pembimbing</span>
-                <strong id="summary-lecturer"></strong>
+                <strong>{{ summary.lecturer }}</strong>
               </div>
               <div>
                 <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Jam Kegiatan</span>
-                <strong id="summary-time"></strong>
+                <strong>{{ summary.time }}</strong>
               </div>
               <div>
                 <span style="display:block;color:rgba(255,255,255,0.38);margin-bottom:4px;">Reviewer</span>
-                <strong id="summary-reviewer"></strong>
+                <strong>{{ summary.reviewer }}</strong>
               </div>
             </div>
           </aside>
@@ -98,125 +130,85 @@
 </div>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  const session = simag_getSession();
-  const allowedRoles = ['mahasiswa', 'dospem', 'mitra'];
-  if (!session.token || !allowedRoles.includes(session.role)) {
-    window.location.href = '../login.html';
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const logbookId = params.get('id');
-  const role = params.get('role') || session.role;
-  let logbook = SIMAG_DATA.getLogbook(logbookId);
-
-  function formatDate(value) {
-    return new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(new Date(`${value}T00:00:00`));
-  }
-
-  function getBackTarget() {
-    if (role === 'mahasiswa') {
-      return 'logbook-saya.html';
+'use strict';
+const { createApp } = Vue;
+createApp({
+  data() {
+    const session = simag_getSession();
+    const allowedRoles = ['mahasiswa', 'dospem', 'mitra'];
+    if (!session.token || !allowedRoles.includes(session.role)) {
+      window.location.href = '../login.html';
     }
-    if (role === 'mitra') {
-      return logbook ? `review-logbook.html?intern=${encodeURIComponent(logbook.internId)}` : 'review-logbook.html';
-    }
-    return logbook ? `review-logbook-dospem.html?intern=${encodeURIComponent(logbook.internId)}` : 'review-logbook-dospem.html';
-  }
-
-  function renderActions() {
-    const actions = document.getElementById('review-actions');
-    actions.innerHTML = '';
-    if (role === 'mahasiswa') {
-      actions.innerHTML = '<span class="badge badge-info">Status Mahasiswa</span>';
-      return;
-    }
-    if (role === 'mitra') {
-      actions.innerHTML = '<span class="badge badge-info">Monitoring Mitra</span>';
-      return;
-    }
-    if (!['submitted', 'pending', 'revision'].includes(logbook.status)) {
-      actions.innerHTML = '<span class="badge badge-success">Review selesai</span>';
-      return;
-    }
-
-    const approveButton = document.createElement('button');
-    approveButton.type = 'button';
-    approveButton.textContent = 'Setujui Logbook';
-    approveButton.className = 'btn-primary';
-    approveButton.style.cssText = 'padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;font-weight:600;';
-    approveButton.onclick = () => {
-      SIMAG_DATA.approveLogbook(logbook.id);
-      logbook = SIMAG_DATA.getLogbook(logbook.id);
-      renderDetail();
+    const params = new URLSearchParams(window.location.search);
+    return {
+      loading: true,
+      logbookId: params.get('id'),
+      role: params.get('role') || session.role,
+      logbook: null,
+      intern: null,
+      db: null
     };
-
-    const revisionButton = document.createElement('button');
-    revisionButton.type = 'button';
-    revisionButton.textContent = 'Beri Revisi';
-    revisionButton.className = 'btn-outline';
-    revisionButton.style.cssText = 'padding:10px 16px;border-radius:9px;color:#fff;font-size:13px;';
-    revisionButton.onclick = () => {
-      const note = window.prompt('Catatan revisi untuk mahasiswa:', logbook.note || 'Lengkapi detail hasil implementasi dan bukti pengujian.');
-      if (!note) return;
-      SIMAG_DATA.requestLogbookRevision(logbook.id, note);
-      logbook = SIMAG_DATA.getLogbook(logbook.id);
-      renderDetail();
-    };
-
-    actions.append(approveButton, revisionButton);
-  }
-
-  function renderDetail() {
-    if (!logbook) {
-      document.getElementById('missing-state').style.display = 'block';
-      document.getElementById('detail-state').style.display = 'none';
-      return;
+  },
+  computed: {
+    studentMeta() { return this.intern ? `${this.intern.name} - ${this.intern.position}` : ''; },
+    statusLabel() { return this.logbook ? SIMAG_DATA.statusLabel(this.logbook.status) : ''; },
+    statusBadge() { return this.logbook ? SIMAG_DATA.statusBadge(this.logbook.status) : ''; },
+    isReviewable() { return this.logbook && ['submitted', 'pending', 'revision'].includes(this.logbook.status); },
+    summary() {
+      if(!this.logbook || !this.intern || !this.db) return {};
+      return {
+        student: `${this.intern.name} (${this.intern.nim})`,
+        company: this.intern.company || this.db.people.company.name,
+        lecturer: this.intern.lecturer || this.db.people.lecturer.name,
+        time: `${this.logbook.startTime || '-'} - ${this.logbook.endTime || '-'}`,
+        reviewer: this.logbook.reviewer || 'Belum direview'
+      };
     }
-
-    const data = SIMAG_DATA.getData();
-    const intern = data.interns.find((item) => item.id === logbook.internId) || data.interns[0];
-    const status = SIMAG_DATA.statusLabel(logbook.status);
-
-    document.title = `${logbook.title} - Detail Logbook SIMAG`;
-    document.getElementById('detail-state').style.display = 'block';
-    document.getElementById('missing-state').style.display = 'none';
-    document.getElementById('student-meta').textContent = `${intern.name} - ${intern.position}`;
-    document.getElementById('logbook-title').textContent = logbook.title;
-    const statusBadge = document.getElementById('logbook-status');
-    statusBadge.textContent = status;
-    statusBadge.className = `badge ${SIMAG_DATA.statusBadge(logbook.status)}`;
-    document.getElementById('logbook-date').textContent = formatDate(logbook.date);
-    document.getElementById('logbook-description').textContent = logbook.description || logbook.activity || '-';
-    document.getElementById('logbook-result').textContent = logbook.result || '-';
-    document.getElementById('logbook-obstacle').textContent = logbook.obstacle || 'Tidak ada kendala yang dilaporkan.';
-    document.getElementById('summary-student').textContent = `${intern.name} (${intern.nim})`;
-    document.getElementById('summary-company').textContent = intern.company || data.people.company.name;
-    document.getElementById('summary-lecturer').textContent = intern.lecturer || data.people.lecturer.name;
-    document.getElementById('summary-time').textContent = `${logbook.startTime || '-'} - ${logbook.endTime || '-'}`;
-    document.getElementById('summary-reviewer').textContent = logbook.reviewer || 'Belum direview';
-
-    const noteBox = document.getElementById('review-note-box');
-    if (logbook.note) {
-      document.getElementById('review-note').textContent = logbook.note;
-      noteBox.style.display = 'block';
-    } else {
-      noteBox.style.display = 'none';
+  },
+  methods: {
+    formatDate(v) { try { return new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(`${v}T00:00:00`)); } catch { return v||'-'; } },
+    goBack() {
+      if (this.role === 'mahasiswa') window.location.href = 'logbook-saya.html';
+      else if (this.role === 'mitra') window.location.href = this.logbook ? `review-logbook.html?intern=${encodeURIComponent(this.logbook.internId)}` : 'review-logbook.html';
+      else window.location.href = this.logbook ? `review-logbook-dospem.html?intern=${encodeURIComponent(this.logbook.internId)}` : 'review-logbook-dospem.html';
+    },
+    async approveLogbook() {
+      if(this.logbook) {
+        await SIMAG_DATA.approveLogbook(this.logbook.id);
+        await this.reloadLogbook();
+      }
+    },
+    async requestRevision() {
+      if(this.logbook) {
+        const note = window.prompt('Catatan revisi untuk mahasiswa:', this.logbook.note || 'Lengkapi detail hasil implementasi dan bukti pengujian.');
+        if (note) {
+          await SIMAG_DATA.requestLogbookRevision(this.logbook.id, note);
+          await this.reloadLogbook();
+        }
+      }
+    },
+    async reloadLogbook() {
+      this.logbook = await SIMAG_DATA.getLogbook(this.logbookId);
+      if(this.logbook) {
+        document.title = `${this.logbook.title} - Detail Logbook SIMAG`;
+        this.intern = this.db.interns.find(i => i.id === this.logbook.internId) || this.db.interns[0];
+      }
+    },
+    async loadData() {
+      try {
+        this.db = await SIMAG_DATA.getData().catch(() => ({ interns: [] }));
+        await this.reloadLogbook();
+      } catch (e) {
+        console.error('Gagal memuat data:', e);
+      } finally {
+        this.loading = false;
+      }
     }
-    renderActions();
-  }
-
-  document.getElementById('back-button').onclick = () => {
-    window.location.href = getBackTarget();
-  };
-
-  renderDetail();
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

@@ -1,12 +1,40 @@
-  /* ============================================================
-    SIMAG — Shared Stylesheet
-    Digunakan oleh semua halaman: landing, login, dan dashboard
-    ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+/* ============================================================
+  SIMAG — Shared Stylesheet
+  Digunakan oleh semua halaman: landing, login, dan dashboard
+  ============================================================ */
+
+  :root {
+    --primary-font: 'Plus Jakarta Sans', sans-serif;
+    --heading-font: 'Outfit', sans-serif;
+  }
 
   /* Reset & Base */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: #0f0f1a; color: #fff; overflow-x: hidden; }
-  h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
+  body { font-family: var(--primary-font); background: #09090e; color: #f8fafc; overflow-x: hidden; }
+  h1, h2, h3, h4, h5 { font-family: var(--heading-font); }
+  [v-cloak] { display: none !important; }
+
+  /* ── Background Orbs ─────────────────────────────────────── */
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out alternate;
+    pointer-events: none;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(99,102,241,0.2); top: -15%; left: -15%; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(168,85,247,0.15); bottom: -10%; right: -10%; animation-delay: -7s; }
+  .orb-3 { width: 300px; height: 300px; background: rgba(14,165,233,0.15); top: 50%; left: 60%; animation-delay: -12s; }
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.05); }
+    100% { transform: translate(-20px, 30px) scale(0.95); }
+  }
 
   /* ── Utility ─────────────────────────────────────────────── */
   .gradient-text {
@@ -20,6 +48,12 @@
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255,255,255,0.12);
   }
 
   /* ── Buttons ─────────────────────────────────────────────── */
@@ -59,7 +93,7 @@
     border-radius: 50%;
     background: linear-gradient(135deg, #4f46e5, #06b6d4);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--primary-font);
     font-size: 13px; font-weight: 700; flex-shrink: 0;
   }
 
@@ -70,7 +104,7 @@
     border-radius: 10px;
     padding: 12px 16px;
     color: #fff;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--primary-font);
     font-size: 15px;
     width: 100%;
     transition: border-color 0.2s;
@@ -110,7 +144,7 @@
 
   /* ── Stat Cards ──────────────────────────────────────────── */
   .stat-card { text-align: center; padding: 20px; }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; }
+  .stat-num { font-family: var(--heading-font); font-size: 32px; font-weight: 700; line-height: 1; }
   .stat-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
   /* ── Dashboard Sidebar ───────────────────────────────────── */
@@ -181,7 +215,7 @@
     position: fixed;
     top: 14px;
     left: 14px;
-    z-index: 90;
+    z-index: 101;
     width: 42px;
     height: 42px;
     display: none;
@@ -193,41 +227,25 @@
     color: #fff;
     backdrop-filter: blur(14px);
     cursor: pointer;
+    transition: all 0.2s;
+  }
+  .simag-mobile-menu-button:hover {
+    background: rgba(255,255,255,0.1);
   }
 
   .simag-mobile-overlay {
     position: fixed;
     inset: 0;
-    z-index: 98;
+    z-index: 99;
     display: none;
     background: rgba(0,0,0,0.62);
     backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
-
-  .simag-mobile-overlay.open { display: block; }
-
-  .simag-mobile-drawer {
-    position: fixed;
-    inset: 0 auto 0 0;
-    z-index: 99;
-    width: min(82vw, 280px);
-    min-height: 100vh;
-    transform: translateX(-105%);
-    transition: transform 0.22s ease;
-    background: #111120;
-    box-shadow: 18px 0 40px rgba(0,0,0,0.35);
-    overflow-y: auto;
-  }
-
-  .simag-mobile-drawer.open { transform: translateX(0); }
-
-  .simag-mobile-drawer aside {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 100vh;
-    border-right: none !important;
+  .simag-mobile-overlay.open {
+    display: block;
+    opacity: 1;
   }
 
   /* ── Responsive ──────────────────────────────────────────── */
@@ -235,6 +253,25 @@
     body { padding-top: 58px; }
     .simag-mobile-menu-button { display: flex; }
     body.simag-no-mobile-shell { padding-top: 0; }
+    
+    /* Make aside act as a drawer */
+    aside {
+      position: fixed !important;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100 !important;
+      width: 260px !important;
+      background: #09090e !important; /* solid background so it doesn't overlap weirdly */
+      box-shadow: 18px 0 40px rgba(0,0,0,0.35);
+      transform: translateX(-105%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: block !important; /* override any inline or style block display:none */
+    }
+    aside.open {
+      transform: translateX(0);
+    }
+
     .hero-grid, .hiw-grid  { grid-template-columns: 1fr !important; }
     .stats-grid             { grid-template-columns: 1fr !important; }
     .roles-grid             { grid-template-columns: repeat(2, 1fr) !important; }
@@ -243,6 +280,12 @@
     .dashboard-stats        { grid-template-columns: 1fr !important; }
     .login-left             { display: none !important; }
     main                    { padding: 20px !important; }
+    
+    button, a, input, select, textarea { max-width: 100%; }
+    .student-evaluation-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    #vacancy-grid { grid-template-columns: 1fr !important; }
+    main > div[style*="padding: 32px"] { padding: 0 !important; }
+    .glass-card[style*="display:flex"] { min-width: 0; }
   }
 
   @media (max-width: 1024px) {
@@ -252,28 +295,27 @@
     }
   }
 
-  @media (max-width: 768px) {
-    button,
-    a,
-    input,
-    select,
-    textarea {
-      max-width: 100%;
-    }
+/* Loading Screen Anti-Flicker */
+.simag-loading-screen {
+  animation: simag-delay-show 0.15s forwards;
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes simag-delay-show {
+  0% { opacity: 0; }
+  99% { opacity: 0; }
+  100% { opacity: 1; pointer-events: auto; }
+}
 
-    .student-evaluation-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    #vacancy-grid {
-      grid-template-columns: 1fr !important;
-    }
-
-    main > div[style*="padding: 32px"] {
-      padding: 0 !important;
-    }
-
-    .glass-card[style*="display:flex"] {
-      min-width: 0;
-    }
-  }
+/* Pulse Skeleton Loader */
+.simag-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: simag-skeleton-pulse 1.5s infinite linear;
+  border-radius: 6px;
+  display: inline-block;
+}
+@keyframes simag-skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

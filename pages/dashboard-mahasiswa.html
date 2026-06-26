@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Mahasiswa — SIMAG</title>
 
+  <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323802" />
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
+
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
 
   <!-- ── Sidebar ────────────────────────────────────────────── -->
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
 
     <!-- User Info -->
     <div id="sidebar-user" style="display:flex;align-items:center;gap:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">RA</div>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">
+        <span id="sidebar-initials"><span class="simag-user-initials"></span></span>
+      </div>
       <div style="overflow:hidden;">
-        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Raka Aditya</p>
+        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Mahasiswa • S1 IF</p>
       </div>
     </div>
@@ -33,38 +52,36 @@
     <nav>
       <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
       <div class="sidebar-item active" onclick="window.location.href='dashboard-mahasiswa.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
         Dashboard
       </div>
       <div class="sidebar-item" onclick="window.location.href='cari-lowongan.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
         Cari Lowongan
       </div>
       <div class="sidebar-item" onclick="window.location.href='logbook-saya.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
         Logbook Saya
-        <span class="badge badge-warning" style="margin-left:auto;">2</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='progress-sks.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
         Progress SKS
       </div>
       <div class="sidebar-item" onclick="window.location.href='jadwal.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2h-19A1.5 1.5 0 0 0 1 3.5v17A1.5 1.5 0 0 0 2.5 22h19a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 21.5 2zM1 8h22"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2h-19A1.5 1.5 0 0 0 1 3.5v17A1.5 1.5 0 0 0 2.5 22h19a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 21.5 2zM1 8h22" /></svg>
         Jadwal
       </div>
       <div class="sidebar-item" onclick="window.location.href='notifikasi.html'" style="cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0" /></svg>
         Notifikasi
-        <span class="badge badge-info" style="margin-left:auto;">3</span>
       </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
         <div class="sidebar-item" onclick="window.location.href='profil.html'" style="cursor:pointer;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4" /><path d="M6 20v-2a6 6 0 0 1 12 0v2" /></svg>
           Profil
         </div>
         <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
           Keluar
         </div>
       </div>
@@ -72,185 +89,226 @@
   </aside>
 
   <!-- ── Main Content ───────────────────────────────────────── -->
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
 
-    <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
-      <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Selamat datang, <span id="header-name">Raka</span>! 👋</h1>
-        <p id="student-subtitle" style="font-size:14px;color:rgba(255,255,255,0.45);">Memuat progress magang...</p>
-      </div>
-      <button class="btn-primary" onclick="window.location.href='isi-logbook.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;">+ Tambah Logbook</button>
+    <!-- Loading State -->
+    <div v-if="loading" class="simag-loading-screen" style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
+      <div style="width:40px;height:40px;border-radius:50%;border:3px solid rgba(99,102,241,0.2);border-top-color:#818cf8;animation:spin 0.8s linear infinite;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:14px;">Memuat dashboard...</p>
     </div>
 
-    <!-- Alert -->
-    <div id="student-alert" style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-      <span style="font-size:18px;">⚠️</span>
-      <div>
-        <p id="student-alert-title" style="font-size:14px;font-weight:500;color:#fbbf24;">Logbook menunggu review</p>
-        <p id="student-alert-copy" style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">Data sedang dimuat.</p>
+    <template v-else>
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+        <div>
+          <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">Selamat datang, {{ firstName }}!</h1>
+          <p style="font-size:14px;color:rgba(255,255,255,0.45);">{{ subtitle }}</p>
+        </div>
+        <button class="btn-primary" onclick="window.location.href='isi-logbook.html'" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-weight:600;cursor:pointer;">+ Tambah Logbook</button>
       </div>
-      <button class="btn-outline" onclick="window.location.href='isi-logbook.html'" style="margin-left:auto;padding:7px 14px;border-radius:8px;font-size:12px;color:rgba(255,255,255,0.7);flex-shrink:0;">Isi Sekarang</button>
-    </div>
 
-    <!-- Stats -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Progress Magang</p>
-        <p id="student-progress" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#818cf8;">0%</p>
-        <div class="progress-bar" style="margin-top:8px;"><div id="student-progress-fill" class="progress-fill" style="width:0%;"></div></div>
+      <!-- Alert -->
+      <div v-if="alert.show" style="border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;" :style="{ background: alert.type === 'warning' ? 'rgba(251,191,36,0.08)' : 'rgba(74,222,128,0.08)', border: alert.type === 'warning' ? '1px solid rgba(251,191,36,0.2)' : '1px solid rgba(74,222,128,0.2)' }">
+        <div>
+          <p style="font-size:14px;font-weight:500;" :style="{ color: alert.type === 'warning' ? '#fbbf24' : '#4ade80' }">{{ alert.title }}</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">{{ alert.copy }}</p>
+        </div>
+        <button class="btn-outline" onclick="window.location.href='isi-logbook.html'" style="margin-left:auto;padding:7px 14px;border-radius:8px;font-size:12px;color:rgba(255,255,255,0.7);flex-shrink:0;">Isi Sekarang</button>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">SKS Terkonversi</p>
-        <p id="student-sks" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0 <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ 20</span></p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Terisi</p>
-        <p id="student-logbook-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0 <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ 150</span></p>
-      </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Nilai Rata-rata</p>
-        <p id="student-grade" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">-</p>
-      </div>
-    </div>
 
-    <!-- Cards Row -->
-    <div class="dashboard-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-
-      <!-- Magang Info -->
-      <div class="glass-card" style="border-radius:14px;padding:24px;">
-        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Magang Aktif</h3>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#1e3a5f,#1e5f4e);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#60a5fa;text-align:center;line-height:1.2;">BM</div>
-          <div>
-            <p id="student-company" style="font-size:15px;font-weight:600;">PT Bank Mandiri (Persero) Tbk</p>
-            <p id="student-position" style="font-size:12px;color:rgba(255,255,255,0.4);">Software Engineer Intern • Jakarta Pusat</p>
+      <!-- Stats Cards -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Progress Magang</p>
+          <p style="font-size:28px;font-weight:700;color:#818cf8;">{{ intern ? intern.progress || 0 : 0 }}%</p>
+          <div class="progress-bar" style="margin-top:8px;">
+            <div class="progress-fill" :style="{ width: (intern ? intern.progress || 0 : 0) + '%' }"></div>
           </div>
-          <span id="student-approval-status" class="badge badge-success" style="margin-left:auto;flex-shrink:0;">Accepted</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;color:rgba(255,255,255,0.5);">
-          <div><span style="color:rgba(255,255,255,0.25);">Mulai</span><br><span id="student-start" style="color:rgba(255,255,255,0.8);">-</span></div>
-          <div><span style="color:rgba(255,255,255,0.25);">Selesai</span><br><span id="student-end" style="color:rgba(255,255,255,0.8);">-</span></div>
-          <div><span style="color:rgba(255,255,255,0.25);">Supervisor</span><br><span id="student-mentor" style="color:rgba(255,255,255,0.8);">-</span></div>
-          <div><span style="color:rgba(255,255,255,0.25);">Dosen Pembimbing</span><br><span id="student-lecturer" style="color:rgba(255,255,255,0.8);">-</span></div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">SKS Terkonversi</p>
+          <p style="font-size:28px;font-weight:700;color:#22d3ee;">{{ sks.sks }} <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ {{ sks.target }}</span></p>
         </div>
-        <div id="student-evaluation-scores" class="student-evaluation-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px;"></div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Terisi</p>
+          <p style="font-size:28px;font-weight:700;color:#4ade80;">{{ intern ? intern.logbookCompleted || 0 : 0 }} <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ {{ intern ? intern.logbookTarget || 150 : 0 }}</span></p>
+        </div>
+        <div class="glass-card" style="border-radius:12px;padding:20px;">
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Nilai Rata-rata</p>
+          <p style="font-size:28px;font-weight:700;color:#fbbf24;">{{ evaluation ? evaluation.grade : '-' }}</p>
+        </div>
       </div>
 
-      <!-- Recent Logbooks -->
-      <div class="glass-card" style="border-radius:14px;padding:24px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <h3 style="font-size:16px;font-weight:700;">Logbook Terbaru</h3>
-          <button onclick="window.location.href='logbook-saya.html'" style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Lihat Semua →</button>
+      <!-- Cards Row -->
+      <div class="dashboard-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+        <!-- Magang Info -->
+        <div class="glass-card" style="border-radius:14px;padding:24px;">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Magang Aktif</h3>
+
+          <!-- Empty State -->
+          <div v-if="!intern" style="padding:24px;text-align:center;color:rgba(255,255,255,0.4);">
+            <p style="font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:8px;">Belum ada magang aktif</p>
+            <p style="font-size:12px;margin-bottom:16px;">Cari dan daftar lowongan magang terlebih dahulu.</p>
+            <button onclick="window.location.href='cari-lowongan.html'" class="btn-primary" style="padding:9px 18px;border-radius:8px;font-size:13px;color:#fff;font-weight:600;border:none;cursor:pointer;">Cari Lowongan →</button>
+          </div>
+
+          <!-- Intern Data -->
+          <template v-else>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#1e3a5f,#1e5f4e);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#60a5fa;text-align:center;line-height:1.2;">
+                {{ company ? companyInitials : 'MT' }}
+              </div>
+              <div>
+                <p style="font-size:15px;font-weight:600;">{{ company ? company.name : '-' }}</p>
+                <p style="font-size:12px;color:rgba(255,255,255,0.4);">{{ intern.position || '-' }} • {{ (company && company.location) || intern.location || '-' }}</p>
+              </div>
+              <span class="badge" :class="statusBadgeClass" style="margin-left:auto;flex-shrink:0;">{{ applicationStatus }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;color:rgba(255,255,255,0.5);">
+              <div><span style="color:rgba(255,255,255,0.25);">Mulai</span><br><span style="color:rgba(255,255,255,0.8);">{{ formatDate(intern.startDate) }}</span></div>
+              <div><span style="color:rgba(255,255,255,0.25);">Selesai</span><br><span style="color:rgba(255,255,255,0.8);">{{ formatDate(intern.endDate) }}</span></div>
+              <div><span style="color:rgba(255,255,255,0.25);">Supervisor</span><br><span style="color:rgba(255,255,255,0.8);">{{ intern.mentor || '-' }}</span></div>
+              <div><span style="color:rgba(255,255,255,0.25);">Dosen Pembimbing</span><br><span style="color:rgba(255,255,255,0.8);">{{ lecturer ? lecturer.name : '-' }}</span></div>
+            </div>
+
+            <!-- Evaluation Scores -->
+            <div v-if="evaluation" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px;">
+              <div v-for="(score, label) in evaluationScores" :key="label" style="padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);text-align:center;">
+                <p style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:4px;">{{ label }}</p>
+                <strong style="font-size:16px;color:#4ade80;">{{ score }}</strong>
+              </div>
+            </div>
+          </template>
         </div>
-        <div id="recent-logbook-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+        <!-- Recent Logbooks -->
+        <div class="glass-card" style="border-radius:14px;padding:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 style="font-size:16px;font-weight:700;">Logbook Terbaru</h3>
+            <button onclick="window.location.href='logbook-saya.html'" style="font-size:12px;color:#818cf8;background:none;border:none;cursor:pointer;">Lihat Semua →</button>
+          </div>
+          <div v-if="!logbooks.length" style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">
+            {{ intern ? 'Belum ada logbook. Tambah logbook pertamamu!' : 'Belum ada logbook. Daftar magang dulu ya!' }}
+          </div>
+          <div v-else style="display:flex;flex-direction:column;gap:10px;">
+            <div v-for="lb in logbooks.slice(0,3)" :key="lb.id" style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">
+              <div :style="{ width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0, background: lb.status === 'approved' ? '#4ade80' : lb.status === 'revision' ? '#fbbf24' : '#818cf8' }"></div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ lb.title || lb.activity || '-' }}</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.35);">{{ formatDate(lb.date) }}</p>
+              </div>
+              <span class="badge" :class="getStatusBadge(lb.status)">{{ getStatusLabel(lb.status) }}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </template>
 
   </main>
 </div>
 
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  // Guard: hanya mahasiswa yang boleh akses halaman ini
-  simag_requireAuth('mahasiswa');
+'use strict';
 
-  // Tampilkan nama dari sesi
-  const { user } = simag_getSession();
-  if (user) {
-    const firstName = user.name.split(' ')[0];
-    document.getElementById('sidebar-name').textContent = user.name;
-    document.getElementById('header-name').textContent  = firstName;
-  }
+// Guard: hanya mahasiswa yang boleh akses halaman ini
+simag_requireAuth('mahasiswa');
 
-  function formatShortDate(value) {
-    return new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(new Date(`${value}T00:00:00`));
-  }
+const { createApp } = Vue;
 
-  function renderStudentDashboard() {
-    const summary = SIMAG_DATA.getDashboardSummary();
-    const { student, intern, company, lecturer, application, logbooks, submittedLogbooks, revisionLogbooks, evaluation, sks } = summary;
-    const firstName = student.name.split(' ')[0];
-
-    document.getElementById('sidebar-name').textContent = student.name;
-    document.getElementById('header-name').textContent = firstName;
-    document.getElementById('student-subtitle').textContent = `${intern.period} - ${intern.logbookWeek}`;
-
-    document.getElementById('student-progress').textContent = `${intern.progress}%`;
-    document.getElementById('student-progress-fill').style.width = `${intern.progress}%`;
-    document.getElementById('student-sks').innerHTML = `${sks.sks} <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ ${sks.target}</span>`;
-    document.getElementById('student-logbook-count').innerHTML = `${intern.logbookCompleted} <span style="font-size:14px;color:rgba(255,255,255,0.4);">/ ${intern.logbookTarget}</span>`;
-    document.getElementById('student-grade').textContent = evaluation ? evaluation.grade : '-';
-    const scoreBox = document.getElementById('student-evaluation-scores');
-    scoreBox.innerHTML = '';
-    if (evaluation) {
-      [
-        ['Teknis', evaluation.scores.technical],
-        ['Komunikasi', evaluation.scores.communication],
-        ['Disiplin', evaluation.scores.discipline],
-        ['Teamwork', evaluation.scores.teamwork]
-      ].forEach(([label, score]) => {
-        const item = document.createElement('div');
-        item.style.cssText = 'padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);text-align:center;';
-        item.innerHTML = `<p style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:4px;">${label}</p><strong style="font-size:16px;color:#4ade80;">${score}</strong>`;
-        scoreBox.appendChild(item);
-      });
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true,
+      userName: user ? user.name : '...',
+      intern: null,
+      company: null,
+      lecturer: null,
+      logbooks: [],
+      evaluation: null,
+      sks: { sks: 0, target: 20, status: 'Pending' },
+      application: null,
+      alert: { show: false, type: 'warning', title: '', copy: '' }
+    };
+  },
+  computed: {
+    firstName() {
+      return (this.userName || '').split(' ')[0] || 'Mahasiswa';
+    },
+    initials() {
+      return (this.userName || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || '-';
+    },
+    subtitle() {
+      if (!this.intern) return 'Kamu belum mendaftar magang. Cari lowongan untuk mulai!';
+      return `${this.intern.period || '-'} • ${this.intern.logbookWeek || 'Minggu ke-1'}`;
+    },
+    applicationStatus() {
+      return (this.application ? this.application.status : this.intern?.status) || 'Pending';
+    },
+    statusBadgeClass() {
+      return this.getStatusBadge(this.applicationStatus);
+    },
+    companyInitials() {
+      if (!this.company) return 'MT';
+      return (this.company.name || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || 'MT';
+    },
+    evaluationScores() {
+      if (!this.evaluation) return {};
+      const s = this.evaluation.scores || {};
+      return { Teknis: s.technical || 0, Komunikasi: s.communication || 0, Disiplin: s.discipline || 0, Teamwork: s.teamwork || 0 };
     }
+  },
+  methods: {
+    formatDate(value) {
+      if (!value) return '-';
+      try {
+        return new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${value}T00:00:00`));
+      } catch { return value; }
+    },
+    getStatusLabel(status) {
+      return SIMAG_DATA.statusLabel(status);
+    },
+    getStatusBadge(status) {
+      return SIMAG_DATA.statusBadge(status);
+    },
+    async loadDashboard() {
+      try {
+        const summary = await SIMAG_DATA.getDashboardSummary().catch(() => ({}));
+        const { intern, company, lecturer, logbooks = [], submittedLogbooks = [], revisionLogbooks = [], evaluation, sks, application } = summary;
 
-    const alert = document.getElementById('student-alert');
-    const alertTitle = document.getElementById('student-alert-title');
-    const alertCopy = document.getElementById('student-alert-copy');
-    if (revisionLogbooks.length) {
-      alert.style.display = 'flex';
-      alertTitle.textContent = 'Logbook Perlu Revisi';
-      alertCopy.textContent = `${revisionLogbooks[0].title} diberi catatan revisi oleh ${lecturer.name}.`;
-    } else if (submittedLogbooks.length) {
-      alert.style.display = 'flex';
-      alertTitle.textContent = `${submittedLogbooks.length} Logbook Submitted`;
-      alertCopy.textContent = 'Logbook terbaru sudah masuk ke dashboard dosen, mitra, dan admin.';
-    } else {
-      alert.style.display = 'none';
+        this.intern = intern || null;
+        this.company = company || null;
+        this.lecturer = lecturer || null;
+        this.logbooks = logbooks;
+        this.evaluation = evaluation || null;
+        this.sks = sks || { sks: 0, target: 20 };
+        this.application = application || null;
+
+        if (revisionLogbooks.length) {
+          this.alert = { show: true, type: 'warning', title: 'Logbook Perlu Revisi', copy: `${revisionLogbooks[0].title || revisionLogbooks[0].activity} diberi catatan revisi${lecturer ? ' oleh ' + lecturer.name : ''}.` };
+        } else if (submittedLogbooks.length) {
+          this.alert = { show: true, type: 'info', title: `${submittedLogbooks.length} Logbook Menunggu Review`, copy: 'Logbook sudah masuk ke dashboard dosen, mitra, dan admin.' };
+        }
+      } catch (e) {
+        console.error('Gagal memuat dashboard:', e);
+      } finally {
+        this.loading = false;
+      }
     }
-
-    document.getElementById('student-company').textContent = company.name;
-    document.getElementById('student-position').textContent = `${intern.position} - ${company.location}`;
-    const approvalBadge = document.getElementById('student-approval-status');
-    approvalBadge.textContent = application ? application.status : intern.status;
-    approvalBadge.className = `badge ${SIMAG_DATA.statusBadge(approvalBadge.textContent)}`;
-    document.getElementById('student-start').textContent = intern.startDate ? formatShortDate(intern.startDate) : '-';
-    document.getElementById('student-end').textContent = intern.endDate ? formatShortDate(intern.endDate) : '-';
-    document.getElementById('student-mentor').textContent = intern.mentor;
-    document.getElementById('student-lecturer').textContent = lecturer.name;
-
-    const list = document.getElementById('recent-logbook-list');
-    list.innerHTML = '';
-    if (!logbooks.length) {
-      list.innerHTML = '<div style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Belum ada logbook. Isi logbook pertama agar muncul di dosen, mitra, dan admin.</div>';
-      return;
-    }
-    logbooks.slice(0, 3).forEach((logbook) => {
-      const dotColor = logbook.status === 'approved' ? '#4ade80' : logbook.status === 'revision' ? '#fbbf24' : '#818cf8';
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;';
-      item.innerHTML = `
-        <div style="width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0;"></div>
-        <div style="flex:1;min-width:0;">
-          <p style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${simag_escapeHtml(logbook.title)}</p>
-          <p style="font-size:11px;color:rgba(255,255,255,0.35);">${formatShortDate(logbook.date)}</p>
-        </div>
-        <span class="badge ${SIMAG_DATA.statusBadge(logbook.status)}">${SIMAG_DATA.statusLabel(logbook.status)}</span>
-      `;
-      list.appendChild(item);
-    });
+  },
+  async mounted() {
+    await this.loadDashboard();
   }
-
-  renderStudentDashboard();
+}).mount('#app');
 </script>
 </body>
+
 </html>

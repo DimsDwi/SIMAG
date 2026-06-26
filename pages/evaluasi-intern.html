@@ -4,58 +4,158 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evaluasi Intern — SIMAG</title>
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323807" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
     .score-grid { display:grid;grid-template-columns:1fr 120px;gap:16px;align-items:center; }
     @media (max-width:768px) {
-      aside { display:none; }
+      /* aside display removed for mobile drawer */
       main { padding:20px !important; }
       .score-grid { grid-template-columns:1fr; }
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;">
-    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a></div>
-    <div style="display:flex;align-items:center;gap:10px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">BM</div>
-      <div><p id="sidebar-name" style="font-size:12px;font-weight:600;">PT. Bank Mandiri</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Perusahaan Mitra</p></div>
-    </div>
-    <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-mitra.html'">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='intern-aktif.html'">Intern Aktif</div>
-      <div class="sidebar-item" onclick="window.location.href='review-logbook.html'">Monitoring Logbook</div>
-      <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'">Lowongan Aktif</div>
-      <div class="sidebar-item active" onclick="window.location.href='laporan-mitra.html'">Laporan</div>
-      <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;"><div class="sidebar-item" onclick="simag_logout()">Keluar</div></div>
-    </nav>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;">
+    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a></div>
+    
+    <template v-if="pageRole === 'dospem'">
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">{{ dospemInitials }}</div>
+        <div><p style="font-size:12px;font-weight:600;">{{ dospemName }}</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
+      </div>
+      <nav>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+        <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Mahasiswa Bimbingan
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Review Logbook
+        </div>
+        <div class="sidebar-item active" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Penilaian &amp; Evaluasi
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jadwal Bimbingan
+        </div>
+        <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+          <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+            Pengaturan
+          </div>
+          <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Keluar
+          </div>
+        </div>
+      </nav>
+    </template>
+
+    <template v-else>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">{{ mitraInitials }}</div>
+        <div><p style="font-size:12px;font-weight:600;">{{ mitraName }}</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Perusahaan Mitra</p></div>
+      </div>
+      <nav>
+        <div class="sidebar-item" onclick="window.location.href='dashboard-mitra.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='intern-aktif.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Intern Aktif
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='review-logbook.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Monitoring Logbook
+        </div>
+        <div class="sidebar-item" onclick="window.location.href='lowongan-aktif.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Lowongan Aktif
+        </div>
+        <div class="sidebar-item active" onclick="window.location.href='laporan-mitra.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Laporan
+        </div>
+        <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+          <div class="sidebar-item" onclick="window.location.href='profil-mitra.html'" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            Pengaturan Profil
+          </div>
+          <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Keluar
+          </div>
+        </div>
+      </nav>
+    </template>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="max-width:820px;">
-      <a id="back-link" href="laporan-mitra.html" style="display:inline-block;margin-bottom:20px;color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">Kembali ke Laporan</a>
+      <a @click.prevent="goBack" href="#" style="display:inline-block;margin-bottom:20px;color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">{{ backLinkText }}</a>
       <div style="margin-bottom:26px;">
-        <h1 id="page-title" style="font-size:24px;margin-bottom:5px;">Evaluasi Akhir Intern</h1>
-        <p id="candidate-meta" style="font-size:14px;color:rgba(255,255,255,0.45);"></p>
+        <h1 style="font-size:24px;margin-bottom:5px;">{{ pageTitle }}</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.45);">{{ candidateMeta }}</p>
       </div>
 
-      <form id="evaluation-form" class="glass-card" onsubmit="submitEvaluation(event)" style="padding:30px;border-radius:16px;">
-        <div id="score-fields" style="display:flex;flex-direction:column;gap:18px;"></div>
+      <!-- Loading -->
+      <div v-if="loading" style="padding:60px;text-align:center;">
+        <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(74,222,128,0.2);border-top-color:#4ade80;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat form evaluasi...</p>
+      </div>
+
+      <form v-else @submit.prevent="submitEvaluation" class="glass-card" style="padding:30px;border-radius:16px;">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div v-for="c in criteria" :key="c.id" class="score-grid">
+            <label :for="'score-'+c.id">
+              <strong style="display:block;font-size:14px;">{{ c.label }}</strong>
+              <span style="display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">{{ c.description }}</span>
+            </label>
+            <input :id="'score-'+c.id" type="number" min="0" max="100" required class="form-input" v-model.number="scores[c.id]" placeholder="0-100">
+          </div>
+        </div>
         <div style="margin-top:22px;">
           <label for="evaluation-notes" class="form-label">Catatan Evaluasi</label>
-          <textarea id="evaluation-notes" class="form-input" rows="5" required maxlength="1000" placeholder="Tuliskan catatan kinerja, kekuatan, dan area pengembangan..." style="resize:vertical;"></textarea>
+          <textarea id="evaluation-notes" class="form-input" rows="5" required maxlength="1000" v-model="notes" placeholder="Tuliskan catatan kinerja, kekuatan, dan area pengembangan..." style="resize:vertical;"></textarea>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:24px;padding:18px;border-radius:12px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.15);">
           <div><p style="font-size:12px;color:rgba(255,255,255,0.45);">Nilai Akhir</p><p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px;">Rata-rata seluruh aspek</p></div>
-          <strong id="final-score" style="font-family:'Syne',sans-serif;font-size:30px;color:#4ade80;">0</strong>
+          <strong style="font-size:30px;color:#4ade80;">{{ finalScore }}</strong>
         </div>
         <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">
-          <button type="button" onclick="goBackToEvaluationList()" class="btn-outline" style="padding:10px 20px;border-radius:8px;color:#fff;">Batal</button>
-          <button type="submit" class="btn-primary" style="padding:10px 22px;border-radius:8px;color:#fff;font-weight:600;">Simpan Evaluasi</button>
+          <button type="button" @click="goBack" class="btn-outline" style="padding:10px 20px;border-radius:8px;color:#fff;cursor:pointer;">Batal</button>
+          <button type="submit" class="btn-primary" style="padding:10px 22px;border-radius:8px;color:#fff;font-weight:600;border:none;cursor:pointer;">Simpan Evaluasi</button>
         </div>
       </form>
     </div>
@@ -63,115 +163,86 @@
 </div>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth(['mitra', 'dospem']);
-  const session = simag_getSession();
-  const params = new URLSearchParams(window.location.search);
-  const pageRole = params.get('role') || session.role;
-
-  function goBackToEvaluationList() {
-    window.location.href = pageRole === 'dospem' ? 'penilaian-dospem.html' : 'laporan-mitra.html';
-  }
-
-  function renderRoleShell() {
-    const data = SIMAG_DATA.getData();
-    const aside = document.querySelector('aside');
-    if (pageRole === 'dospem') {
-      aside.innerHTML = `
-        <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a></div>
-        <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">${simag_escapeHtml(data.people.lecturer.initials || 'DP')}</div>
-          <div><p style="font-size:12px;font-weight:600;">${simag_escapeHtml(data.people.lecturer.name)}</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
-        </div>
-        <nav>
-          <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'">Dashboard</div>
-          <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'">Mahasiswa Bimbingan</div>
-          <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'">Review Logbook</div>
-          <div class="sidebar-item active" onclick="window.location.href='penilaian-dospem.html'">Penilaian &amp; Evaluasi</div>
-          <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'">Jadwal Bimbingan</div>
-          <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;"><div class="sidebar-item" onclick="window.location.href='profil-dospem.html'">Pengaturan</div><div class="sidebar-item" onclick="simag_logout()">Keluar</div></div>
-        </nav>
-      `;
-      document.getElementById('back-link').href = 'penilaian-dospem.html';
-      document.getElementById('back-link').textContent = 'Kembali ke Penilaian Dosen';
-      document.getElementById('page-title').textContent = 'Penilaian Akhir Mahasiswa';
-      document.title = 'Penilaian Dosen - SIMAG';
-      return;
+'use strict';
+simag_requireAuth(['mitra', 'dospem']);
+const { createApp } = Vue;
+createApp({
+  data() {
+    const session = simag_getSession();
+    const params = new URLSearchParams(window.location.search);
+    return {
+      loading: true,
+      pageRole: params.get('role') || session.role,
+      candidateId: params.get('candidate'),
+      db: null, candidate: null, existingEvaluation: null,
+      dospemName: '...', dospemInitials: 'DP',
+      mitraName: '...', mitraInitials: 'BM',
+      criteria: [
+        { id: 'technical', label: 'Kompetensi Teknis', description: 'Penguasaan keterampilan sesuai posisi magang.' },
+        { id: 'communication', label: 'Komunikasi', description: 'Kemampuan menyampaikan informasi dan menerima masukan.' },
+        { id: 'discipline', label: 'Disiplin & Kehadiran', description: 'Ketepatan waktu dan kepatuhan terhadap aturan.' },
+        { id: 'teamwork', label: 'Teamwork', description: 'Kontribusi serta kolaborasi dengan anggota tim.' }
+      ],
+      scores: { technical: 90, communication: 88, discipline: 95, teamwork: 92 },
+      notes: ''
+    };
+  },
+  computed: {
+    backLinkText() { return this.pageRole === 'dospem' ? 'Kembali ke Penilaian Dosen' : 'Kembali ke Laporan'; },
+    pageTitle() { return this.pageRole === 'dospem' ? 'Penilaian Akhir Mahasiswa' : 'Evaluasi Akhir Intern'; },
+    candidateMeta() { return this.candidate ? `${this.candidate.name} • ${this.candidate.position} • ${this.candidate.period}` : ''; },
+    finalScore() {
+      const vals = Object.values(this.scores).map(Number).filter(Number.isFinite);
+      return vals.length === this.criteria.length ? Math.round(vals.reduce((t,v) => t+v, 0) / vals.length) : 0;
     }
-
-    const activeCompany = data.people.company;
-    document.getElementById('sidebar-name').textContent = activeCompany.shortName || activeCompany.name;
-  }
-
-  renderRoleShell();
-
-  const criteria = [
-    ['technical', 'Kompetensi Teknis', 'Penguasaan keterampilan sesuai posisi magang.'],
-    ['communication', 'Komunikasi', 'Kemampuan menyampaikan informasi dan menerima masukan.'],
-    ['discipline', 'Disiplin & Kehadiran', 'Ketepatan waktu dan kepatuhan terhadap aturan.'],
-    ['teamwork', 'Teamwork', 'Kontribusi serta kolaborasi dengan anggota tim.']
-  ];
-  const defaultScores = {
-    technical: 90,
-    communication: 88,
-    discipline: 95,
-    teamwork: 92
-  };
-  const candidateId = params.get('candidate');
-  const candidate = SIMAG_MITRA.getEvaluationCandidates().find((item) => item.id === candidateId)
-    || SIMAG_MITRA.getEvaluationCandidates()[0];
-  const existingEvaluation = SIMAG_MITRA.getEvaluation(candidate.id);
-  document.getElementById('candidate-meta').textContent = `${candidate.name} • ${candidate.position} • ${candidate.period}`;
-
-  const scoreFields = document.getElementById('score-fields');
-  criteria.forEach(([id, label, description]) => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'score-grid';
-    wrapper.innerHTML = `
-      <label for="score-${id}"><strong style="display:block;font-size:14px;">${label}</strong><span style="display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">${description}</span></label>
-      <input id="score-${id}" data-score-field="${id}" type="number" min="0" max="100" required class="form-input" value="${existingEvaluation ? existingEvaluation.scores[id] : defaultScores[id]}" placeholder="0-100">
-    `;
-    scoreFields.appendChild(wrapper);
-  });
-
-  if (existingEvaluation) {
-    document.getElementById('evaluation-notes').value = existingEvaluation.notes;
-  } else {
-    document.getElementById('evaluation-notes').value = 'Kinerja teknis kuat, komunikasi baik, disiplin sangat konsisten, dan mampu bekerja sama dalam tim.';
-  }
-
-  function updateFinalScore() {
-    const values = [...document.querySelectorAll('[data-score-field]')]
-      .map((input) => Number(input.value))
-      .filter((value) => Number.isFinite(value));
-    const finalScore = values.length === criteria.length
-      ? Math.round(values.reduce((total, value) => total + value, 0) / values.length)
-      : 0;
-    document.getElementById('final-score').textContent = finalScore;
-    return finalScore;
-  }
-
-  document.querySelectorAll('[data-score-field]').forEach((input) => {
-    input.addEventListener('input', updateFinalScore);
-  });
-  updateFinalScore();
-
-  function submitEvaluation(event) {
-    event.preventDefault();
-    const scores = {};
-    document.querySelectorAll('[data-score-field]').forEach((input) => {
-      scores[input.dataset.scoreField] = Number(input.value);
-    });
-    const finalScore = updateFinalScore();
-    SIMAG_MITRA.saveEvaluation({
-      candidateId: candidate.id,
-      scores,
-      finalScore,
-      notes: document.getElementById('evaluation-notes').value.trim()
-    });
-    window.location.href = pageRole === 'dospem' ? 'penilaian-dospem.html?evaluated=1' : 'laporan-mitra.html?evaluated=1';
-  }
+  },
+  methods: {
+    goBack() { window.location.href = this.pageRole === 'dospem' ? 'penilaian-dospem.html' : 'laporan-mitra.html'; },
+    async submitEvaluation() {
+      await SIMAG_MITRA.saveEvaluation({
+        candidateId: this.candidate.id,
+        scores: this.scores,
+        finalScore: this.finalScore,
+        notes: this.notes.trim()
+      });
+      window.location.href = this.pageRole === 'dospem' ? 'penilaian-dospem.html?evaluated=1' : 'laporan-mitra.html?evaluated=1';
+    },
+    async loadData() {
+      try {
+        this.db = await SIMAG_DATA.getData().catch(() => ({ people: { lecturer: { name: 'Dosen', initials: 'DP' } } }));
+        if (this.pageRole === 'dospem') {
+          document.title = 'Penilaian Dosen - SIMAG';
+          this.dospemName = this.db.people?.lecturer?.name || 'Dosen Pembimbing';
+          this.dospemInitials = this.db.people?.lecturer?.initials || 'DP';
+        } else {
+          const session = simag_getSession();
+          this.mitraName = session && session.user ? session.user.name : '...';
+          this.mitraInitials = (this.mitraName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'BM';
+        }
+        
+        const candidates = await SIMAG_MITRA.getEvaluationCandidates().catch(() => []);
+        this.candidate = candidates.find(c => c.id === this.candidateId) || candidates[0];
+        
+        if(this.candidate) {
+          this.existingEvaluation = await SIMAG_MITRA.getEvaluation(this.candidate.id).catch(() => null);
+          if(this.existingEvaluation) {
+            this.scores = { ...this.existingEvaluation.scores };
+            this.notes = this.existingEvaluation.notes;
+          } else {
+            this.notes = 'Kinerja teknis kuat, komunikasi baik, disiplin sangat konsisten, dan mampu bekerja sama dalam tim.';
+          }
+        }
+      } catch (e) {
+        console.error('Gagal memuat data:', e);
+      } finally {
+        this.loading = false;
+      }
+    }
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

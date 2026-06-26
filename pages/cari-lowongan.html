@@ -5,31 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cari Lowongan — SIMAG</title>
 
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323798" />
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
 
   <!-- ── Sidebar ────────────────────────────────────────────── -->
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
-
-    <!-- User Info -->
     <div id="sidebar-user" style="display:flex;align-items:center;gap:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">RA</div>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span id="sidebar-initials"><span class="simag-user-initials"></span></span></div>
       <div style="overflow:hidden;">
-        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Raka Aditya</p>
+        <p style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Mahasiswa • S1 IF</p>
       </div>
     </div>
-
     <nav>
       <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
       <div class="sidebar-item" onclick="window.location.href='dashboard-mahasiswa.html'" style="cursor:pointer;">
@@ -43,7 +58,6 @@
       <div class="sidebar-item" onclick="window.location.href='logbook-saya.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Logbook Saya
-        <span class="badge badge-warning" style="margin-left:auto;">2</span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='progress-sks.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -56,7 +70,6 @@
       <div class="sidebar-item" onclick="window.location.href='notifikasi.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
         Notifikasi
-        <span class="badge badge-info" style="margin-left:auto;">3</span>
       </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
         <div class="sidebar-item" onclick="window.location.href='profil.html'" style="cursor:pointer;">
@@ -72,80 +85,131 @@
   </aside>
 
   <!-- ── Main Content ───────────────────────────────────────── -->
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
-
-<div style="padding: 32px;">
-    <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">Cari Lowongan Magang</h1>
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
+    <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;">Cari Lowongan Magang</h1>
     <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:28px;">Temukan posisi magang yang sesuai dengan minat dan jurusanmu.</p>
 
+    <!-- Search Bar -->
     <div style="display:flex;gap:16px;margin-bottom:24px;">
-        <input type="text" id="search-input" onkeyup="if(event.key==='Enter') filterLowongan()" placeholder="Cari posisi atau perusahaan..." style="flex:1;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;">
-        <button class="btn-primary" onclick="filterLowongan()" style="padding:0 24px;border-radius:10px;font-weight:600;cursor:pointer;">Cari</button>
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Cari posisi atau perusahaan..."
+        style="flex:1;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;"
+      />
+      <button class="btn-primary" style="padding:0 24px;border-radius:10px;font-weight:600;cursor:pointer;">Cari</button>
     </div>
 
-    <div id="vacancy-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"></div>
-    <div id="no-result-msg" style="display:none;text-align:center;padding:40px;color:rgba(255,255,255,0.5);">Lowongan yang kamu cari tidak ditemukan.</div>
+    <!-- Loading -->
+    <div v-if="loading" style="padding:60px;text-align:center;">
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(99,102,241,0.2);border-top-color:#818cf8;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;">Memuat lowongan...</p>
+    </div>
+
+    <!-- No Results -->
+    <div v-else-if="filteredVacancies.length === 0" style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);">
+      <p style="font-size:16px;margin-bottom:8px;">{{ vacancies.length === 0 ? 'Belum ada lowongan tersedia.' : 'Lowongan yang kamu cari tidak ditemukan.' }}</p>
+      <p v-if="vacancies.length > 0" style="font-size:13px;">Coba kata kunci yang berbeda.</p>
+    </div>
+
+    <!-- Vacancy Grid -->
+    <div v-else style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div
+        v-for="vacancy in filteredVacancies"
+        :key="vacancy.id"
+        class="glass-card"
+        style="padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:10px;transition:transform 0.15s ease,box-shadow 0.15s ease;"
+        @mouseenter="$event.currentTarget.style.transform='translateY(-2px)'"
+        @mouseleave="$event.currentTarget.style.transform=''"
+      >
+        <!-- Company Initials -->
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(6,182,212,0.3));border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#c4b5fd;flex-shrink:0;">
+            {{ getCompanyInitials(vacancy.company) }}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ vacancy.title }}</h3>
+            <p style="color:rgba(255,255,255,0.5);font-size:13px;">{{ vacancy.company }}</p>
+          </div>
+        </div>
+
+        <!-- Meta -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:11px;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.05);padding:3px 8px;border-radius:99px;">📍 {{ vacancy.location }}</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.05);padding:3px 8px;border-radius:99px;">🏢 {{ vacancy.workModel }}</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.05);padding:3px 8px;border-radius:99px;">👥 {{ vacancy.quota }} kuota</span>
+        </div>
+
+        <!-- Badge + Button -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+          <span class="badge" :class="vacancy.badge === 'Sesuai Jurusan' ? 'badge-success' : 'badge-info'">{{ vacancy.badge || 'Terbuka' }}</span>
+          <button
+            class="btn-outline"
+            @click="goDetail(vacancy.id)"
+            style="padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);color:#fff;background:rgba(255,255,255,0.05);cursor:pointer;font-size:13px;transition:all 0.2s;"
+          >Lihat Detail →</button>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 
-</main>
-</div>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  // Guard: hanya mahasiswa yang boleh akses halaman ini
-  simag_requireAuth('mahasiswa');
+'use strict';
+simag_requireAuth('mahasiswa');
 
-  // Tampilkan nama dari sesi
-  const { user } = simag_getSession();
-  if (user) {
-    document.getElementById('sidebar-name').textContent = user.name;
-  }
-</script>
+const { createApp } = Vue;
 
-<script>
-  function filterLowongan() {
-    const input = document.getElementById('search-input');
-    const filter = input.value.toLowerCase();
-    const cards = document.querySelectorAll('[data-vacancy-card]');
-    let hasResult = false;
-
-    cards.forEach(card => {
-      if (card.dataset.searchText.includes(filter)) {
-        card.style.display = '';
-        hasResult = true;
-      } else {
-        card.style.display = 'none';
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true,
+      userName: user ? user.name : '...',
+      vacancies: [],
+      searchQuery: ''
+    };
+  },
+  computed: {
+    initials() {
+      return (this.userName || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || '-';
+    },
+    filteredVacancies() {
+      if (!this.searchQuery.trim()) return this.vacancies;
+      const q = this.searchQuery.toLowerCase();
+      return this.vacancies.filter(v =>
+        `${v.title} ${v.company} ${v.location} ${v.workModel}`.toLowerCase().includes(q)
+      );
+    }
+  },
+  methods: {
+    getCompanyInitials(name) {
+      return (name || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || 'MT';
+    },
+    goDetail(id) {
+      window.location.href = `detail-lowongan.html?id=${encodeURIComponent(id)}`;
+    },
+    async loadVacancies() {
+      try {
+        const all = await SIMAG_DATA.getVacancies();
+        this.vacancies = all.filter(v => v.status === 'active');
+      } catch (e) {
+        console.error('Gagal memuat lowongan:', e);
+      } finally {
+        this.loading = false;
       }
-    });
-
-    document.getElementById('no-result-msg').style.display = hasResult ? 'none' : 'block';
+    }
+  },
+  async mounted() {
+    await this.loadVacancies();
   }
-
-  function renderLowongan() {
-    const grid = document.getElementById('vacancy-grid');
-    const vacancies = SIMAG_DATA.getVacancies().filter((vacancy) => vacancy.status === 'active');
-    grid.innerHTML = '';
-
-    vacancies.forEach((vacancy) => {
-      const card = document.createElement('div');
-      card.className = 'glass-card';
-      card.dataset.vacancyCard = vacancy.id;
-      card.dataset.searchText = `${vacancy.title} ${vacancy.company} ${vacancy.location} ${vacancy.workModel}`.toLowerCase();
-      card.style.cssText = 'padding:20px;border-radius:12px;';
-      card.innerHTML = `
-        <h3 style="font-size:16px;font-weight:600;">${simag_escapeHtml(vacancy.title)}</h3>
-        <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:12px;">${simag_escapeHtml(vacancy.company)} - ${simag_escapeHtml(vacancy.location)} (${simag_escapeHtml(vacancy.workModel)})</p>
-        <span class="badge ${vacancy.badge === 'Sesuai Jurusan' ? 'badge-success' : 'badge-info'}">${simag_escapeHtml(vacancy.badge || 'Terbuka')}</span>
-        <button class="btn-outline" onclick="window.location.href='detail-lowongan.html?id=${encodeURIComponent(vacancy.id)}'" style="width:100%;margin-top:16px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05);cursor:pointer;transition:all 0.2s;">Lihat Detail</button>
-      `;
-      grid.appendChild(card);
-    });
-    filterLowongan();
-  }
-
-  renderLowongan();
+}).mount('#app');
 </script>
 </body>
-
 </html>

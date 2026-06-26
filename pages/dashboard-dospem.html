@@ -4,31 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Dosen Pembimbing — SIMAG</title>
-
+  <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../shared/styles.css" />
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323801" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
 
-<div style="display:flex;min-height:100vh;">
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
 
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <!-- Sidebar -->
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
     <div style="margin-bottom:28px;padding:0 8px;">
-      <a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">◈ SIMAG</a>
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
     </div>
-
     <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AF</div>
+      <div id="sidebar-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
       <div style="overflow:hidden;">
-        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name">Dr. Ahmad Fauzi</p>
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p>
       </div>
     </div>
-
     <nav>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
       <div class="sidebar-item active" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
@@ -40,24 +50,23 @@
       <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Review Logbook
-        <span id="dospem-review-badge" class="badge badge-warning" style="margin-left:auto;">0</span>
+        <span id="dospem-review-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="reviewLogbooks"></span></span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Penilaian & Evaluasi
-        <span id="dospem-evaluation-badge" class="badge badge-info" style="margin-left:auto;">0</span>
+        Penilaian &amp; Evaluasi
+        <span id="dospem-evaluation-badge" class="badge badge-info" style="margin-left:auto;"><span class="simag-badge-value" data-key="waitingEvaluations"></span></span>
       </div>
       <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Jadwal Bimbingan
       </div>
-
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
         <div class="sidebar-item" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
           Pengaturan
         </div>
-        <div class="sidebar-item" onclick="simag_logout()">
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Keluar
         </div>
@@ -65,278 +74,233 @@
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <!-- Main -->
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
+    <!-- Loading State -->
+    <div v-if="loading" class="simag-loading-screen" style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
+      <div style="width:40px;height:40px;border-radius:50%;border:3px solid rgba(99,102,241,0.2);border-top-color:#818cf8;animation:spin 0.8s linear infinite;"></div>
+      <p style="color:rgba(255,255,255,0.4);font-size:14px;">Memuat dashboard...</p>
+    </div>
 
+    <template v-else>
+    <!-- Header -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
       <div>
-        <h1 style="font-size:24px;font-weight:700;margin-bottom:4px;">Panel Dosen Pembimbing 👨‍🏫</h1>
+        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">Panel Dosen Pembimbing</h1>
         <p style="font-size:14px;color:rgba(255,255,255,0.45);">Fakultas Ilmu Komputer — Semester Genap 2024/2025</p>
       </div>
-      <button type="button" onclick="window.location.href='jadwal-dospem.html'" class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">+ Buat Jadwal Bimbingan</button>
+      <button type="button" onclick="window.location.href='jadwal-dospem.html'" class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-weight:600;">+ Buat Jadwal Bimbingan</button>
     </div>
 
-    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-      <span style="font-size:18px;">📝</span>
-      <div>
-        <p id="dospem-alert-title" style="font-size:14px;font-weight:500;color:#fbbf24;">Logbook Menunggu Review</p>
-        <p id="dospem-alert-copy" style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">Data sedang dimuat.</p>
+    <!-- Alert -->
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;min-height:74px;">
+      <div style="flex:1;">
+        <p style="font-size:14px;font-weight:500;color:#fbbf24;">
+          <span v-show="loading" class="simag-skeleton" style="width:250px;height:18px;display:inline-block;"></span>
+          <span>{{ reviewLogbooks.length }} Logbook Menunggu Review</span>
+        </p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">
+          <span v-show="loading" class="simag-skeleton" style="width:380px;height:14px;display:inline-block;"></span>
+          <span>{{ alertCopy }}</span>
+        </p>
       </div>
-      <button onclick="window.location.href='review-logbook-dospem.html'" class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;font-family:'Syne',sans-serif;">Review Sekarang</button>
+      <button onclick="window.location.href='review-logbook-dospem.html'" class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;">Review Sekarang</button>
     </div>
 
+    <!-- Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Mahasiswa Bimbingan</p>
-        <p id="dospem-intern-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#a855f7;">0</p>
+        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
+        <p style="font-size:28px;font-weight:700;color:#a855f7;">{{ interns.length }}</p>
+        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
         <p style="font-size:11px;color:#4ade80;margin-top:4px;">Semua aktif magang</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Menunggu Penilaian</p>
-        <p id="dospem-evaluation-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#22d3ee;">0</p>
+        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
+        <p style="font-size:28px;font-weight:700;color:#22d3ee;">{{ waitingEvaluations }}</p>
+        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Siap konversi nilai</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Pending</p>
-        <p id="dospem-pending-count" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fbbf24;">0</p>
+        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
+        <p style="font-size:28px;font-weight:700;color:#fbbf24;">{{ reviewLogbooks.length }}</p>
+        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
         <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Perlu segera direview</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;">
+      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Rata-rata Progress</p>
-        <p id="dospem-average-progress" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#4ade80;">0%</p>
-        <div class="progress-bar" style="margin-top:8px;"><div id="dospem-average-progress-fill" class="progress-fill" style="width:0%;background:#4ade80;"></div></div>
+        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
+        <p style="font-size:28px;font-weight:700;color:#4ade80;">{{ averageProgress }}%</p>
+        <div v-show="loading" class="simag-skeleton" style="width:100%;height:6px;margin-top:8px;border-radius:3px;"></div>
+        <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" :style="{ width: averageProgress + '%', background: '#4ade80' }"></div></div>
       </div>
     </div>
 
+    <!-- Cards -->
     <div class="dashboard-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-
-      <div id="student-guidance" class="glass-card" style="border-radius:14px;padding:24px;scroll-margin-top:24px;">
+      <!-- Student List -->
+      <div class="glass-card" style="border-radius:14px;padding:24px;min-height:340px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
           <h3 style="font-size:16px;font-weight:700;">Progress Mahasiswa Bimbingan</h3>
           <button onclick="window.location.href='review-logbook-dospem.html'" style="font-size:12px;color:#a855f7;background:none;border:none;cursor:pointer;">Lihat Review</button>
         </div>
-        <div id="dospem-student-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+        <div v-if="!interns.length" style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Belum ada mahasiswa bimbingan.</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div v-for="intern in interns" :key="intern.id" style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">{{ intern.initials }}</div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:13px;font-weight:600;">{{ intern.name }}</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.company }} - {{ intern.position }}</p>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge" :class="getStatusBadge(intern.status)">{{ intern.status }}</span>
+                <p style="font-size:13px;font-weight:700;color:#4ade80;margin-top:5px;">{{ intern.progress }}%</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.3);">{{ intern.logbookCompleted }} Logbook</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:74px;">
+                <button @click="goDetail(intern.id)" class="btn-outline" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;cursor:pointer;">Detail</button>
+                <button @click="goReview(intern)" class="btn-primary" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;cursor:pointer;">Review</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div id="review-logbook" class="glass-card" style="border-radius:14px;padding:24px;scroll-margin-top:24px;">
-        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Review Logbook & Jurnal</h3>
-        <div id="dospem-logbook-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <!-- Logbook Review -->
+      <div class="glass-card" style="border-radius:14px;padding:24px;min-height:340px;">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Review Logbook &amp; Jurnal</h3>
+        <div v-if="!reviewLogbooks.length" style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Tidak ada logbook yang perlu direview.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div v-for="lb in reviewLogbooks" :key="lb.id" style="padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:3px solid #fbbf24;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px;">
+                <div>
+                  <p style="font-size:13px;font-weight:600;">{{ lb.title }}</p>
+                  <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dari: {{ getInternName(lb.internId) }} - {{ formatDate(lb.date) }}</p>
+                </div>
+                <span class="badge" :class="getStatusBadge(lb.status)">{{ getStatusLabel(lb.status) }}</span>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button @click="goLogbookDetail(lb.id)" style="padding:6px 12px;border-radius:6px;background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.3);color:#c4b5fd;font-size:11px;cursor:pointer;flex:1;">Detail</button>
+                <button @click="approveLogbook(lb.id)" style="padding:6px 12px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;flex:1;">Setujui</button>
+                <button @click="requestRevision(lb)" style="padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:11px;cursor:pointer;flex:1;">Beri Revisi</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
     </div>
 
-    <div class="glass-card" style="border-radius:14px;padding:24px;margin-top:20px;">
+    <!-- Connection Grid -->
+    <div class="glass-card" style="border-radius:14px;padding:24px;margin-top:20px;min-height:220px;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
         <div>
           <h3 style="font-size:16px;font-weight:700;margin-bottom:4px;">Koneksi Data Bimbingan</h3>
           <p style="font-size:12px;color:rgba(255,255,255,0.45);">Progress, logbook, nilai, dan SKS mahasiswa tampil lintas dashboard.</p>
         </div>
-        <span id="dospem-sync-summary" class="badge badge-info">Sinkron</span>
+        <span v-show="loading" class="simag-skeleton" style="width:150px;height:20px;"></span>
+        <span class="badge badge-info">{{ syncSummary }}</span>
       </div>
-      <div id="dospem-connection-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;">
+        <div v-for="card in connectionCards" :key="card.role" style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">{{ card.title }}</p>
+            <strong style="font-size:22px;" :style="{ color: card.color }">{{ card.value }}</strong>
+            <p style="font-size:12px;color:rgba(255,255,255,0.42);margin-top:6px;line-height:1.5;">{{ card.copy }}</p>
+          </div>
+          <button @click="openDashboard(card.role, card.page)" class="btn-outline" style="margin-top:auto;padding:8px 10px;border-radius:8px;color:#fff;font-size:12px;cursor:pointer;">{{ card.button }}</button>
+        </div>
+      </div>
     </div>
+      </template>
   </main>
 </div>
 
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('dospem');
+'use strict';
+simag_requireAuth('dospem');
+const { createApp } = Vue;
+createApp({
+  data() {
+    const { user } = simag_getSession();
+    return {
+      loading: true, userName: user ? user.name : '...',
+      interns: [], reviewLogbooks: [], waitingEvaluations: 0, averageProgress: 0,
+      sksConversions: [], connectionCards: [], syncSummary: 'Sinkron',
+      alertCopy: 'Data sedang dimuat.'
+    };
+  },
+  computed: {
+    initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'DP'; }
+  },
+  methods: {
+    formatDate(v) { try { return new Intl.DateTimeFormat('id-ID',{day:'numeric',month:'long',year:'numeric'}).format(new Date(`${v}T00:00:00`)); } catch { return v||'-'; } },
+    getStatusLabel(s) { return SIMAG_DATA.statusLabel(s); },
+    getStatusBadge(s) { return SIMAG_DATA.statusBadge(s); },
+    getInternName(id) { return this.interns.find(i=>i.id===id)?.name||'Mahasiswa'; },
+    goDetail(id) { window.location.href = `detail-intern.html?intern=${encodeURIComponent(id)}&role=dospem`; },
+    goReview(intern) {
+      const pending = this._allLogbooks?.find(l => l.internId === intern.id && ['submitted','pending','revision'].includes(l.status));
+      window.location.href = pending ? `detail-logbook.html?id=${encodeURIComponent(pending.id)}&role=dospem` : `review-logbook-dospem.html?intern=${encodeURIComponent(intern.id)}`;
+    },
+    goLogbookDetail(id) { window.location.href = `detail-logbook.html?id=${encodeURIComponent(id)}&role=dospem`; },
+    async approveLogbook(id) { await SIMAG_DATA.approveLogbook(id); await this.loadData(); },
+    async requestRevision(lb) {
+      const note = window.prompt('Catatan revisi untuk mahasiswa:', lb.note||'Lengkapi detail hasil implementasi.');
+      if (!note) return;
+      await SIMAG_DATA.requestLogbookRevision(lb.id, note);
+      await this.loadData();
+    },
+    openDashboard(role, page) {
+      const s = simag_getSession();
+      if (s.token && s.role === role) { window.location.href = page; return; }
+      simag_setPostLoginRedirect(role, `pages/${page}`);
+      window.location.href = `../login.html?role=${encodeURIComponent(role)}`;
+    },
+    async loadData() {
+      try {
+        const data = await SIMAG_DATA.getDashboardSummaryDospem().catch(() => null);
+        if (!data) return;
 
-  const { user } = simag_getSession();
-  if (user) {
-    document.getElementById('sidebar-name').textContent = user.name;
-  }
+        this.interns = data.interns || [];
+        this.reviewLogbooks = data.reviewLogbooks || [];
+        this._allLogbooks = data._allLogbooks || [];
+        this.waitingEvaluations = data.waitingEvaluations || 0;
+        this.averageProgress = data.averageProgress || 0;
+        this.sksConversions = data.sksConversions || [];
+        
+        const review = this.reviewLogbooks;
+        const avgProg = this.averageProgress;
+        
+        const latestReviewTitle = review.length > 0 ? review[0].title : '';
+        const latestReviewIntern = review.length > 0 ? (data.interns.find(i=>i.id===review[0].internId)?.name || 'mahasiswa') : '';
 
-  function formatDate(value) {
-    return new Intl.DateTimeFormat('id-ID', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(new Date(`${value}T00:00:00`));
-  }
+        this.alertCopy = review.length ? `Paling baru: ${latestReviewTitle} dari ${latestReviewIntern}.` : 'Semua logbook mahasiswa bimbingan sudah selesai direview.';
+        this.syncSummary = `${data.internCount || 0} mahasiswa - ${review.length} logbook`;
+        
+        const primarySks = data.primarySks || { sks: 0, target: 20 };
+        const primaryInternStats = data.primaryInternStats;
 
-  function openConnectedDashboard(role, page) {
-    const session = simag_getSession();
-    if (session.token && session.role === role) {
-      window.location.href = page;
-      return;
-    }
-
-    simag_setPostLoginRedirect(role, `pages/${page}`);
-    window.location.href = `../login.html?role=${encodeURIComponent(role)}`;
-  }
-
-  function renderDospemConnections(data, reviewLogbooks, waitingEvaluations, averageProgress) {
-    const activeVacancies = data.vacancies.filter((item) => item.status === 'active');
-    const primaryIntern = data.interns.find((item) => item.id === data.people.student.id) || data.interns[0];
-    const primarySks = primaryIntern
-      ? data.sksConversions.find((item) => item.studentId === primaryIntern.id) || { sks: 0, target: 20, status: 'Pending' }
-      : { sks: 0, target: 20, status: 'Pending' };
-
-    document.getElementById('dospem-sync-summary').textContent =
-      `${data.interns.length} mahasiswa - ${reviewLogbooks.length} logbook`;
-
-    const cards = [
-      {
-        role: 'dospem',
-        page: 'mahasiswa-bimbingan.html',
-        title: 'Dosen Pembimbing',
-        value: `${averageProgress}% progress`,
-        copy: `${reviewLogbooks.length} logbook perlu tindak lanjut`,
-        color: '#a855f7',
-        button: 'Lihat bimbingan'
-      },
-      {
-        role: 'mahasiswa',
-        page: 'dashboard-mahasiswa.html',
-        title: 'Mahasiswa',
-        value: `${primarySks.sks}/${primarySks.target} SKS`,
-        copy: primaryIntern ? `${primaryIntern.logbookCompleted} logbook terisi` : 'Belum ada mahasiswa aktif',
-        color: '#818cf8',
-        button: 'Cek tampilan'
-      },
-      {
-        role: 'mitra',
-        page: 'dashboard-mitra.html',
-        title: 'Mitra',
-        value: `${data.interns.length} intern`,
-        copy: `${activeVacancies.length} lowongan aktif`,
-        color: '#22d3ee',
-        button: 'Cek mitra'
-      },
-      {
-        role: 'adminprodi',
-        page: 'dashboard-admin.html',
-        title: 'Admin Prodi',
-        value: `${waitingEvaluations} nilai`,
-        copy: `${data.sksConversions.length} data konversi SKS`,
-        color: '#fbbf24',
-        button: 'Cek admin'
+        this.connectionCards = [
+          { role:'dospem', page:'mahasiswa-bimbingan.html', title:'Dosen Pembimbing', value:`${avgProg}% progress`, copy:`${review.length} logbook perlu tindak lanjut`, color:'#a855f7', button:'Lihat bimbingan' },
+          { role:'mahasiswa', page:'dashboard-mahasiswa.html', title:'Mahasiswa', value:`${primarySks.sks}/${primarySks.target} SKS`, copy: primaryInternStats ? `${primaryInternStats.logbookCompleted} logbook terisi` : 'Belum ada mahasiswa aktif', color:'#818cf8', button:'Cek tampilan' },
+          { role:'mitra', page:'dashboard-mitra.html', title:'Mitra', value:`${data.internCount || 0} intern`, copy:`${data.activeVacancyCount || 0} lowongan aktif`, color:'#22d3ee', button:'Cek mitra' },
+          { role:'adminprodi', page:'dashboard-admin.html', title:'Admin Prodi', value:`${this.waitingEvaluations} nilai`, copy:`${data.totalSksConversions || 0} data konversi SKS`, color:'#fbbf24', button:'Cek admin' }
+        ];
+      } catch(e) {
+        console.error("Gagal memuat data:", e);
+      } finally {
+        this.loading = false;
       }
-    ];
-
-    const grid = document.getElementById('dospem-connection-grid');
-    grid.innerHTML = cards.map((card) => `
-      <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:12px;">
-        <div>
-          <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:6px;">${simag_escapeHtml(card.title)}</p>
-          <strong style="font-family:'Syne',sans-serif;font-size:22px;color:${card.color};">${simag_escapeHtml(card.value)}</strong>
-          <p style="font-size:12px;color:rgba(255,255,255,0.42);margin-top:6px;line-height:1.5;">${simag_escapeHtml(card.copy)}</p>
-        </div>
-        <button type="button" data-role="${card.role}" data-page="${card.page}" class="btn-outline" style="margin-top:auto;padding:8px 10px;border-radius:8px;color:#fff;font-size:12px;">${simag_escapeHtml(card.button)}</button>
-      </div>
-    `).join('');
-
-    grid.querySelectorAll('button[data-role]').forEach((button) => {
-      button.onclick = () => openConnectedDashboard(button.dataset.role, button.dataset.page);
-    });
-  }
-
-  function renderDospemDashboard() {
-    const data = SIMAG_DATA.getData();
-    const interns = data.interns;
-    const evaluations = data.evaluations;
-    const sksConversions = data.sksConversions;
-    const reviewLogbooks = data.logbooks.filter((item) => ['submitted', 'pending', 'revision'].includes(item.status));
-    const evaluatedStudentIds = new Set(evaluations.map((item) => item.candidateId));
-    const waitingEvaluations = interns.filter((intern) => !evaluatedStudentIds.has(intern.id)).length;
-    const averageProgress = interns.length
-      ? Math.round(interns.reduce((total, intern) => total + intern.progress, 0) / interns.length)
-      : 0;
-
-    document.getElementById('sidebar-name').textContent = data.people.lecturer.name;
-    document.getElementById('dospem-alert-title').textContent = `${reviewLogbooks.length} Logbook Menunggu Review`;
-    document.getElementById('dospem-alert-copy').textContent = reviewLogbooks.length
-      ? `Paling baru: ${reviewLogbooks[0].title} dari ${interns.find((item) => item.id === reviewLogbooks[0].internId)?.name || 'mahasiswa'}.`
-      : 'Semua logbook mahasiswa bimbingan sudah selesai direview.';
-    document.getElementById('dospem-intern-count').textContent = interns.length;
-    document.getElementById('dospem-evaluation-count').textContent = waitingEvaluations;
-    document.getElementById('dospem-pending-count').textContent = reviewLogbooks.length;
-    document.getElementById('dospem-average-progress').textContent = `${averageProgress}%`;
-    document.getElementById('dospem-average-progress-fill').style.width = `${averageProgress}%`;
-    document.getElementById('dospem-review-badge').textContent = reviewLogbooks.length;
-    document.getElementById('dospem-evaluation-badge').textContent = waitingEvaluations;
-    renderDospemConnections(data, reviewLogbooks, waitingEvaluations, averageProgress);
-
-    const studentList = document.getElementById('dospem-student-list');
-    studentList.innerHTML = '';
-    interns.forEach((intern) => {
-      const sks = sksConversions.find((item) => item.studentId === intern.id) || { sks: 0, status: 'Pending' };
-      const pendingLogbook = data.logbooks.find((logbook) =>
-        logbook.internId === intern.id && ['submitted', 'pending', 'revision'].includes(logbook.status)
-      );
-      const item = document.createElement('div');
-      item.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;';
-      item.innerHTML = `
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${simag_escapeHtml(intern.initials)}</div>
-        <div style="flex:1;min-width:0;">
-          <p style="font-size:13px;font-weight:600;">${simag_escapeHtml(intern.name)}</p>
-          <p style="font-size:11px;color:rgba(255,255,255,0.4);">${simag_escapeHtml(intern.company)} - ${simag_escapeHtml(intern.position)} - ${sks.sks} SKS ${simag_escapeHtml(sks.status)}</p>
-        </div>
-        <div style="text-align:right;">
-          <span class="badge ${SIMAG_DATA.statusBadge(intern.status)}">${simag_escapeHtml(intern.status)}</span>
-          <p style="font-size:13px;font-weight:700;color:#4ade80;margin-top:5px;">${intern.progress}%</p>
-          <p style="font-size:11px;color:rgba(255,255,255,0.3);">${intern.logbookCompleted} Logbook</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:6px;min-width:74px;">
-          <button type="button" data-action="detail" class="btn-outline" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;">Detail</button>
-          <button type="button" data-action="review" class="btn-primary" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;">Review</button>
-        </div>
-      `;
-      item.querySelector('[data-action="detail"]').onclick = () => {
-        window.location.href = `detail-intern.html?intern=${encodeURIComponent(intern.id)}&role=dospem`;
-      };
-      item.querySelector('[data-action="review"]').onclick = () => {
-        window.location.href = pendingLogbook
-          ? `detail-logbook.html?id=${encodeURIComponent(pendingLogbook.id)}&role=dospem`
-          : `review-logbook-dospem.html?intern=${encodeURIComponent(intern.id)}`;
-      };
-      studentList.appendChild(item);
-    });
-
-    const logbookList = document.getElementById('dospem-logbook-list');
-    logbookList.innerHTML = '';
-    if (!reviewLogbooks.length) {
-      logbookList.innerHTML = '<div style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Tidak ada logbook yang perlu direview.</div>';
-      return;
     }
-
-    reviewLogbooks.forEach((logbook) => {
-      const intern = interns.find((item) => item.id === logbook.internId);
-      const item = document.createElement('div');
-      item.style.cssText = 'padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:3px solid #fbbf24;';
-      item.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px;">
-          <div>
-            <p style="font-size:13px;font-weight:600;">${simag_escapeHtml(logbook.title)}</p>
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dari: ${simag_escapeHtml(intern ? intern.name : 'Mahasiswa')} - ${formatDate(logbook.date)}</p>
-          </div>
-          <span class="badge ${SIMAG_DATA.statusBadge(logbook.status)}">${SIMAG_DATA.statusLabel(logbook.status)}</span>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button data-action="detail" style="padding:6px 12px;border-radius:6px;background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.3);color:#c4b5fd;font-size:11px;cursor:pointer;flex:1;">Detail</button>
-          <button data-action="approve" style="padding:6px 12px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;flex:1;">Setujui</button>
-          <button data-action="revision" style="padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:11px;cursor:pointer;flex:1;">Beri Revisi</button>
-        </div>
-      `;
-      item.querySelector('[data-action="detail"]').onclick = () => {
-        window.location.href = `detail-logbook.html?id=${encodeURIComponent(logbook.id)}&role=dospem`;
-      };
-      item.querySelector('[data-action="approve"]').onclick = () => {
-        SIMAG_DATA.approveLogbook(logbook.id);
-        renderDospemDashboard();
-      };
-      item.querySelector('[data-action="revision"]').onclick = () => {
-        const note = window.prompt('Catatan revisi untuk mahasiswa:', logbook.note || 'Lengkapi detail hasil implementasi dan bukti pengujian.');
-        if (!note) return;
-        SIMAG_DATA.requestLogbookRevision(logbook.id, note);
-        renderDospemDashboard();
-      };
-      logbookList.appendChild(item);
-    });
-  }
-
-  renderDospemDashboard();
+  },
+  async mounted() { await this.loadData(); }
+}).mount('#app');
 </script>
 </body>
 </html>

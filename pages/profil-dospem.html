@@ -4,63 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profil Dosen Pembimbing - SIMAG</title>
-
+  
+  
+  
+    <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../shared/styles.css?v=1782406323823" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>[v-cloak] { display: none !important; }</style>
 </head>
 <body>
-<div style="display:flex;min-height:100vh;">
-  <aside style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
-    <div style="margin-bottom:28px;padding:0 8px;"><a href="../index.html" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;">SIMAG</a></div>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="simag-layout-wrapper" style="display:flex;min-height:100vh;">
+  <button class="simag-mobile-menu-button" onclick="document.getElementById('simag-sidebar').classList.add('open'); document.getElementById('simag-overlay').classList.add('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div id="simag-overlay" class="simag-mobile-overlay" onclick="document.getElementById('simag-sidebar').classList.remove('open'); document.getElementById('simag-overlay').classList.remove('open')"></div>
+
+  <aside id="simag-sidebar" style="width:240px;background:rgba(255,255,255,0.025);border-right:1px solid rgba(255,255,255,0.06);padding:24px 16px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;">
+    <div style="margin-bottom:28px;padding:0 8px;">
+      <a href="../index.html" class="brand-font" style="font-size:22px;font-weight:800;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
+    </div>
     <div style="display:flex;align-items:center;gap:10px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.15);border-radius:10px;padding:12px;margin-bottom:24px;">
-      <div id="lecturer-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">AF</div>
-      <div style="overflow:hidden;"><p id="sidebar-name" style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dr. Ahmad Fauzi</p><p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p></div>
+      <div id="sidebar-initials" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#d946ef);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;"><span class="simag-user-initials"></span></div>
+      <div style="overflow:hidden;">
+        <p style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="sidebar-name"><span class="simag-user-name"></span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dosen Pembimbing</p>
+      </div>
     </div>
     <nav>
-      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">Dashboard</div>
-      <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">Mahasiswa Bimbingan</div>
-      <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">Review Logbook</div>
-      <div class="sidebar-item" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">Penilaian &amp; Evaluasi</div>
-      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">Jadwal Bimbingan</div>
+      <p style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">Menu</p>
+      <div class="sidebar-item" onclick="window.location.href='dashboard-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='mahasiswa-bimbingan.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Mahasiswa Bimbingan
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='review-logbook-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Review Logbook
+        <span id="dospem-review-badge" class="badge badge-warning" style="margin-left:auto;"><span class="simag-badge-value" data-key="reviewLogbooks"></span></span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='penilaian-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Penilaian &amp; Evaluasi
+        <span id="dospem-evaluation-badge" class="badge badge-info" style="margin-left:auto;"><span class="simag-badge-value" data-key="waitingEvaluations"></span></span>
+      </div>
+      <div class="sidebar-item" onclick="window.location.href='jadwal-dospem.html'" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Jadwal Bimbingan
+      </div>
       <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
-        <div class="sidebar-item active" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">Pengaturan</div>
-        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">Keluar</div>
+        <div class="sidebar-item active" onclick="window.location.href='profil-dospem.html'" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Pengaturan
+        </div>
+        <div class="sidebar-item" onclick="simag_logout()" style="cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Keluar
+        </div>
       </div>
     </nav>
   </aside>
 
-  <main style="flex:1;padding:32px;overflow-x:hidden;">
+  <main id="app" style="flex:1;padding:32px;overflow-x:hidden;" v-cloak>
     <div style="max-width:760px;">
-      <h1 style="font-size:24px;font-weight:700;margin-bottom:6px;">Profil Dosen Pembimbing</h1>
+      <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Profil Dosen Pembimbing</h1>
       <p style="font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:24px;">Data ini dipakai pada dashboard dospem, mahasiswa, dan laporan bimbingan.</p>
 
-      <form class="glass-card" onsubmit="saveLecturerProfile(event)" style="padding:26px;border-radius:14px;">
+      <form class="glass-card" @submit.prevent="saveProfile" style="padding:26px;border-radius:14px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
           <div>
             <label for="lecturer-name" class="form-label">Nama Dosen</label>
-            <input id="lecturer-name" class="form-input" required maxlength="80" />
+            <input id="lecturer-name" v-model="form.name" class="form-input" required maxlength="80" />
           </div>
           <div>
             <label for="lecturer-id" class="form-label">NIP / ID</label>
-            <input id="lecturer-id" class="form-input" required maxlength="40" />
+            <input id="lecturer-id" v-model="form.id" class="form-input" required maxlength="40" />
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
           <div>
             <label for="lecturer-faculty" class="form-label">Fakultas</label>
-            <input id="lecturer-faculty" class="form-input" required maxlength="80" />
+            <input id="lecturer-faculty" v-model="form.faculty" class="form-input" required maxlength="80" />
           </div>
           <div>
             <label for="lecturer-email" class="form-label">Email</label>
-            <input id="lecturer-email" type="email" class="form-input" placeholder="dosen@amikom.ac.id" />
+            <input id="lecturer-email" v-model="form.email" type="email" class="form-input" placeholder="dosen@amikom.ac.id" />
           </div>
         </div>
-        <div id="save-message" style="display:none;margin-bottom:16px;padding:12px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;font-size:13px;"></div>
+        <div v-if="saveMessage" style="margin-bottom:16px;padding:12px;border-radius:10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;font-size:13px;">{{ saveMessage }}</div>
         <div style="display:flex;justify-content:flex-end;gap:10px;">
-          <button type="button" onclick="window.location.href='dashboard-dospem.html'" class="btn-outline" style="padding:10px 18px;border-radius:9px;color:#fff;">Batal</button>
-          <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-weight:600;">Simpan Profil</button>
+          <button type="button" onclick="window.location.href='dashboard-dospem.html'" class="btn-outline" style="padding:10px 18px;border-radius:9px;color:#fff;cursor:pointer;">Batal</button>
+          <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:9px;color:#fff;font-weight:600;border:none;cursor:pointer;">Simpan Profil</button>
         </div>
       </form>
     </div>
@@ -68,53 +113,46 @@
 </div>
 
 <script src="../shared/utils.js"></script>
-<script src="../shared/mitra-data.js"></script>
+<script src="../shared/api-client.js"></script>
 <script>
-  simag_requireAuth('dospem');
-
-  function initialsFromName(name) {
-    return String(name)
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part.charAt(0).toUpperCase())
-      .join('') || 'DP';
-  }
-
-  function loadLecturerProfile() {
-    const lecturer = SIMAG_DATA.getData().people.lecturer;
-    document.getElementById('lecturer-name').value = lecturer.name || '';
-    document.getElementById('lecturer-id').value = lecturer.id || '';
-    document.getElementById('lecturer-faculty').value = lecturer.faculty || '';
-    document.getElementById('lecturer-email').value = lecturer.email || '';
-    document.getElementById('sidebar-name').textContent = lecturer.name || 'Dosen Pembimbing';
-    document.getElementById('lecturer-initials').textContent = lecturer.initials || initialsFromName(lecturer.name);
-  }
-
-  function saveLecturerProfile(event) {
-    event.preventDefault();
-    const name = document.getElementById('lecturer-name').value.trim();
-    const saved = SIMAG_DATA.saveRoleProfile('dospem', {
-      name,
-      id: document.getElementById('lecturer-id').value.trim(),
-      faculty: document.getElementById('lecturer-faculty').value.trim(),
-      email: document.getElementById('lecturer-email').value.trim(),
-      initials: initialsFromName(name)
-    });
-
-    const session = simag_getSession();
-    if (session.user && saved) {
-      session.user.name = saved.name;
-      simag_saveSession(session);
+'use strict';
+simag_requireAuth('dospem');
+const { createApp } = Vue;
+createApp({
+  data() {
+    return { form: { name: '', id: '', faculty: '', email: '' }, saveMessage: '' };
+  },
+  computed: {
+    initials() { return (this.form.name||'').split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'DP'; }
+  },
+  methods: {
+    async loadProfile() {
+      try {
+        const data = await SIMAG_DATA.getData().catch(() => ({ people: { lecturer: { name: '', id: '', faculty: '', email: '' } } }));
+        const gl = data.people?.lecturer || {};
+        const { user } = simag_getSession();
+        const local = JSON.parse(localStorage.getItem('simag_custom_profile_' + (user?.id || 'default')));
+        const lec = local || { name: user?.name || gl.name, id: gl.id, faculty: gl.faculty, email: user?.identifier || gl.email };
+        this.form = { name: lec.name || '', id: lec.id || '', faculty: lec.faculty || '', email: lec.email || '' };
+      } catch (e) {
+        console.error('Gagal memuat profil:', e);
+      }
+    },
+    async saveProfile() {
+      const saved = await SIMAG_DATA.saveRoleProfile('dospem', { name: this.form.name.trim(), id: this.form.id.trim(), faculty: this.form.faculty.trim(), email: this.form.email.trim(), initials: this.initials });
+      const session = simag_getSession();
+      if (session.user && saved) {
+        session.user.name = saved.name;
+        simag_saveSession(session);
+        if(typeof simag_updateSidebarName === 'function') simag_updateSidebarName();
+        localStorage.setItem('simag_custom_profile_' + session.user.id, JSON.stringify({ name: saved.name, id: saved.id, faculty: saved.faculty, email: saved.email, initials: saved.initials }));
+      }
+      await this.loadProfile();
+      this.saveMessage = 'Profil dosen berhasil disimpan.';
     }
-
-    loadLecturerProfile();
-    const message = document.getElementById('save-message');
-    message.textContent = 'Profil dosen berhasil disimpan.';
-    message.style.display = 'block';
-  }
-
-  loadLecturerProfile();
+  },
+  async mounted() { await this.loadProfile(); }
+}).mount('#app');
 </script>
 </body>
 </html>
