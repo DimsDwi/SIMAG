@@ -206,7 +206,10 @@ createApp({
     getStudentProfile(studentId) {
       if(!this.db) return { name: 'Mahasiswa' };
       const intern = this.db.interns.find(i => i.id === studentId);
-      if (intern) return intern;
+      if (intern) return {
+        ...intern,
+        company: intern.company && typeof intern.company === 'object' ? intern.company.name : (intern.company || 'Perusahaan Mitra')
+      };
       
       const app = this.db.applications.find(a => a.studentId === studentId);
       let sName = 'Mahasiswa', sNim = '-', sProg = 'S1 Informatika', cName = this.db.people.company.name, pos = 'Magang';

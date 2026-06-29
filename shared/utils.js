@@ -383,9 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
   simag_initAdminSidebar();
   simag_initMobileSidebar();
   
-  // Sync sidebar badges automatically across all pages (except dashboards, which sync via their main data fetch)
-  const isDashboard = window.location.pathname.includes('dashboard-');
-  if (!isDashboard && window.SIMAG_DATA && typeof SIMAG_DATA.syncSidebarBadges === 'function') {
+  // Sync sidebar badges automatically across all pages
+  if (window.SIMAG_DATA && typeof SIMAG_DATA.syncSidebarBadges === 'function') {
     const { user } = simag_getSession();
     SIMAG_DATA.syncSidebarBadges(user ? user.id : null);
   }

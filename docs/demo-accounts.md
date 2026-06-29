@@ -4,10 +4,10 @@ Gunakan akun berikut untuk demo setelah MySQL XAMPP aktif dan API berjalan.
 
 | Role | Username / Identifier | Password |
 | --- | --- | --- |
-| Mahasiswa | `mahasiswa` | `demo123` |
-| Mitra | `mitra` | `demo123` |
-| Admin Prodi | `admin` | `demo123` |
-| Dospem | `dospem` | `demo123` |
+| Mahasiswa | `23.11.5508` | `budi1234` |
+| Mitra | `hr@mitrademo.com` | `mitra123` |
+| Admin Prodi | `adminprodi` | `admin123` |
+| Dospem | `19800101` | `dosen123` |
 
 Jalankan ulang seed jika database hilang:
 

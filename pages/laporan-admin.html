@@ -161,7 +161,7 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
           <div v-for="intern in interns" :key="intern.id" style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);">
             <p style="font-size:13px;font-weight:700;margin-bottom:5px;">{{ intern.name }}</p>
-            <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;">{{ intern.company }} - {{ intern.position }}</p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;">{{ intern.company?.name || intern.company || '-' }} - {{ intern.position }}</p>
             <span class="badge" :class="getStatusBadge(getSks(intern.id).status)">{{ getSks(intern.id).sks }}/{{ getSks(intern.id).target }} SKS {{ getSks(intern.id).status }}</span>
           </div>
         </div>

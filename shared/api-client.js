@@ -163,6 +163,16 @@
     saveRoleProfile: (role, changes) => apiFetch(`/people/role/${role}`, { method: 'POST', body: JSON.stringify(changes) }),
     getRecentActivities: () => apiFetch('/activities'),
 
+    // CV and Requirements
+    uploadCvFile: (filePath, fileType) => apiFetch('/cv/upload', { method: 'POST', body: JSON.stringify({ filePath, fileType }) }),
+    getCv: (studentId = 'me') => apiFetch(`/cv/${studentId}`),
+    updateCvDetails: (studentId = 'me', details) => apiFetch(`/cv/${studentId}`, { method: 'PUT', body: JSON.stringify(details) }),
+    deleteCvFile: (studentId = 'me') => apiFetch(`/cv/${studentId}/file`, { method: 'DELETE' }),
+    getVacancyRequirements: (id) => apiFetch(`/vacancies/${id}/requirements`),
+    saveVacancyRequirements: (id, requirements) => apiFetch(`/vacancies/${id}/requirements`, { method: 'POST', body: JSON.stringify(requirements) }),
+    getApplicationReviews: (id) => apiFetch(`/applications/${id}/cv-reviews`),
+    reviewApplicationCv: (id, reviewerType, review) => apiFetch(`/applications/${id}/review-cv`, { method: 'POST', body: JSON.stringify({ reviewerType, ...review }) }),
+
     statusLabel: (status) => {
       const map = {
         submitted: 'Submitted',
@@ -184,8 +194,16 @@
     syncSidebarBadges: async (userId) => {
       try {
         const logbooks = await api.getLogbooks();
-        const pendingCount = logbooks.filter((item) => ['submitted', 'pending'].includes(item.status)).length;
-        const actionCount = logbooks.filter((item) => ['submitted', 'pending', 'revision'].includes(item.status)).length;
+        const pendingCount = logbooks.filter((item) => ['submitted', 'pending'].includes((item.status || '').toLowerCase())).length;
+        const actionCount = logbooks.filter((item) => ['submitted', 'pending', 'revision'].includes((item.status || '').toLowerCase())).length;
+        
+        try {
+          const badges = JSON.parse(localStorage.getItem('simag_badges') || '{}');
+          badges.pendingLogbooks = pendingCount;
+          badges.reviewLogbooks = actionCount;
+          localStorage.setItem('simag_badges', JSON.stringify(badges));
+        } catch (e) {}
+
         document.querySelectorAll('.sidebar-item').forEach((item) => {
           const badge = item.querySelector('.badge');
           if (!badge) return;

@@ -23,23 +23,23 @@ async function migrate() {
 
     console.log('Mengeksekusi schema.sql...');
     await connection.query(schemaSql);
-    
+
     console.log('Schema berhasil dibuat!');
 
     console.log('Memasukkan data dummy (seeding)...');
-    
+
     // Seed Users
     const users = [
       ['user-1', 'mahasiswa', '22.11.0987', 'xin123', 'Xin', 'mahasiswa-1781368597309-8016e0'],
       ['user-2', 'dospem', '99876', 'gon123', 'Gon.S.IT', 'dospem-1781375261814-c42587'],
       ['user-3', 'adminprodi', 'adminit', 'it1234', 'PRODI IT', 'adminprodi-1781370990009-98e4c2'],
       ['user-4', 'mitra', 'shp@gmail.com', 'shp123', 'Shopee', 'mitra-1781371482888-6bf697'],
-      ['user-demo-mahasiswa', 'mahasiswa', 'mahasiswa', 'demo123', 'Mahasiswa Demo', 'mahasiswa-demo'],
-      ['user-demo-dospem', 'dospem', 'dospem', 'demo123', 'Dosen Pembimbing Demo', 'dospem-demo'],
-      ['user-demo-admin', 'adminprodi', 'admin', 'demo123', 'Admin Prodi Demo', 'admin-demo'],
-      ['user-demo-mitra', 'mitra', 'mitra', 'demo123', 'Mitra Demo', 'mitra-demo']
+      ['user-demo-mahasiswa', 'mahasiswa', '23.11.5508', 'budi1234', 'Budi Santoso', 'mahasiswa-demo'],
+      ['user-demo-dospem', 'dospem', '19800101', 'dosen123', 'Dosen Pembimbing Demo', 'dospem-demo'],
+      ['user-demo-admin', 'adminprodi', 'adminprodi', 'admin123', 'Admin Prodi Demo', 'admin-demo'],
+      ['user-demo-mitra', 'mitra', 'hr@mitrademo.com', 'mitra123', 'TechCorp Indonesia', 'mitra-demo']
     ];
-    
+
     for (const u of users) {
       await connection.query('INSERT IGNORE INTO users (id, role, identifier, password, name, linked_id) VALUES (?, ?, ?, ?, ?, ?)', u);
     }
@@ -50,7 +50,7 @@ async function migrate() {
         'vacancy-demo-frontend',
         'Frontend Developer Intern',
         'mitra-demo',
-        'Mitra Demo',
+        'TechCorp Indonesia',
         'Yogyakarta',
         'Hybrid',
         3,
@@ -65,7 +65,7 @@ async function migrate() {
         'vacancy-demo-uiux',
         'UI/UX Designer Intern',
         'mitra-demo',
-        'Mitra Demo',
+        'TechCorp Indonesia',
         'Remote',
         'WFH',
         2,
@@ -104,7 +104,7 @@ async function migrate() {
         'Accepted',
         '2026-06-10T09:00:00.000Z',
         '2026-06-11T10:00:00.000Z',
-        
+
         'application-demo-xin',
         'mahasiswa-1781368597309-8016e0',
         'vacancy-demo-uiux',
@@ -127,14 +127,14 @@ async function migrate() {
         'applicant-demo-mahasiswa',
         'mahasiswa-demo',
         'vacancy-demo-frontend',
-        'Mahasiswa Demo',
+        'Budi Santoso',
         '23.11.5508',
         'S1 Informatika',
         6,
         '3.82',
         JSON.stringify(['JavaScript', 'UI Design', 'Git']),
         'Diterima',
-        
+
         'applicant-demo-xin',
         'mahasiswa-1781368597309-8016e0',
         'vacancy-demo-uiux',
@@ -156,12 +156,12 @@ async function migrate() {
       [
         'mahasiswa-demo',
         'MD',
-        'Mahasiswa Demo',
+        'Budi Santoso',
         '23.11.5508',
         'Universitas Amikom Yogyakarta',
         'S1 Informatika',
         'mitra-demo',
-        'Mitra Demo',
+        'TechCorp Indonesia',
         'dospem-demo',
         'Dosen Pembimbing Demo',
         'Frontend Developer Intern',
@@ -263,9 +263,9 @@ async function migrate() {
 
     // Seed Activities
     const activities = [
-      ['activity-demo-1', 'application', 'Mahasiswa Demo diterima sebagai Frontend Developer Intern', 'Mitra Demo - Approved', 'AP'],
-      ['activity-demo-2', 'logbook', 'Logbook Perbaikan Dashboard menunggu review', 'Mahasiswa Demo - Minggu 2', 'LG'],
-      ['activity-demo-3', 'vacancy', 'Mitra Demo membuka lowongan Frontend Developer Intern', 'Yogyakarta - Hybrid', 'LW']
+      ['activity-demo-1', 'application', 'Budi Santoso diterima sebagai Frontend Developer Intern', 'TechCorp Indonesia - Approved', 'AP'],
+      ['activity-demo-2', 'logbook', 'Logbook Perbaikan Dashboard menunggu review', 'Budi Santoso - Minggu 2', 'LG'],
+      ['activity-demo-3', 'vacancy', 'TechCorp Indonesia membuka lowongan Frontend Developer Intern', 'Yogyakarta - Hybrid', 'LW']
     ];
 
     for (const activity of activities) {
@@ -274,7 +274,7 @@ async function migrate() {
         activity
       );
     }
-    
+
     console.log('Data dummy berhasil dimasukkan!');
     console.log('Migrasi selesai. Anda bisa menutup script ini.');
 

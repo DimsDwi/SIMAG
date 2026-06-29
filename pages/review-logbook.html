@@ -198,10 +198,21 @@ createApp({
     initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'BM'; },
     filteredLogbooks() {
       const q = this.searchQuery.toLowerCase();
+      const filter = this.statusFilter ? this.statusFilter.toLowerCase() : '';
       return this.logbooks.filter(lb => {
         const i = this.getIntern(lb.internId);
         const matchQ = i && `${i.name} ${i.position} ${lb.activity}`.toLowerCase().includes(q);
-        const matchS = !this.statusFilter || lb.status === this.statusFilter;
+        
+        let matchS = true;
+        if (filter) {
+          const lbStatus = (lb.status || '').toLowerCase();
+          if (filter === 'submitted') {
+            matchS = ['submitted', 'pending'].includes(lbStatus);
+          } else {
+            matchS = lbStatus === filter;
+          }
+        }
+        
         const matchI = !this.selectedIntern || lb.internId === this.selectedIntern;
         return matchQ && matchS && matchI;
       });
