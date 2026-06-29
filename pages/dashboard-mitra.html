@@ -358,7 +358,7 @@
             const applicants = data.applicants || [];
             const sksConversions = data.sksConversions || [];
 
-            const pending = logbooks.filter(l => ['submitted', 'pending', 'revision'].includes(l.status));
+            const pending = logbooks.filter(l => ['submitted', 'pending', 'revision'].includes((l.status || '').toLowerCase()));
             const active = vacancies.filter(v => v.status === 'active');
             const avgProg = interns.length ? Math.round(interns.reduce((t, i) => t + i.progress, 0) / interns.length) : 0;
 

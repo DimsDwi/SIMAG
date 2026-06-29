@@ -80,8 +80,13 @@ app.post('/api/auth/register', asyncRoute(async (req, res) => {
     return res.status(501).json({ success: false, message: 'Service method register is missing' });
   }
   const result = await service.register(req.body);
-  if (result.success) res.json(result);
-  else res.status(400).json(result);
+  if (result.success) {
+    res.status(201).json(result);
+  } else if (result.message === 'Akun sudah terdaftar.') {
+    res.status(409).json(result);
+  } else {
+    res.status(400).json(result);
+  }
 }));
 
 // Data export
@@ -104,7 +109,8 @@ app.get('/api/dashboard/summary-admin', asyncRoute(async (req, res) => {
 }));
 
 app.get('/api/dashboard/summary-dospem', asyncRoute(async (req, res) => {
-  res.json(await service.getDashboardSummaryDospem());
+  const userId = getUserId(req);
+  res.json(await service.getDashboardSummaryDospem(userId));
 }));
 
 // People
@@ -128,7 +134,8 @@ app.get('/api/interns/:id', asyncRoute(async (req, res) => res.json(await servic
 // Logbooks
 app.get('/api/logbooks', asyncRoute(async (req, res) => {
   const userId = getUserId(req);
-  res.json(await service.getLogbooks(userId));
+  const role = req.user ? req.user.role : null;
+  res.json(await service.getLogbooks(userId, role));
 }));
 app.post('/api/logbooks', asyncRoute(async (req, res) => {
   const userId = getUserId(req);
@@ -142,11 +149,19 @@ app.post('/api/logbooks/:id/revision', asyncRoute(async (req, res) => res.json(a
 app.get('/api/interns/:id/logbooks/latest', asyncRoute(async (req, res) => res.json(await service.getLatestLogbookForIntern(req.params.id))));
 app.get('/api/interns/:id/logbooks/pending', asyncRoute(async (req, res) => res.json(await service.getPendingLogbookForIntern(req.params.id))));
 
+app.get('/api/applications/:id/cv-reviews', asyncRoute(async (req, res) => res.json(await service.getApplicationReviews(req.params.id))));
+app.post('/api/applications/:id/review-cv', asyncRoute(async (req, res) => res.json(await service.reviewApplicationCv(req.params.id, req.body.reviewerType, req.body))));
+
 // Vacancies
 app.get('/api/vacancies', asyncRoute(async (req, res) => res.json(await service.getVacancies())));
 app.post('/api/vacancies', asyncRoute(async (req, res) => res.json(await service.addVacancy(req.body))));
 app.get('/api/vacancies/:id', asyncRoute(async (req, res) => res.json(await service.getVacancy(req.params.id))));
 app.put('/api/vacancies/:id', asyncRoute(async (req, res) => res.json(await service.updateVacancy(req.params.id, req.body))));
+app.get('/api/vacancies/:id/requirements', asyncRoute(async (req, res) => {
+  const reqs = await service.getVacancyRequirements(req.params.id);
+  res.json(reqs || {});
+}));
+app.post('/api/vacancies/:id/requirements', asyncRoute(async (req, res) => res.json(await service.saveVacancyRequirements(req.params.id, req.body))));
 
 // Applicants
 app.get('/api/applicants', asyncRoute(async (req, res) => {
@@ -160,9 +175,30 @@ app.put('/api/applicants/:id', asyncRoute(async (req, res) => res.json(await ser
 app.get('/api/applications', asyncRoute(async (req, res) => res.json(await service.getApplications())));
 app.post('/api/applications/apply', asyncRoute(async (req, res) => {
   const userId = getUserId(req);
-  res.json(await service.applyVacancy(req.body.vacancyId, userId));
+  res.json(await service.applyVacancy(req.body.vacancyId, userId, req.body.cvFileId, req.body.cvDetailsId));
 }));
 app.post('/api/applications/:id/approve', asyncRoute(async (req, res) => res.json(await service.approveApplication(req.params.id))));
+app.post('/api/applications/:id/review-cv', asyncRoute(async (req, res) => res.json(await service.reviewApplicationCv(req.params.id, req.body.reviewerType, req.body))));
+
+// CV Management
+app.get('/api/cv/:studentId', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  const file = await service.getCvFile(studentId);
+  const details = await service.getCvDetails(studentId);
+  res.json({ file, details });
+}));
+app.put('/api/cv/:studentId', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  res.json(await service.saveCvDetails(studentId, req.body));
+}));
+app.post('/api/cv/upload', asyncRoute(async (req, res) => {
+  const userId = getUserId(req);
+  res.json(await service.saveCvFile(userId, req.body.filePath, req.body.fileType));
+}));
+app.delete('/api/cv/:studentId/file', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  res.json(await service.deleteCvFile(studentId));
+}));
 
 // SKS Conversions
 app.get('/api/sks', asyncRoute(async (req, res) => res.json(await service.getSksConversions())));
@@ -174,6 +210,44 @@ app.get('/api/evaluations/candidates', asyncRoute(async (req, res) => res.json(a
 app.get('/api/evaluations', asyncRoute(async (req, res) => res.json(await service.getEvaluations())));
 app.get('/api/evaluations/:candidateId', asyncRoute(async (req, res) => res.json(await service.getEvaluation(req.params.candidateId))));
 app.post('/api/evaluations', asyncRoute(async (req, res) => res.json(await service.saveEvaluation(req.body))));
+
+// CV Management
+app.post('/api/cv/upload', asyncRoute(async (req, res) => {
+  const userId = getUserId(req);
+  res.json(await service.saveCvFile(userId, req.body.filePath, req.body.fileType));
+}));
+app.get('/api/cv/:studentId', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  const file = await service.getCvFile(studentId);
+  const details = await service.getCvDetails(studentId);
+  res.json({ success: true, file, details });
+}));
+app.put('/api/cv/:studentId', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  res.json(await service.saveCvDetails(studentId, req.body));
+}));
+app.delete('/api/cv/:studentId/file', asyncRoute(async (req, res) => {
+  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
+  res.json(await service.deleteCvFile(studentId));
+}));
+
+// Vacancy Requirements
+app.get('/api/vacancies/:id/requirements', asyncRoute(async (req, res) => {
+  res.json(await service.getVacancyRequirements(req.params.id));
+}));
+// Note: POST /api/vacancies and PUT /api/vacancies/:id should be updated in the frontend to call service.saveVacancyRequirements after creating/updating vacancy.
+// I will just add a dedicated endpoint to save requirements for now to keep it modular.
+app.post('/api/vacancies/:id/requirements', asyncRoute(async (req, res) => {
+  res.json(await service.saveVacancyRequirements(req.params.id, req.body));
+}));
+
+// Application Reviews
+app.get('/api/applications/:id/cv-reviews', asyncRoute(async (req, res) => {
+  res.json(await service.getApplicationReviews(req.params.id));
+}));
+app.post('/api/applications/:id/review-cv', asyncRoute(async (req, res) => {
+  res.json(await service.saveApplicationReview(req.params.id, req.body.reviewerType, req.body));
+}));
 
 // Activities
 app.get('/api/activities', asyncRoute(async (req, res) => res.json(await service.getRecentActivities())));

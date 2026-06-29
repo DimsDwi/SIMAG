@@ -155,15 +155,18 @@ createApp({
     studentMeta() { return this.intern ? `${this.intern.name} - ${this.intern.position}` : ''; },
     statusLabel() { return this.logbook ? SIMAG_DATA.statusLabel(this.logbook.status) : ''; },
     statusBadge() { return this.logbook ? SIMAG_DATA.statusBadge(this.logbook.status) : ''; },
-    isReviewable() { return this.logbook && ['submitted', 'pending', 'revision'].includes(this.logbook.status); },
+    isReviewable() { return this.logbook && ['submitted', 'pending', 'revision'].includes((this.logbook.status || '').toLowerCase()); },
     summary() {
       if(!this.logbook || !this.intern || !this.db) return {};
+      const companyName = this.intern.company && typeof this.intern.company === 'object' ? this.intern.company.name : (this.intern.company || (this.db.people && this.db.people.company ? this.db.people.company.name : '-'));
+      const lecturerName = this.intern.lecturer && typeof this.intern.lecturer === 'object' ? this.intern.lecturer.name : (this.intern.lecturer || (this.db.people && this.db.people.lecturer ? this.db.people.lecturer.name : '-'));
+      const reviewerName = this.logbook.reviewer && typeof this.logbook.reviewer === 'object' ? this.logbook.reviewer.name : (this.logbook.reviewer || 'Belum direview');
       return {
         student: `${this.intern.name} (${this.intern.nim})`,
-        company: this.intern.company || this.db.people.company.name,
-        lecturer: this.intern.lecturer || this.db.people.lecturer.name,
-        time: `${this.logbook.startTime || '-'} - ${this.logbook.endTime || '-'}`,
-        reviewer: this.logbook.reviewer || 'Belum direview'
+        company: companyName,
+        lecturer: lecturerName,
+        time: this.logbook.timeIn && this.logbook.timeOut ? `${this.logbook.timeIn} - ${this.logbook.timeOut}` : `${this.logbook.startTime || '-'} - ${this.logbook.endTime || '-'}`,
+        reviewer: reviewerName
       };
     }
   },

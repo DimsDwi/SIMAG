@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` VARCHAR(255) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `linked_id` VARCHAR(50) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `idx_identifier_role` (`identifier`, `role`)
 );
 
 -- Vacancies
@@ -42,6 +43,8 @@ CREATE TABLE IF NOT EXISTS `applicants` (
   `semester` INT,
   `gpa` VARCHAR(10),
   `skills` JSON,
+  `cv_file_id` VARCHAR(50),
+  `cv_details_id` VARCHAR(50),
   `status` VARCHAR(50) DEFAULT 'Menunggu',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -140,4 +143,47 @@ CREATE TABLE IF NOT EXISTS `evaluations` (
   `initiative_score` INT DEFAULT 0,
   `notes` TEXT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CV Files
+CREATE TABLE IF NOT EXISTS `cv_files` (
+  `id` VARCHAR(50) PRIMARY KEY,
+  `user_id` VARCHAR(50) NOT NULL,
+  `file_path` VARCHAR(255) NOT NULL,
+  `file_type` VARCHAR(50),
+  `uploaded_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- CV Details
+CREATE TABLE IF NOT EXISTS `cv_details` (
+  `id` VARCHAR(50) PRIMARY KEY,
+  `user_id` VARCHAR(50) NOT NULL,
+  `work_experience` JSON,
+  `skills` JSON,
+  `portfolio_links` JSON,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Vacancy Requirements
+CREATE TABLE IF NOT EXISTS `vacancy_requirements` (
+  `id` VARCHAR(50) PRIMARY KEY,
+  `vacancy_id` VARCHAR(50) NOT NULL,
+  `min_gpa` VARCHAR(10),
+  `required_skills` JSON,
+  `required_semester` INT,
+  `custom_questions` JSON,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Application Reviews
+CREATE TABLE IF NOT EXISTS `application_reviews` (
+  `id` VARCHAR(50) PRIMARY KEY,
+  `application_id` VARCHAR(50) NOT NULL,
+  `reviewer_type` VARCHAR(20) NOT NULL,
+  `status` VARCHAR(20) DEFAULT 'pending',
+  `feedback` TEXT,
+  `reviewed_at` TIMESTAMP NULL
 );

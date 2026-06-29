@@ -151,23 +151,44 @@
               <li v-for="(item, idx) in normalizeList(vacancy.qualifications)" :key="'q'+idx">{{ item }}</li>
             </ul>
           </div>
+
+          <div v-if="requirements && (requirements.min_gpa || requirements.required_skills || requirements.required_semester)" class="glass-card" style="border-radius:14px;padding:28px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);">
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(99,102,241,0.2);padding-bottom:12px;color:#a5b4fc;">📋 Ketentuan Khusus Lowongan</h3>
+            
+            <div v-if="requirements.min_gpa" style="margin-bottom:16px;">
+              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;">Minimum IPK:</p>
+              <p style="font-size:14px;color:#fff;font-weight:600;">{{ requirements.min_gpa }}</p>
+            </div>
+
+            <div v-if="requirements.required_semester" style="margin-bottom:16px;">
+              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;">Semester Minimum:</p>
+              <p style="font-size:14px;color:#fff;font-weight:600;">Semester {{ requirements.required_semester }}</p>
+            </div>
+
+            <div v-if="requirements.required_skills && requirements.required_skills.length > 0">
+              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:12px;">Skill yang Dibutuhkan:</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <span v-for="skill in requirements.required_skills" :key="skill" style="background:rgba(99,102,241,0.3);color:#a5b4fc;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;">{{ skill }}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="glass-card" style="border-radius:14px;padding:28px;">
           <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;">Tentang Perusahaan</h3>
-          <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:16px;">{{ vacancy.companyDescription || company.tagline || 'Perusahaan mitra SIMAG yang membuka program magang terverifikasi.' }}</p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:16px;">{{ vacancy.companyDescription || company?.tagline || 'Perusahaan mitra SIMAG yang membuka program magang terverifikasi.' }}</p>
           <ul style="list-style:none;padding:0;margin:0;font-size:13px;">
             <li style="margin-bottom:12px;">
               <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Website</span>
-              <a :href="vacancy.websiteUrl || company.website" target="_blank" rel="noopener noreferrer" style="color:#22d3ee;text-decoration:none;">{{ vacancy.websiteLabel || company.website }}</a>
+              <a :href="vacancy.websiteUrl || company?.website || '#'" target="_blank" rel="noopener noreferrer" style="color:#22d3ee;text-decoration:none;">{{ vacancy.websiteLabel || company?.website || '-' }}</a>
             </li>
             <li style="margin-bottom:12px;">
               <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Industri</span>
-              <span style="color:#fff;">{{ vacancy.industry || company.industry }}</span>
+              <span style="color:#fff;">{{ vacancy.industry || company?.industry || '-' }}</span>
             </li>
             <li>
               <span style="display:block;color:rgba(255,255,255,0.4);margin-bottom:4px;">Alamat</span>
-              <span style="color:#fff;">{{ vacancy.address || company.address }}</span>
+              <span style="color:#fff;">{{ vacancy.address || company?.address || '-' }}</span>
             </li>
           </ul>
         </div>
@@ -177,10 +198,8 @@
     <div v-else style="padding:60px;text-align:center;color:rgba(255,255,255,0.5);">
       Data lowongan tidak ditemukan.
     </div>
-  </main>
-</div>
 
-<!-- Modal Konfirmasi Lamaran -->
+    <!-- Modal Konfirmasi Lamaran -->
 <div id="apply-modal" class="modal-overlay" :class="{ active: isModalOpen }" @click="closeModalOnBg" role="dialog" aria-modal="true" aria-labelledby="apply-modal-title">
   <div class="modal-content glass-card">
     <div style="text-align:center;margin-bottom:24px;">
@@ -188,14 +207,57 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       </div>
       <h2 id="apply-modal-title" style="font-size:20px;font-weight:700;margin-bottom:8px;">Konfirmasi Lamaran</h2>
-      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Apakah kamu yakin ingin melamar posisi <b>{{ vacancy ? vacancy.title : '' }}</b> di <span>{{ companyName }}</span>? Pastikan profil SIMAG-mu sudah lengkap.</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Apakah kamu yakin ingin melamar posisi <b>{{ vacancy ? vacancy.title : '' }}</b> di <span>{{ companyName }}</span>?</p>
+    </div>
+
+    <!-- Requirements Section -->
+    <div v-if="requirements && (requirements.min_gpa || requirements.required_skills || requirements.required_semester)" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:10px;padding:16px;margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;color:#a5b4fc;">📋 Ketentuan Lowongan:</h3>
+      <div v-if="requirements.min_gpa" style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:8px;">
+        • Minimum IPK: <span style="font-weight:600;">{{ requirements.min_gpa }}</span>
+      </div>
+      <div v-if="requirements.required_semester" style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:8px;">
+        • Semester Minimum: <span style="font-weight:600;">{{ requirements.required_semester }}</span>
+      </div>
+      <div v-if="requirements.required_skills && requirements.required_skills.length > 0" style="font-size:13px;color:rgba(255,255,255,0.7);">
+        • Skill yang Dibutuhkan:
+        <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;">
+          <span v-for="skill in requirements.required_skills" :key="skill" style="background:rgba(99,102,241,0.2);color:#a5b4fc;padding:4px 10px;border-radius:6px;font-size:12px;">{{ skill }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CV Summary Box -->
+    <div v-if="cvData" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:16px;margin-bottom:24px;">
+      <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;color:#fff;">CV yang akan dikirim:</h3>
+      
+      <div v-if="cvData.file" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span style="font-size:13px;color:#fff;">{{ cvData.file.name || cvData.file.path.split('/').pop() }}</span>
+      </div>
+      
+      <div v-if="cvData.details && cvData.details.workExperience && cvData.details.workExperience.length > 0" style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:4px;">
+        • {{ cvData.details.workExperience.length }} Pengalaman Kerja
+      </div>
+      <div v-if="cvData.details && cvData.details.skills && cvData.details.skills.length > 0" style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:4px;">
+        • {{ cvData.details.skills.length }} Skills
+      </div>
+      
+      <div v-if="!cvData.file && (!cvData.details || Object.keys(cvData.details).length === 0)" style="font-size:13px;color:#ef4444;">
+        Tidak ada CV! Silakan isi CV di menu Profil terlebih dahulu.
+      </div>
     </div>
 
     <div style="display:flex;gap:12px;justify-content:center;">
       <button @click="closeModal" style="padding:10px 20px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:14px;cursor:pointer;font-weight:600;flex:1;">Batal</button>
-      <button @click="submitApplication" style="padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;flex:1;">Kirim Lamaran</button>
+      <button @click="submitApplication" :disabled="!isCvComplete || applicationState.submitting" style="padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;flex:1;" :style="{ opacity: (isCvComplete && !applicationState.submitting) ? 1 : 0.5 }">
+        <span v-if="applicationState.submitting">Mengirim...</span>
+        <span v-else>Kirim Lamaran</span>
+      </button>
     </div>
   </div>
+</div>
+  </main>
 </div>
 
 <script src="../shared/utils.js"></script>
@@ -216,26 +278,39 @@ createApp({
       vacancy: null,
       company: null,
       existingApp: null,
+      requirements: null,
       isModalOpen: false,
-      applicationState: { submitting: false, success: false, adminStatus: '', status: '' }
+      applicationState: { submitting: false, success: false, adminStatus: '', status: '' },
+      cvData: null
     };
   },
   computed: {
     initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'M'; },
-    companyName() { return this.vacancy && this.company ? (this.vacancy.company || this.company.name) : ''; },
+    companyName() { return this.vacancy && this.company ? (this.vacancy.company?.name || this.vacancy.company || this.company.name) : ''; },
     companyLocation() { return this.vacancy && this.company ? (this.vacancy.location || this.company.location) : ''; },
     companyInitials() { return this.company ? this.company.initials : 'BM'; },
     badgeLabel() { return this.vacancy ? (this.vacancy.badge || 'Terbuka') : ''; },
     applyBtnText() {
       if(this.applicationState.submitting) return 'Sedang Mengirim...';
       if(this.applicationState.success) return this.applicationState.adminStatus === 'Approved' ? 'Lamaran Sudah Diproses' : 'Lamaran Terkirim';
-      if(this.existingApp) return `Status Lamaran: ${this.existingApp.status}`;
+      if(this.existingApp) {
+        if(this.existingApp.status === 'Sudah Magang') return 'Sudah Magang di Perusahaan Ini';
+        return `Status: ${this.existingApp.status}`;
+      }
       return 'Lamar Sekarang';
     },
     applyBtnBg() {
       if(this.applicationState.success) return 'linear-gradient(135deg,#22c55e,#10b981)';
-      if(this.existingApp) return this.existingApp.status === 'Rejected' ? 'linear-gradient(135deg,#ef4444,#f97316)' : 'linear-gradient(135deg,#22c55e,#10b981)';
+      if(this.existingApp) {
+        if(this.existingApp.status === 'Sudah Magang') return 'linear-gradient(135deg,#f59e0b,#d97706)';
+        if(this.existingApp.status === 'Rejected') return 'linear-gradient(135deg,#ef4444,#f97316)';
+        return 'linear-gradient(135deg,#22c55e,#10b981)';
+      }
       return '';
+    },
+    isCvComplete() {
+      if (!this.cvData) return false;
+      return !!(this.cvData.file || (this.cvData.details && (this.cvData.details.workExperience?.length > 0 || this.cvData.details.skills?.length > 0)));
     }
   },
   methods: {
@@ -244,9 +319,15 @@ createApp({
       if(Array.isArray(items)) return items;
       return String(items||'').split(/\n|;/).map(i => i.replace(/^-+\s*/,'').trim()).filter(Boolean);
     },
-    handleApplyClick() {
+    async handleApplyClick() {
       if(this.existingApp) window.location.href = 'dashboard-mahasiswa.html';
       else if(!this.applicationState.success && !this.applicationState.submitting) {
+        // Load CV Data before showing modal
+        try {
+          this.cvData = await SIMAG_DATA.getCv();
+        } catch(e) {
+          this.cvData = {};
+        }
         this.isModalOpen = true;
         document.getElementById('apply-modal').style.display = 'flex';
       }
@@ -256,22 +337,27 @@ createApp({
       setTimeout(() => { document.getElementById('apply-modal').style.display = 'none'; }, 300);
     },
     closeModalOnBg(e) { if(e.target.id === 'apply-modal') this.closeModal(); },
-    submitApplication() {
-      this.closeModal();
+    async submitApplication() {
       this.applicationState.submitting = true;
-      setTimeout(async () => {
-        try {
-          const application = await SIMAG_DATA.applyVacancy(this.vacancy.id);
+      try {
+        const application = await SIMAG_DATA.applyVacancy(this.vacancy.id);
+        
+        if (!application.success) {
           this.applicationState.submitting = false;
-          this.applicationState.success = true;
-          this.applicationState.adminStatus = application.adminStatus;
-          this.applicationState.status = application.status;
-          alert(`Berhasil! Lamaran magang kamu telah dikirim ke ${this.companyName}. Status masuk sebagai ${application.status}.`);
-        } catch(e) {
-          this.applicationState.submitting = false;
-          alert('Gagal mengirim lamaran.');
+          alert(application.message || 'Gagal mengirim lamaran.');
+          return;
         }
-      }, 1000);
+
+        this.applicationState.success = true;
+        this.applicationState.adminStatus = application.adminStatus;
+        this.applicationState.status = application.status;
+        this.closeModal();
+        alert(`Berhasil! Lamaran magang kamu telah dikirim ke ${this.companyName}. ${application.message || ''}`);
+      } catch(e) {
+        this.applicationState.submitting = false;
+        this.closeModal();
+        alert('Gagal mengirim lamaran. ' + (e.message || ''));
+      }
     },
     async loadData() {
       try {
@@ -282,8 +368,28 @@ createApp({
         if(this.vacancy) {
           document.title = `${this.vacancy.title} - SIMAG`;
           this.company = await SIMAG_DATA.getCompany().catch(() => null);
+          
+          // Load requirements (gracefully handle errors)
+          try {
+            const reqs = await SIMAG_DATA.getVacancyRequirements(this.vacancy.id);
+            this.requirements = reqs || null;
+          } catch(e) {
+            console.warn('Requirements not available:', e);
+            this.requirements = null;
+          }
+          
+          // Check existing applications
           const apps = await SIMAG_DATA.getApplications().catch(() => []);
           this.existingApp = apps.find(a => (a.studentId === this.userId || a.student_id === this.userId) && (a.vacancyId === this.vacancy.id || a.vacancy_id === this.vacancy.id));
+          
+          // Check if already interning at this company
+          if (!this.existingApp && this.vacancy.company_id) {
+            const interns = await SIMAG_DATA.getInterns().catch(() => []);
+            const isInterningHere = interns.some(i => i.student_id === this.userId && i.company_id === this.vacancy.company_id);
+            if (isInterningHere) {
+              this.existingApp = { status: 'Sudah Magang', vacancy_id: this.vacancy.id };
+            }
+          }
         }
       } catch (e) {
         console.error('Gagal memuat data:', e);

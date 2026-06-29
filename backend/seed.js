@@ -14,7 +14,7 @@ async function seed() {
     await pool.query('DELETE FROM applicants');
     await pool.query('DELETE FROM vacancies');
     await pool.query('DELETE FROM users');
-    
+
     const mahasiswaId = `mahasiswa-demo`;
     const mitraId = `mitra-demo`;
     const adminId = `admin-demo`;
@@ -28,8 +28,8 @@ async function seed() {
 
     console.log('Membuat akun (Password 6 karakter)...');
     await pool.query(`INSERT INTO users (id, role, identifier, password, name, linked_id) VALUES 
-      (?, 'mahasiswa', '23.11.5508', 'budi1234', 'Mahasiswa Demo', ?),
-      (?, 'mitra', 'hr@mitrademo.com', 'mitra123', 'Mitra Demo', ?),
+      (?, 'mahasiswa', '23.11.5508', 'budi1234', 'Budi Santoso', ?),
+      (?, 'mitra', 'hr@mitrademo.com', 'mitra123', 'TechCorp Indonesia', ?),
       (?, 'adminprodi', 'adminprodi', 'admin123', 'Admin Prodi Demo', ?),
       (?, 'dospem', '19800101', 'dosen123', 'Dosen Pembimbing Demo', ?)
     `, [
@@ -41,8 +41,8 @@ async function seed() {
 
     console.log('Membuat lowongan...');
     await pool.query(`INSERT INTO vacancies (id, title, company_id, company, location, work_model, quota, deadline, description, status, badge) VALUES 
-      (?, 'Frontend Developer Intern', ?, 'Mitra Demo', 'Yogyakarta', 'Hybrid', 3, '2026-08-15', 'Membantu pengembangan antarmuka SIMAG dan dashboard operasional.', 'active', 'Terbuka'),
-      (?, 'UI/UX Designer Intern', ?, 'Mitra Demo', 'Remote', 'WFH', 2, '2026-08-30', 'Membantu riset pengguna dan desain pengalaman dashboard magang.', 'active', 'Terbuka')
+      (?, 'Frontend Developer Intern', ?, 'TechCorp Indonesia', 'Yogyakarta', 'Hybrid', 3, '2026-08-15', 'Membantu pengembangan antarmuka SIMAG dan dashboard operasional.', 'active', 'Terbuka'),
+      (?, 'UI/UX Designer Intern', ?, 'TechCorp Indonesia', 'Remote', 'WFH', 2, '2026-08-30', 'Membantu riset pengguna dan desain pengalaman dashboard magang.', 'active', 'Terbuka')
     `, [vacancyId, mitraId, `vacancy-demo-uiux`, mitraId]);
 
     console.log('Membuat pendaftaran...');
@@ -51,12 +51,12 @@ async function seed() {
     `, [applicationId, mahasiswaId, vacancyId, mitraId, dospemId]);
 
     await pool.query(`INSERT INTO applicants (id, student_id, vacancy_id, name, nim, study_program, semester, gpa, status) VALUES 
-      (?, ?, ?, 'Mahasiswa Demo', '23.11.5508', 'S1 Informatika', 6, '3.82', 'Diterima')
+      (?, ?, ?, 'Budi Santoso', '23.11.5508', 'S1 Informatika', 6, '3.82', 'Diterima')
     `, [applicantId, mahasiswaId, vacancyId]);
 
     console.log('Membuat data magang aktif...');
     await pool.query(`INSERT INTO interns (id, initials, name, nim, institution, study_program, company_id, company, lecturer_id, lecturer, position, status, progress, logbook_completed, logbook_target, period, start_date, end_date, mentor, attendance, logbook_week) VALUES 
-      (?, 'MD', 'Mahasiswa Demo', '23.11.5508', 'S1 Informatika - Universitas Amikom Yogyakarta', 'S1 Informatika', ?, 'Mitra Demo', ?, 'Dosen Pembimbing Demo', 'Frontend Developer Intern', 'Accepted', 68, 3, 150, '15 Jun 2026 - 15 Des 2026', '2026-06-15', '2026-12-15', 'Budi Santoso', '0 / 0 Hari', 'Minggu ke-3')
+      (?, 'MD', 'Budi Santoso', '23.11.5508', 'S1 Informatika - Universitas Amikom Yogyakarta', 'S1 Informatika', ?, 'TechCorp Indonesia', ?, 'Dosen Pembimbing Demo', 'Frontend Developer Intern', 'Accepted', 68, 3, 150, '15 Jun 2026 - 15 Des 2026', '2026-06-15', '2026-12-15', 'Budi Santoso', '0 / 0 Hari', 'Minggu ke-3')
     `, [mahasiswaId, mitraId, dospemId]);
 
     console.log('Membuat logbook...');

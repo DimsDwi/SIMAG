@@ -154,11 +154,22 @@ createApp({
     initials() { return (this.userName||'').split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('')||'AF'; },
     filteredLogbooks() {
       const q = this.searchQuery.toLowerCase();
+      const filter = this.statusFilter ? this.statusFilter.toLowerCase() : '';
       return this.logbooks.filter(lb => {
         const intern = this.interns.find(i => i.id === lb.internId) || {};
         const haystack = `${intern.name||''} ${intern.position||''} ${lb.title} ${lb.description}`.toLowerCase();
         const matchQ = haystack.includes(q);
-        const matchS = !this.statusFilter || lb.status === this.statusFilter;
+        
+        let matchS = true;
+        if (filter) {
+          const lbStatus = (lb.status || '').toLowerCase();
+          if (filter === 'submitted') {
+            matchS = ['submitted', 'pending'].includes(lbStatus);
+          } else {
+            matchS = lbStatus === filter;
+          }
+        }
+        
         const matchI = !this.selectedIntern || lb.internId === this.selectedIntern;
         return matchQ && matchS && matchI;
       });

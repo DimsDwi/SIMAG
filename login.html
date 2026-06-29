@@ -556,10 +556,10 @@
           if (!this.identifier || this.identifier.trim() === '') {
             this.identifierError = this.currentRole === 'mahasiswa' ? 'NIM tidak boleh kosong.' : 'Identifier tidak boleh kosong.';
             valid = false;
-          } else if (this.currentRole === 'mahasiswa' && !/^\d{2}\.\d{2}\.\d{4}$/.test(this.identifier) && this.identifier !== 'mahasiswa') {
+          } else if (this.currentRole === 'mahasiswa' && !/^\d{2}\.\d{2}\.\d{4}$/.test(this.identifier)) {
             this.identifierError = 'Format NIM tidak valid. Gunakan format: 23.11.5508';
             valid = false;
-          } else if (this.currentRole === 'mitra' && this.identifier !== 'mitra' && !/\S+@\S+\.\S+/.test(this.identifier)) {
+          } else if (this.currentRole === 'mitra' && !/\S+@\S+\.\S+/.test(this.identifier)) {
             this.identifierError = 'Format email tidak valid.';
             valid = false;
           }

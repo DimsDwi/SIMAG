@@ -194,7 +194,7 @@ createApp({
     pageTitle() { return this.pageRole === 'dospem' ? 'Penilaian Akhir Mahasiswa' : 'Evaluasi Akhir Intern'; },
     candidateMeta() { return this.candidate ? `${this.candidate.name} • ${this.candidate.position} • ${this.candidate.period}` : ''; },
     finalScore() {
-      const vals = Object.values(this.scores).map(Number).filter(Number.isFinite);
+      const vals = this.criteria.map(c => Number(this.scores[c.id])).filter(Number.isFinite);
       return vals.length === this.criteria.length ? Math.round(vals.reduce((t,v) => t+v, 0) / vals.length) : 0;
     }
   },

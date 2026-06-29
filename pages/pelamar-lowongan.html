@@ -201,8 +201,56 @@
       <div style="padding:12px;border-radius:9px;background:rgba(255,255,255,0.04);"><small style="color:rgba(255,255,255,0.4);">Semester</small><strong style="display:block;margin-top:4px;">{{ profileData.semester }}</strong></div>
       <div style="padding:12px;border-radius:9px;background:rgba(255,255,255,0.04);"><small style="color:rgba(255,255,255,0.4);">IPK</small><strong style="display:block;margin-top:4px;color:#22d3ee;">{{ profileData.gpa }}</strong></div>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;">
-      <span v-for="(skill, idx) in profileData.skills" :key="idx" class="badge badge-info">{{ skill }}</span>
+    
+    <!-- CV Section -->
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">Curriculum Vitae</h3>
+      <div v-if="profileData.cvFile" style="margin-bottom:12px;">
+        <a :href="profileData.cvFile.path" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:#818cf8;border-radius:8px;font-size:13px;text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Lihat File CV
+        </a>
+      </div>
+      
+      <div v-if="profileData.cvDetails && profileData.cvDetails.skills && profileData.cvDetails.skills.length > 0" style="margin-bottom:12px;">
+        <small style="color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;">Skills Tambahan</small>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span v-for="sk in profileData.cvDetails.skills" :key="sk" class="badge badge-info">{{ sk }}</span>
+        </div>
+      </div>
+      
+      <div v-if="profileData.cvDetails && profileData.cvDetails.workExperience && profileData.cvDetails.workExperience.length > 0" style="margin-bottom:16px;">
+        <small style="color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;">Pengalaman</small>
+        <div v-for="(exp, i) in profileData.cvDetails.workExperience" :key="i" style="margin-bottom:8px;padding-left:12px;border-left:2px solid rgba(255,255,255,0.1);">
+          <strong style="display:block;font-size:13px;">{{ exp.title }}</strong>
+          <span style="display:block;font-size:12px;color:rgba(255,255,255,0.6);">{{ exp.company }} ({{ exp.year }})</span>
+        </div>
+      </div>
+
+      <div v-if="!profileData.cvFile && !profileData.cvDetails" style="font-size:13px;color:rgba(255,255,255,0.5);">
+        Pelamar belum melengkapi CV.
+      </div>
+
+      <!-- CV Review Section for Mitra -->
+      <div v-if="profileData.applicationId" style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px dashed rgba(255,255,255,0.1);">
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:10px;">Review Mitra</h4>
+        <div v-if="profileData.mitraReview && profileData.mitraReview.status">
+          <p style="font-size:13px;margin-bottom:4px;">
+            Status Review: <span class="badge" :class="profileData.mitraReview.status === 'approved' ? 'badge-success' : 'badge-warning'">{{ profileData.mitraReview.status }}</span>
+          </p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.6);">Catatan: {{ profileData.mitraReview.feedback || '-' }}</p>
+        </div>
+        <div v-else>
+          <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px;">Belum ada review. Berikan review agar Admin dapat menyetujui pelamar ini.</p>
+          <select v-model="reviewForm.status" style="width:100%;margin-bottom:10px;padding:8px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;">
+            <option value="">-- Pilih Keputusan --</option>
+            <option value="approved">Setuju (Approved)</option>
+            <option value="rejected">Tolak (Rejected)</option>
+          </select>
+          <textarea v-model="reviewForm.feedback" rows="2" placeholder="Catatan opsional..." style="width:100%;margin-bottom:10px;padding:8px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;"></textarea>
+          <button @click="submitReview" :disabled="!reviewForm.status" style="width:100%;padding:8px;background:#6366f1;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Simpan Review</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -224,7 +272,8 @@ createApp({
       searchKeyword: '',
       filterStatus: '',
       isProfileOpen: false,
-      profileData: { name: '', nim: '', studyProgram: '', semester: '', gpa: '', skills: [] }
+      profileData: { name: '', nim: '', studyProgram: '', semester: '', gpa: '', skills: [], cvFile: null, cvDetails: null, applicationId: null, mitraReview: null },
+      reviewForm: { status: '', feedback: '' }
     };
   },
   computed: {
@@ -252,10 +301,25 @@ createApp({
     async openProfile(applicantId) {
       const applicant = await SIMAG_MITRA.getApplicant(applicantId);
       this.profileData = { ...applicant };
+      this.reviewForm = { status: '', feedback: '' };
       this.isProfileOpen = true;
     },
     closeProfile() { this.isProfileOpen = false; },
     closeProfileOnBg(e) { if(e.target.id === 'profile-modal') this.closeProfile(); },
+    async submitReview() {
+      try {
+        if (!this.profileData.applicationId) return alert('Data aplikasi tidak ditemukan.');
+        await SIMAG_MITRA.reviewApplicationCv(this.profileData.applicationId, 'mitra', {
+          status: this.reviewForm.status,
+          feedback: this.reviewForm.feedback
+        });
+        alert('Review berhasil disimpan.');
+        await this.refreshApplicants();
+        await this.openProfile(this.profileData.id);
+      } catch (e) {
+        alert('Gagal menyimpan review.');
+      }
+    },
     async refreshApplicants() {
       if(this.vacancy) this.applicants = await SIMAG_MITRA.getApplicants(this.vacancy.id);
     },

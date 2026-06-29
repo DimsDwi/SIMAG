@@ -123,7 +123,15 @@
                 <span class="badge" :class="app.adminStatus === 'Approved' ? 'badge-success' : 'badge-warning'">{{ app.adminStatus }}</span>
               </td>
               <td style="padding:12px;">
-                <span class="badge" :class="getStatusBadge(app.partnerStatus || app.status)">{{ app.partnerStatus || app.status }}</span>
+                <div style="margin-bottom:6px;">
+                  <span class="badge" :class="getStatusBadge(app.partnerStatus || app.status)">{{ app.partnerStatus || app.status }}</span>
+                </div>
+                <div v-if="app.mitraReview" style="font-size:11px;color:rgba(255,255,255,0.6);padding:4px 6px;background:rgba(255,255,255,0.05);border-radius:4px;display:inline-block;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" :title="'Review CV Mitra: ' + app.mitraReview.status + ' - ' + (app.mitraReview.feedback || '')">
+                  CV: {{ app.mitraReview.status === 'approved' ? '✅ Disetujui' : (app.mitraReview.status === 'rejected' ? '❌ Ditolak' : '⏳ Menunggu') }}
+                </div>
+                <div v-else style="font-size:11px;color:rgba(255,255,255,0.4);">
+                  CV: Belum Direview
+                </div>
               </td>
               <td style="padding:12px;">
                 <span v-if="app.adminStatus === 'Approved'" style="font-size:12px;color:rgba(255,255,255,0.4);">Sudah disetujui</span>
@@ -165,7 +173,7 @@ createApp({
         
         const vacancy = this.db.vacancies.find(v => v.id === app.vacancyId) || {};
         const compUser = this.db.users.find(u => u.linkedId === app.companyId || u.id === app.companyId);
-        const companyName = compUser ? compUser.name : (vacancy.company || this.db.people.company.name);
+        const companyName = compUser ? compUser.name : (vacancy.company?.name || vacancy.company || this.db.people.company.name);
         
         const lectUser = this.db.users.find(u => u.linkedId === app.lecturerId || u.id === app.lecturerId);
         const lecturerName = lectUser ? lectUser.name : this.db.people.lecturer.name;

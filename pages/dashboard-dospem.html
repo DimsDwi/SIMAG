@@ -153,7 +153,7 @@
               <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">{{ intern.initials }}</div>
               <div style="flex:1;min-width:0;">
                 <p style="font-size:13px;font-weight:600;">{{ intern.name }}</p>
-                <p style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.company }} - {{ intern.position }}</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.company?.name || intern.company || '-' }} - {{ intern.position }}</p>
               </div>
               <div style="text-align:right;">
                 <span class="badge" :class="getStatusBadge(intern.status)">{{ intern.status }}</span>
@@ -245,7 +245,7 @@ createApp({
     getInternName(id) { return this.interns.find(i=>i.id===id)?.name||'Mahasiswa'; },
     goDetail(id) { window.location.href = `detail-intern.html?intern=${encodeURIComponent(id)}&role=dospem`; },
     goReview(intern) {
-      const pending = this._allLogbooks?.find(l => l.internId === intern.id && ['submitted','pending','revision'].includes(l.status));
+      const pending = this._allLogbooks?.find(l => l.internId === intern.id && ['submitted','pending','revision'].includes((l.status || '').toLowerCase()));
       window.location.href = pending ? `detail-logbook.html?id=${encodeURIComponent(pending.id)}&role=dospem` : `review-logbook-dospem.html?intern=${encodeURIComponent(intern.id)}`;
     },
     goLogbookDetail(id) { window.location.href = `detail-logbook.html?id=${encodeURIComponent(id)}&role=dospem`; },
