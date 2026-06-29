@@ -634,7 +634,14 @@ createApp({
         const interns = data.interns || [];
         const session = simag_getSession();
         
-        let myIntern = interns.length > 0 ? interns[0] : null;
+        let myIntern = null;
+        if (session.user && session.role === 'mahasiswa') {
+          myIntern = interns.find(i => i.id === session.user.id);
+        }
+        if (!myIntern) {
+          myIntern = interns.find(i => i.companyId) || (interns.length > 0 ? interns[0] : null);
+        }
+        
         let activeStudentName = 'Mahasiswa';
         let activeCompanyName = 'Perusahaan';
         
@@ -644,26 +651,22 @@ createApp({
         }
 
         if (myIntern) {
-          const student = (data.users || []).find(u => u.id === myIntern.id) || { name: myIntern.name || activeStudentName };
-          const company = (data.companies || []).find(c => c.id === myIntern.companyId) || { name: myIntern.company || activeCompanyName };
+          const student = (data.users || []).find(u => u.id === myIntern.id) || { name: myIntern.name || myIntern.student?.name || activeStudentName };
+          const company = (data.companies || []).find(c => c.id === myIntern.companyId) || { name: myIntern.company?.name || myIntern.company || activeCompanyName };
           
-          this.pr.mhs.company = company.name;
-          this.pr.mhs.pos = myIntern.position || 'Intern';
+          this.pr.mhs.company = company.name === 'Perusahaan' ? this.pr.mhs.company : company.name;
+          this.pr.mhs.pos = myIntern.position || this.pr.mhs.pos;
           this.pr.mhs.prog = myIntern.progress || 0;
           
-          this.pr.dospem.name = student.name;
-          this.pr.dospem.pos = `${company.name} • ${myIntern.position || 'Intern'}`;
+          this.pr.dospem.name = student.name === 'Mahasiswa' ? this.pr.dospem.name : student.name;
+          this.pr.dospem.pos = `${company.name === 'Perusahaan' ? 'Perusahaan Mitra' : company.name} • ${myIntern.position || 'Intern'}`;
           this.pr.dospem.prog = myIntern.progress || 0;
           
-          this.pr.mitra.name = student.name;
+          this.pr.mitra.name = student.name === 'Mahasiswa' ? this.pr.mitra.name : student.name;
           this.pr.mitra.pos = `${myIntern.position || 'Intern'} Intern`;
           this.pr.mitra.prog = myIntern.progress || 0;
           this.pr.mitra.log = `${myIntern.logbookCompleted || 0} dari ${myIntern.logbookTarget || 150} logbook telah dikumpulkan.`;
           this.pr.mitra.count = interns.length;
-        } else {
-          this.pr.mhs.company = activeCompanyName;
-          this.pr.dospem.name = activeStudentName;
-          this.pr.mitra.name = activeStudentName;
         }
         
         if (data.applications) {

@@ -115,7 +115,7 @@
                 <strong style="display:block;font-size:13px;">{{ intern.name }}</strong>
                 <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.studyProgram || '-' }}</span>
               </td>
-              <td style="padding:12px;font-size:13px;">{{ intern.company || '-' }}</td>
+              <td style="padding:12px;font-size:13px;">{{ intern.company?.name || intern.company || '-' }}</td>
               <td style="padding:12px;font-size:13px;">{{ intern.progress || 0 }}%</td>
               <td style="padding:12px;font-weight:700;color:#22d3ee;">{{ getSks(intern.id).sks }}/{{ getSks(intern.id).target }}</td>
               <td style="padding:12px;">

@@ -109,6 +109,83 @@
           <button @click="showEditModal = true" class="btn-outline" style="margin-top:24px;padding:8px 16px;border-radius:8px; border: 1px solid rgba(255,255,255,0.3); color: #fff; background: rgba(255,255,255,0.05); cursor:pointer;">Edit Profil</button>
         </div>
       </div>
+
+      <div class="glass-card" style="padding:32px;border-radius:12px;margin-top:24px;">
+        <h2 style="font-size:20px;font-weight:600;margin-bottom:16px;">Curriculum Vitae (CV)</h2>
+        <p style="color:rgba(255,255,255,0.5);margin-bottom:24px;font-size:14px;">Upload CV dan lengkapi profil Anda untuk mempermudah mitra mereview lamaran Anda.</p>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+          
+          <!-- File Upload -->
+          <div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">File CV</h3>
+            <div 
+              @dragover.prevent="dragover = true" 
+              @dragleave.prevent="dragover = false" 
+              @drop.prevent="handleDrop"
+              :style="{ border: dragover ? '2px dashed #6366f1' : '2px dashed rgba(255,255,255,0.2)', background: dragover ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.02)' }"
+              style="padding:32px;border-radius:12px;text-align:center;transition:all 0.3s;cursor:pointer;"
+              @click="$refs.cvFileInput.click()"
+            >
+              <input type="file" ref="cvFileInput" style="display:none" @change="handleFileSelect" accept=".pdf,.doc,.docx,image/*" />
+              <svg v-if="!cvFile" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:rgba(255,255,255,0.4);margin:0 auto 12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg v-else width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" style="margin:0 auto 12px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              
+              <div v-if="!cvFile">
+                <p style="font-size:14px;font-weight:500;margin-bottom:4px;">Klik atau Drag & Drop file ke sini</p>
+                <p style="font-size:12px;color:rgba(255,255,255,0.4);">Maks. 5MB (PDF, DOC, DOCX, Image)</p>
+              </div>
+              <div v-else>
+                <p style="font-size:14px;font-weight:500;margin-bottom:4px;color:#22c55e;">{{ cvFile.name || cvFile.path.split('/').pop() }}</p>
+                <button @click.stop="removeCvFile" class="btn-outline" style="margin-top:12px;padding:4px 12px;font-size:12px;border:1px solid rgba(239,68,68,0.5);color:#ef4444;background:transparent;border-radius:6px;">Hapus</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Structured Form -->
+          <div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">Data CV Terstruktur</h3>
+            
+            <div style="margin-bottom:16px;">
+              <label style="font-size:12px;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px;">Skills (pisahkan dengan koma)</label>
+              <input type="text" v-model="cvDetails.skillsStr" placeholder="e.g. JavaScript, Vue.js, UI/UX" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;" />
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <label style="font-size:12px;color:rgba(255,255,255,0.5);display:block;margin-bottom:4px;">Portfolio Links (pisahkan dengan baris baru)</label>
+              <textarea v-model="cvDetails.portfolioStr" rows="3" placeholder="https://github.com/username&#10;https://dribbble.com/username" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:14px;resize:none;box-sizing:border-box;"></textarea>
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <label style="font-size:12px;color:rgba(255,255,255,0.5);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span>Pengalaman Kerja / Organisasi</span>
+                <button @click="addExperience" style="background:transparent;border:none;color:#6366f1;cursor:pointer;font-size:12px;font-weight:600;">+ Tambah</button>
+              </label>
+              
+              <div v-if="cvDetails.workExperience.length === 0" style="padding:16px;text-align:center;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;">
+                <span style="font-size:12px;color:rgba(255,255,255,0.3);">Belum ada pengalaman ditambahkan</span>
+              </div>
+              
+              <div v-for="(exp, idx) in cvDetails.workExperience" :key="idx" style="padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;margin-bottom:8px;">
+                <div style="display:flex;gap:8px;margin-bottom:8px;">
+                  <input type="text" v-model="exp.title" placeholder="Posisi/Jabatan" style="flex:1;padding:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:13px;" />
+                  <input type="text" v-model="exp.company" placeholder="Perusahaan/Organisasi" style="flex:1;padding:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:13px;" />
+                  <button @click="removeExperience(idx)" style="background:transparent;border:none;color:#ef4444;cursor:pointer;padding:4px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" v-model="exp.year" placeholder="Tahun (cth: 2023 - 2024)" style="width:140px;padding:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:13px;" />
+                  <input type="text" v-model="exp.description" placeholder="Deskripsi Singkat" style="flex:1;padding:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:13px;" />
+                </div>
+              </div>
+            </div>
+            
+            <button @click="saveCvDetails" :disabled="savingCv" style="width:100%;padding:12px;background:linear-gradient(135deg, #6366f1, #3b82f6);border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:14px;">
+              {{ savingCv ? 'Menyimpan...' : 'Simpan Detail CV' }}
+            </button>
+          </div>
+
+        </div>
+      </div>
     </div>
 
     <!-- Modal Edit Profil -->
@@ -163,7 +240,15 @@ createApp({
       userId: user ? user.id : 'default',
       profile: savedProfile,
       editForm: { ...savedProfile },
-      showEditModal: false
+      showEditModal: false,
+      dragover: false,
+      cvFile: null,
+      cvDetails: {
+        skillsStr: '',
+        portfolioStr: '',
+        workExperience: []
+      },
+      savingCv: false
     };
   },
   computed: {
@@ -181,7 +266,87 @@ createApp({
         if (typeof simag_updateSidebarName === 'function') simag_updateSidebarName();
       }
       this.showEditModal = false;
+    },
+    async loadCvData() {
+      try {
+        const res = await SIMAG_DATA.getCv();
+        if (res.file) {
+          this.cvFile = res.file;
+        }
+        if (res.details) {
+          this.cvDetails.skillsStr = (res.details.skills || []).join(', ');
+          this.cvDetails.portfolioStr = (res.details.portfolioLinks || []).join('\n');
+          this.cvDetails.workExperience = res.details.workExperience || [];
+        }
+      } catch (e) {
+        console.error('Failed to load CV data:', e);
+      }
+    },
+    async handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) await this.uploadFile(file);
+    },
+    async handleDrop(event) {
+      this.dragover = false;
+      const file = event.dataTransfer.files[0];
+      if (file) await this.uploadFile(file);
+    },
+    async uploadFile(file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file maksimal 5MB.');
+        return;
+      }
+      // Simulate file upload logic by sending path to backend
+      const virtualPath = `/uploads/cv-${this.userId}-${Date.now()}-${file.name}`;
+      try {
+        const res = await SIMAG_DATA.uploadCvFile(virtualPath, file.type || 'application/pdf');
+        if (res.success) {
+          this.cvFile = { path: virtualPath, name: file.name, type: file.type };
+          alert('CV berhasil diunggah.');
+        }
+      } catch (e) {
+        alert('Gagal mengunggah CV.');
+      }
+    },
+    async removeCvFile() {
+      if (!confirm('Hapus file CV?')) return;
+      try {
+        await SIMAG_DATA.deleteCvFile();
+        this.cvFile = null;
+        this.$refs.cvFileInput.value = '';
+      } catch (e) {
+        alert('Gagal menghapus file CV.');
+      }
+    },
+    addExperience() {
+      this.cvDetails.workExperience.push({ title: '', company: '', year: '', description: '' });
+    },
+    removeExperience(idx) {
+      this.cvDetails.workExperience.splice(idx, 1);
+    },
+    async saveCvDetails() {
+      this.savingCv = true;
+      try {
+        const skills = this.cvDetails.skillsStr.split(',').map(s => s.trim()).filter(Boolean);
+        const portfolioLinks = this.cvDetails.portfolioStr.split('\n').map(s => s.trim()).filter(Boolean);
+        const payload = {
+          skills,
+          portfolioLinks,
+          workExperience: this.cvDetails.workExperience
+        };
+        const res = await SIMAG_DATA.updateCvDetails('me', payload);
+        if (res.success) {
+          alert('Detail CV berhasil disimpan.');
+        }
+      } catch (e) {
+        alert('Gagal menyimpan detail CV.');
+      } finally {
+        this.savingCv = false;
+      }
     }
+  },
+  mounted() {
+    this.loadCvData();
   },
   watch: {
     showEditModal(val) {

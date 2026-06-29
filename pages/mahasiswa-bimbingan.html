@@ -125,7 +125,7 @@
                 <span style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.nim }} - {{ intern.studyProgram }}</span>
               </td>
               <td style="padding:12px;font-size:13px;color:rgba(255,255,255,0.7);">
-                {{ intern.company }}
+                {{ intern.company?.name || intern.company || '-' }}
                 <span style="display:block;color:rgba(255,255,255,0.4);font-size:11px;margin-top:3px;">{{ intern.position }}</span>
               </td>
               <td style="padding:12px;">
@@ -192,7 +192,7 @@ createApp({
     getLatestLogbook(internId) { return this.logbooks.find(l => l.internId === internId); },
     goDetail(id) { window.location.href = `detail-intern.html?intern=${encodeURIComponent(id)}&role=dospem`; },
     goReview(id) {
-      const pending = this.logbooks.find(l => l.internId === id && ['submitted','pending','revision'].includes(l.status));
+      const pending = this.logbooks.find(l => l.internId === id && ['submitted','pending','revision'].includes((l.status || '').toLowerCase()));
       if (pending) window.location.href = `detail-logbook.html?id=${encodeURIComponent(pending.id)}&role=dospem`;
       else window.location.href = `review-logbook-dospem.html?intern=${encodeURIComponent(id)}`;
     },

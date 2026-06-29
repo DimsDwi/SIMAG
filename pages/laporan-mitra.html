@@ -207,7 +207,12 @@ createApp({
   },
   methods: {
     getEval(id) { return this.evaluations.find(e => e.candidateId === id); },
-    getCandidateName(id) { const c = this.candidates.find(x => x.id === id); return c ? c.name : 'Mahasiswa'; },
+    getCandidateName(id) {
+      const c = this.candidates.find(x => x.id === id);
+      if (c) return c.name;
+      const e = this.evaluations.find(x => x.candidateId === id);
+      return e && e.candidate ? e.candidate.name : 'Mahasiswa';
+    },
     formatDate(d) { try { return new Intl.DateTimeFormat('id-ID',{dateStyle:'medium'}).format(new Date(d)); } catch { return d||'-'; } },
     goEval(id) { window.location.href = `evaluasi-intern.html?candidate=${encodeURIComponent(id)}`; },
     async loadData() {
