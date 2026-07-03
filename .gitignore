@@ -33,6 +33,7 @@ test-results/
 
 # One-off fix/migration scripts
 fix.js
+fix-*.js
 fix-flicker.js
 fix-loading.js
 fix-mount.js
@@ -49,10 +50,20 @@ update-changelog.js
 upgrade-all-pages.js
 migrate_db.js
 db_alter.js
+check-imports.js
+generate-previews.js
 
 # Temporary tailwind files
 shared/tailwind-dist.css
 shared/tailwind.css
+
+# Test screenshots (generated at runtime)
+screenshots/audit_*.png
+screenshots/roles/
+
+# Backend data directory (empty, used at runtime)
+backend/data/*
+!backend/data/.gitkeep
 
 # Package lock (optional, depends on team policy)
 # package-lock.json

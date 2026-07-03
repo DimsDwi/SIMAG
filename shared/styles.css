@@ -12,10 +12,12 @@
   }
 
   /* Reset & Base */
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--primary-font); background: #09090e; color: #f8fafc; overflow-x: hidden; }
-  h1, h2, h3, h4, h5 { font-family: var(--heading-font); }
-  [v-cloak] { display: none !important; }
+  @layer base {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--primary-font); background: #09090e; color: #f8fafc; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: var(--heading-font); }
+    [v-cloak] { display: none !important; }
+  }
 
   /* ── Background Orbs ─────────────────────────────────────── */
   .bg-orb {

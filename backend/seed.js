@@ -28,10 +28,10 @@ async function seed() {
 
     console.log('Membuat akun (Password 6 karakter)...');
     await pool.query(`INSERT INTO users (id, role, identifier, password, name, linked_id) VALUES 
-      (?, 'mahasiswa', '23.11.5508', 'budi1234', 'Budi Santoso', ?),
-      (?, 'mitra', 'hr@mitrademo.com', 'mitra123', 'TechCorp Indonesia', ?),
-      (?, 'adminprodi', 'adminprodi', 'admin123', 'Admin Prodi Demo', ?),
-      (?, 'dospem', '19800101', 'dosen123', 'Dosen Pembimbing Demo', ?)
+      (?, 'mahasiswa', '23.11.5508', '$2b$10$ublfJLWse2TVzqMRd729UOBUM.8Jz340knB6GUVqDpDoSS4AqjInu', 'Budi Santoso', ?),
+      (?, 'mitra', 'hr@mitrademo.com', '$2b$10$q3drkM4DlADF.ZINSNunI.48RaiFeWw..l0WoNhIl2gMRnMsJf8jW', 'TechCorp Indonesia', ?),
+      (?, 'adminprodi', 'adminprodi', '$2b$10$ipSgJMoEdMWwRgLmjclSb.ytmRVfY5FUP.8ckcEiVhe4IMt3PYyWm', 'Admin Prodi Demo', ?),
+      (?, 'dospem', '19800101', '$2b$10$5d07grmDc7Rclp1pOJKjxemhC6T62eDFXxz.WWonOWDHNQJBFHXOO', 'Dosen Pembimbing Demo', ?)
     `, [
       `user-${mahasiswaId}`, mahasiswaId,
       `user-${mitraId}`, mitraId,

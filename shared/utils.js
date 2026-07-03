@@ -37,18 +37,22 @@ function simag_renderGlobalBadges() {
   } catch (e) {}
 
   try {
-    const userStr = sessionStorage.getItem('simag_user') || localStorage.getItem('simag_user');
-    if (userStr) {
-      const user = JSON.parse(userStr);
-      if (user && user.name) {
-        const name = user.name || 'User';
-        const initials = name.split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || 'U';
-        document.querySelectorAll('.simag-user-name').forEach(el => {
-          if (!el.closest('#app')) el.textContent = name;
-        });
-        document.querySelectorAll('.simag-user-initials').forEach(el => {
-          if (!el.closest('#app')) el.textContent = initials;
-        });
+    // Don't render user info in nosession preview mode
+    const _noSession = new URLSearchParams(window.location.search).get('nosession') === 'true';
+    if (!_noSession) {
+      const userStr = sessionStorage.getItem('simag_user') || localStorage.getItem('simag_user');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user && user.name) {
+          const name = user.name || 'User';
+          const initials = name.split(' ').filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join('') || 'U';
+          document.querySelectorAll('.simag-user-name').forEach(el => {
+            if (!el.closest('#app')) el.textContent = name;
+          });
+          document.querySelectorAll('.simag-user-initials').forEach(el => {
+            if (!el.closest('#app')) el.textContent = initials;
+          });
+        }
       }
     }
   } catch(e) {}
@@ -63,6 +67,15 @@ window.simag_renderGlobalBadges = simag_renderGlobalBadges;
  * @returns {{ token: string|null, role: string|null, user: object|null }}
  */
 function simag_getSession() {
+  // In preview mode with nosession, return empty session
+  // so the dashboard renders in demo mode without leaking another role's data
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('nosession') === 'true') {
+      return { token: null, role: null, user: null };
+    }
+  } catch (e) {}
+
   let token = localStorage.getItem('simag_token');
   let role  = localStorage.getItem('simag_role');
   let userStr = localStorage.getItem('simag_user');
@@ -113,7 +126,23 @@ function simag_logout() {
  * @param {string} requiredRole  'mahasiswa' | 'mitra' | 'adminprodi' | 'dospem'
  */
 function simag_requireAuth(requiredRole) {
+  // Allow preview mode for landing page iframe embeds
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('preview') === 'true') {
+    return; // Skip auth redirect — render dashboard shell only
+  }
+
   const { token, role } = simag_getSession();
+
+  // If no specific role is required, just check for a valid token
+  if (!requiredRole) {
+    if (!token) {
+      const inPages = window.location.pathname.includes('/pages/');
+      window.location.href = inPages ? '../login.html' : 'login.html';
+    }
+    return;
+  }
+
   const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
   if (!token || !allowedRoles.includes(role)) {
     const inPages = window.location.pathname.includes('/pages/');

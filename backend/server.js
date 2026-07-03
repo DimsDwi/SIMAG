@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const service = require('./simag-service-mysql');
 const pool = require('./db');
 
@@ -34,7 +35,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'simag-super-secret-key-2026';
 // Auth Token Validation Middleware
 const authMiddleware = (req, res, next) => {
   // Allow public auth endpoints
-  if (req.path === '/api/auth/login' || req.path === '/api/auth/register') {
+  if (
+    req.path === '/api/auth/login' || 
+    req.path === '/api/auth/register' ||
+    req.path === '/api/auth/forgot-password' ||
+    req.path === '/api/auth/reset-password'
+  ) {
     return next();
   }
 
@@ -61,12 +67,26 @@ const authMiddleware = (req, res, next) => {
 
 app.use(authMiddleware);
 
+const requireRole = (...roles) => (req, res, next) => {
+  if (!req.user || !roles.includes(req.user.role)) {
+    return res.status(403).json({ success: false, message: 'Forbidden: insufficient role' });
+  }
+  next();
+};
+
 function getUserId(req) {
   return req.user ? req.user.id : null;
 }
 
+// Rate limiter for auth endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each IP to 20 requests per windowMs
+  message: { success: false, message: 'Terlalu banyak percobaan, silakan coba lagi setelah 15 menit' }
+});
+
 // Authentication
-app.post('/api/auth/login', asyncRoute(async (req, res) => {
+app.post('/api/auth/login', authLimiter, asyncRoute(async (req, res) => {
   if (typeof service.login !== 'function') {
     return res.status(501).json({ success: false, message: 'Service method login is missing' });
   }
@@ -75,7 +95,7 @@ app.post('/api/auth/login', asyncRoute(async (req, res) => {
   else res.status(401).json(result);
 }));
 
-app.post('/api/auth/register', asyncRoute(async (req, res) => {
+app.post('/api/auth/register', authLimiter, asyncRoute(async (req, res) => {
   if (typeof service.register !== 'function') {
     return res.status(501).json({ success: false, message: 'Service method register is missing' });
   }
@@ -89,26 +109,63 @@ app.post('/api/auth/register', asyncRoute(async (req, res) => {
   }
 }));
 
+app.post('/api/auth/forgot-password', authLimiter, asyncRoute(async (req, res) => {
+  const result = await service.forgotPassword(req.body.email);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
+  }
+}));
+
+app.post('/api/auth/reset-password', authLimiter, asyncRoute(async (req, res) => {
+  const result = await service.resetPassword(req.body.token, req.body.newPassword);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
+  }
+}));
+
+app.post('/api/auth/change-password', authLimiter, asyncRoute(async (req, res) => {
+  const userId = req.user.id; // from authMiddleware
+  const { current_password, new_password, confirm_password } = req.body;
+  
+  if (!current_password || !new_password || !confirm_password) {
+    return res.status(400).json({ success: false, message: 'Semua field harus diisi.' });
+  }
+  if (new_password !== confirm_password) {
+    return res.status(400).json({ success: false, message: 'Konfirmasi password tidak cocok.' });
+  }
+  
+  const result = await service.changePassword(userId, current_password, new_password);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
+  }
+}));
+
 // Data export
 app.get('/api/data', asyncRoute(async (req, res) => {
   res.json(await service.getData());
 }));
 
-app.get('/api/dashboard/summary', asyncRoute(async (req, res) => {
+app.get('/api/dashboard/summary', requireRole('mahasiswa'), asyncRoute(async (req, res) => {
   const userId = getUserId(req);
   res.json(await service.getDashboardSummary(userId));
 }));
 
-app.get('/api/dashboard/summary-mitra', asyncRoute(async (req, res) => {
+app.get('/api/dashboard/summary-mitra', requireRole('mitra'), asyncRoute(async (req, res) => {
   const userId = getUserId(req);
   res.json(await service.getDashboardSummaryMitra(userId));
 }));
 
-app.get('/api/dashboard/summary-admin', asyncRoute(async (req, res) => {
+app.get('/api/dashboard/summary-admin', requireRole('adminprodi'), asyncRoute(async (req, res) => {
   res.json(await service.getDashboardSummaryAdmin());
 }));
 
-app.get('/api/dashboard/summary-dospem', asyncRoute(async (req, res) => {
+app.get('/api/dashboard/summary-dospem', requireRole('dospem'), asyncRoute(async (req, res) => {
   const userId = getUserId(req);
   res.json(await service.getDashboardSummaryDospem(userId));
 }));
@@ -202,8 +259,8 @@ app.delete('/api/cv/:studentId/file', asyncRoute(async (req, res) => {
 
 // SKS Conversions
 app.get('/api/sks', asyncRoute(async (req, res) => res.json(await service.getSksConversions())));
-app.post('/api/sks/convert', asyncRoute(async (req, res) => res.json(await service.convertSks(req.body.studentId, req.body.sks))));
-app.delete('/api/sks/convert/:studentId', asyncRoute(async (req, res) => res.json(await service.deleteSksConversion(req.params.studentId))));
+app.post('/api/sks/convert', requireRole('adminprodi'), asyncRoute(async (req, res) => res.json(await service.convertSks(req.body.studentId, req.body.sks))));
+app.delete('/api/sks/convert/:studentId', requireRole('adminprodi'), asyncRoute(async (req, res) => res.json(await service.deleteSksConversion(req.params.studentId))));
 
 // Evaluations
 app.get('/api/evaluations/candidates', asyncRoute(async (req, res) => res.json(await service.getEvaluationCandidates())));
@@ -211,25 +268,6 @@ app.get('/api/evaluations', asyncRoute(async (req, res) => res.json(await servic
 app.get('/api/evaluations/:candidateId', asyncRoute(async (req, res) => res.json(await service.getEvaluation(req.params.candidateId))));
 app.post('/api/evaluations', asyncRoute(async (req, res) => res.json(await service.saveEvaluation(req.body))));
 
-// CV Management
-app.post('/api/cv/upload', asyncRoute(async (req, res) => {
-  const userId = getUserId(req);
-  res.json(await service.saveCvFile(userId, req.body.filePath, req.body.fileType));
-}));
-app.get('/api/cv/:studentId', asyncRoute(async (req, res) => {
-  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
-  const file = await service.getCvFile(studentId);
-  const details = await service.getCvDetails(studentId);
-  res.json({ success: true, file, details });
-}));
-app.put('/api/cv/:studentId', asyncRoute(async (req, res) => {
-  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
-  res.json(await service.saveCvDetails(studentId, req.body));
-}));
-app.delete('/api/cv/:studentId/file', asyncRoute(async (req, res) => {
-  const studentId = req.params.studentId === 'me' ? getUserId(req) : req.params.studentId;
-  res.json(await service.deleteCvFile(studentId));
-}));
 
 // Vacancy Requirements
 app.get('/api/vacancies/:id/requirements', asyncRoute(async (req, res) => {

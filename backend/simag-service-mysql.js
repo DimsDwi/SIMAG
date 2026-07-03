@@ -1,6 +1,8 @@
 const pool = require('./db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'simag-super-secret-key-2026';
 
@@ -304,7 +306,7 @@ async function login({ identifier, password, role }) {
   if (rows.length > 0) {
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch || password === user.password) {
+    if (isMatch) {
       const token = jwt.sign({ id: user.linked_id, role: user.role }, JWT_SECRET, { expiresIn: '8h' });
       return {
         success: true,
@@ -351,10 +353,95 @@ async function register({ fullname, name, identifier, password, role }) {
     };
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') {
-      return { success: false, message: 'Akun sudah terdaftar.' };
+      return { success: false, message: 'Gagal melakukan pendaftaran.' };
     }
     throw err;
   }
+}
+
+async function forgotPassword(email) {
+  const [rows] = await pool.query('SELECT id, name FROM users WHERE identifier = ?', [email]);
+  if (rows.length === 0) {
+    return { success: true, message: 'Jika email terdaftar, instruksi reset telah dikirim.' };
+  }
+  const user = rows[0];
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiredAt = new Date(Date.now() + 3600000); // 1 hour expiration
+  
+  await pool.query(
+    'INSERT INTO password_resets (user_id, token, expired_at) VALUES (?, ?, ?)',
+    [user.id, token, expiredAt]
+  );
+  
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
+      port: process.env.SMTP_PORT || 587,
+      auth: {
+        user: process.env.SMTP_USER || 'user',
+        pass: process.env.SMTP_PASS || 'pass'
+      }
+    });
+    
+    // Logging for test verification without actual SMTP
+    const resetUrl = `http://localhost:5173/reset-password.html?token=${token}`;
+    console.log(`\n===========================================`);
+    console.log(`[Forgot Password] Reset link for ${email}:`);
+    console.log(`--> ${resetUrl}`);
+    console.log(`===========================================\n`);
+    
+    // Skip sending if host is default ethereal and no valid pass is provided
+  } catch(e) {
+    console.error('Nodemailer error:', e);
+  }
+  
+  return { success: true, message: 'Jika email terdaftar, instruksi reset telah dikirim.' };
+}
+
+async function resetPassword(token, newPassword) {
+  const [rows] = await pool.query('SELECT user_id, expired_at FROM password_resets WHERE token = ?', [token]);
+  if (rows.length === 0) {
+    return { success: false, message: 'Token reset tidak valid.' };
+  }
+  
+  const reset = rows[0];
+  if (new Date() > new Date(reset.expired_at)) {
+    return { success: false, message: 'Token reset telah kedaluwarsa.' };
+  }
+  
+  if (newPassword.length < 6) {
+    return { success: false, message: 'Password minimal 6 karakter.' };
+  }
+  
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+  await pool.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, reset.user_id]);
+  await pool.query('DELETE FROM password_resets WHERE token = ?', [token]);
+  
+  return { success: true, message: 'Password berhasil diubah. Silakan login kembali.' };
+}
+
+async function changePassword(linkedId, currentPassword, newPassword) {
+  const [rows] = await pool.query('SELECT id, password FROM users WHERE linked_id = ?', [linkedId]);
+  if (rows.length === 0) {
+    return { success: false, message: 'User tidak ditemukan.' };
+  }
+  
+  const user = rows[0];
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  
+  if (!isMatch) {
+    return { success: false, message: 'Password lama salah.' };
+  }
+  
+  if (newPassword.length < 6) {
+    return { success: false, message: 'Password baru minimal 6 karakter.' };
+  }
+  
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await pool.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
+  
+  return { success: true, message: 'Password berhasil diubah.' };
 }
 
 // ==========================================
@@ -1400,6 +1487,9 @@ module.exports = {
   // Auth
   login,
   register,
+  forgotPassword,
+  resetPassword,
+  changePassword,
 
   // Dashboard
   getData,

@@ -64,6 +64,7 @@
     pendingGets.clear();
   }
 
+
   async function apiFetch(endpoint, options = {}) {
     const token = localStorage.getItem('simag_token') || sessionStorage.getItem('simag_token');
     const userId = getSessionUserId();
@@ -123,7 +124,17 @@
   }
 
   const api = {
-    getData: () => apiFetch('/data'),
+    getData: async () => {
+      const data = await apiFetch('/data');
+      if (data && !data.people) {
+        data.people = {
+          student: { id: '', name: '-', nim: '-', studyProgram: '-' },
+          lecturer: { id: '', name: '-', nip: '-', email: '-' },
+          company: { id: '', name: '-', address: '-', email: '-' }
+        };
+      }
+      return data;
+    },
     getDashboardSummary: () => apiFetch('/dashboard/summary'),
     getDashboardSummaryMitra: () => apiFetch('/dashboard/summary-mitra'),
     getDashboardSummaryAdmin: () => apiFetch('/dashboard/summary-admin'),

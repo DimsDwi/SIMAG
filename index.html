@@ -1,696 +1,834 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIMAG — Magang Cerdas & Terukur</title>
+  <title>SIMAG — Official Internship Platform</title>
 
-  <!-- Rescue script for Vite fallback routing issues -->
-  <script>
-    if (window.location.pathname.endsWith('/pages/login.html')) {
-      window.location.replace('/login.html');
-    } else if (window.location.pathname.endsWith('/pages/register.html')) {
-      window.location.replace('/register.html');
-    } else if (window.location.pathname !== '/' && window.location.pathname !== '/index.html' && window.location.pathname !== '/login.html' && window.location.pathname !== '/register.html' && !window.location.pathname.includes('/pages/dashboard') && !window.location.pathname.includes('.html')) {
-      window.location.replace('/');
-    }
-  </script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-
-  <!-- Modern Fonts for Premium Aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="shared/styles.css" />
 
   <style>
-    /* Base Typography & Reset */
-    :root {
-      --primary-font: 'Plus Jakarta Sans', sans-serif;
-      --heading-font: 'Outfit', sans-serif;
+    [v-cloak] {
+      display: none !important;
     }
-    
+
     body {
-      background-color: #09090e;
-      color: #f8fafc;
-      font-family: var(--primary-font);
-      overflow-x: hidden;
+      background: #000000;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    h1, h2, h3, h4, .brand-font {
-      font-family: var(--heading-font);
+    .font-heading {
+      font-family: 'Outfit', sans-serif;
     }
 
-    /* Dynamic Background Animations */
-    .bg-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      z-index: -1;
-      opacity: 0.5;
-      animation: float 20s infinite ease-in-out alternate;
-    }
-    .orb-1 { width: 400px; height: 400px; background: rgba(99, 102, 241, 0.4); top: -10%; left: -10%; }
-    .orb-2 { width: 500px; height: 500px; background: rgba(168, 85, 247, 0.3); bottom: -20%; right: -10%; animation-delay: -5s; }
-    .orb-3 { width: 300px; height: 300px; background: rgba(14, 165, 233, 0.3); top: 40%; left: 50%; animation-delay: -10s; }
-
-    @keyframes float {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(30px, -50px) scale(1.1); }
-      100% { transform: translate(-40px, 40px) scale(0.9); }
+    /* Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Premium Glassmorphism & Hover Effects */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .glass-card:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.1);
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Gradient Text */
+    /* Utility Styles */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+    }
+
     .text-gradient {
-      background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #38bdf8 100%);
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.4) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    /* Button Enhancements */
-    .btn-premium {
-      background: linear-gradient(135deg, #4f46e5, #7e22ce);
-      border: none;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-    }
-    .btn-premium::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s ease;
-    }
-    .btn-premium:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
-    }
-    .btn-premium:hover::before {
-      left: 100%;
-    }
-
-    .btn-outline-premium {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: all 0.3s ease;
-    }
-    .btn-outline-premium:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.3);
-      transform: translateY(-2px);
-    }
-
-    /* Tabs Styling */
-    .preview-role-tab {
-      padding: 10px 28px;
-      border: none;
-      border-radius: 99px;
-      background: transparent;
-      color: rgba(255,255,255,0.5);
-      font-family: var(--primary-font);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .preview-role-tab:hover {
-      color: #fff;
-    }
-    .preview-role-tab.active {
-      background: rgba(99, 102, 241, 0.15);
-      color: #818cf8;
-      box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.3);
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 1024px) {
-      .roles-grid, .testi-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    }
-    @media (max-width: 768px) {
-      .hero-grid, .roles-grid, .testi-grid, .hiw-grid { grid-template-columns: 1fr !important; }
-      .preview-role-tabs { display:flex !important; flex-wrap:wrap; width:100%; border-radius:16px !important; }
-      .preview-role-tab { flex:1 1 calc(50% - 6px); padding:8px 10px !important; text-align:center; }
-    }
-    [v-cloak] { display: none; }
   </style>
-  <style>[v-cloak] { display: none !important; }</style>
 </head>
-<body>
 
-<div id="app" v-cloak>
-  <!-- Background Orbs for Aesthetic Vibe -->
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="bg-orb orb-3"></div>
+<body class="antialiased selection:bg-indigo-500/30 overflow-x-hidden">
 
-  <!-- Navbar -->
-  <nav style="position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(24px);background:rgba(9,9,14,0.75);">
-    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:72px;">
-      <div style="display:flex;align-items:center;gap:40px;">
-        <a href="index.html" class="brand-font" style="font-size:22px;font-weight:800;letter-spacing:-0.5px;color:#fff;text-decoration:none;">SIMAG<span style="color:#818cf8">.</span></a>
-        <div style="display:flex;gap:32px;" class="hide-mobile">
-          <a href="#fitur" style="font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Fitur</a>
-          <a href="#untuk-siapa" style="font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Untuk Siapa</a>
-          <a href="#cara-kerja" style="font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Cara Kerja</a>
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:center;">
-        <template v-if="isLoggedIn">
-          <a :href="'pages/dashboard-' + (sessionRole === 'adminprodi' ? 'admin' : sessionRole) + '.html'" class="btn-outline-premium" style="padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;text-decoration:none;">Dashboard</a>
-          <button @click="logout" style="padding:10px 20px;border-radius:10px;font-size:14px;color:#fff;font-weight:600;text-decoration:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#ef4444;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#ef4444';this.style.color='#fff'" onmouseout="this.style.background='rgba(239,68,68,0.1)';this.style.color='#ef4444'">Keluar</button>
-        </template>
-        <template v-else>
-          <a href="login.html" class="btn-outline-premium" style="padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;text-decoration:none;">Masuk</a>
-          <a href="register.html" class="btn-premium" style="padding:10px 20px;border-radius:10px;font-size:14px;color:#fff;font-weight:600;text-decoration:none;">Daftar Sekarang</a>
-        </template>
-      </div>
-    </div>
-  </nav>
+  <div id="app" v-cloak>
 
-  <!-- Hero Section -->
-  <section style="position:relative;max-width:1200px;margin:0 auto;padding:100px 24px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;" class="hero-grid">
-    <div style="position:relative;z-index:2;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:999px;padding:6px 16px;font-size:13px;font-weight:600;color:#a5b4fc;margin-bottom:28px;">
-        <span style="display:inline-block;width:8px;height:8px;background:#818cf8;border-radius:50%;box-shadow:0 0 10px #818cf8;"></span> 
-        Platform Magang Digital FIKOM
-      </div>
-      <h1 class="brand-font" style="font-size:clamp(46px,6vw,72px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;">
-        Magang yang<br>
-        <span class="text-gradient">Cerdas & Terukur</span>
-      </h1>
-      <p style="font-size:18px;color:rgba(248,250,252,0.6);line-height:1.6;margin-bottom:40px;max-width:480px;font-weight:400;">
-        Otomatisasi seluruh proses magang — dari seleksi hingga konversi SKS, menghadirkan pengalaman tanpa hambatan bagi mahasiswa dan dosen.
-      </p>
-      <div style="display:flex;gap:16px;flex-wrap:wrap;">
-        <a href="login.html" class="btn-premium" style="padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
-          Mulai Sekarang <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <!-- 01 Navbar -->
+    <nav class="sticky top-0 w-full z-50 transition-all duration-300 h-[72px]"
+      :class="scrolled ? 'bg-black/60 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'">
+      <div class="max-w-[1280px] mx-auto px-8 h-full w-full flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-black font-bold text-sm">S</div>
+          <span class="font-heading text-xl font-bold tracking-tight">SIMAG</span>
         </a>
-        <a href="#fitur" class="btn-outline-premium" style="padding:16px 32px;border-radius:12px;font-size:16px;font-weight:600;color:#f8fafc;text-decoration:none;">
-          Pelajari Lebih Lanjut
+
+        <!-- Mobile Menu Button -->
+        <button @click="mobileMenuOpen = !mobileMenuOpen"
+          class="md:hidden flex items-center text-white/70 hover:text-white ml-auto mr-4" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-6 h-6" v-if="!mobileMenuOpen"></i>
+          <i data-lucide="x" class="w-6 h-6" v-else></i>
+        </button>
+
+        <div class="hidden md:flex gap-8 text-sm font-medium text-white/60">
+          <a href="#about" class="hover:text-white transition-colors">About</a>
+          <a href="#features" class="hover:text-white transition-colors">Features</a>
+          <a href="#workflow" class="hover:text-white transition-colors">Workflow</a>
+          <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <template v-if="isLoggedIn">
+            <a :href="'pages/dashboard-' + (sessionRole === 'adminprodi' ? 'admin' : sessionRole) + '.html'"
+              class="text-sm font-medium hover:text-indigo-400 transition-colors">Dashboard</a>
+            <button @click="logout"
+              class="text-sm font-medium text-white/50 hover:text-white transition-colors">Logout</button>
+          </template>
+          <template v-else>
+            <a href="login.html" class="text-sm font-medium text-white/70 hover:text-white transition-colors">Login</a>
+            <a href="register.html"
+              class="h-10 px-5 rounded-full flex items-center justify-center text-sm font-semibold bg-white text-black hover:bg-white/90 transition-all">Get
+              Started</a>
+          </template>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <div v-show="mobileMenuOpen"
+        class="md:hidden absolute top-[72px] left-0 w-full bg-black/95 border-b border-white/10 p-6 flex flex-col gap-6 shadow-2xl backdrop-blur-xl">
+        <a href="#about" @click="mobileMenuOpen = false" class="text-white/80 hover:text-white font-medium">About</a>
+        <a href="#features" @click="mobileMenuOpen = false"
+          class="text-white/80 hover:text-white font-medium">Features</a>
+        <a href="#workflow" @click="mobileMenuOpen = false"
+          class="text-white/80 hover:text-white font-medium">Workflow</a>
+        <a href="#faq" @click="mobileMenuOpen = false" class="text-white/80 hover:text-white font-medium">FAQ</a>
+      </div>
+    </nav>
+
+    <!-- 02 Hero -->
+    <section
+      class="relative pt-[140px] pb-[120px] w-full flex flex-col items-center text-center overflow-hidden min-h-[920px]">
+
+      <!-- Background Glow -->
+      <div
+        class="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none">
+      </div>
+
+      <div class="max-w-[1280px] mx-auto px-8 w-full relative z-10 flex flex-col items-center">
+        <div class="max-w-[780px] w-full mx-auto flex flex-col items-center">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-white/80 mb-8 backdrop-blur-md">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i> OFFICIAL INTERNSHIP PLATFORM
+          </div>
+
+          <h1 class="font-heading text-[56px] md:text-[72px] leading-[1.05] font-bold tracking-tight mb-6">
+            Mengelola Magang Lebih Mudah, <span class="text-gradient">Terstruktur dan Transparan.</span>
+          </h1>
+
+          <p class="text-lg text-white/50 max-w-[700px] w-full leading-relaxed mb-10 font-light">
+            SIMAG membantu mahasiswa, dosen, admin, dan mitra mengelola seluruh proses magang dalam satu platform.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-4 w-full">
+            <template v-if="isLoggedIn">
+              <a :href="'pages/dashboard-' + (sessionRole === 'adminprodi' ? 'admin' : sessionRole) + '.html'"
+                class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold bg-white text-black hover:bg-white/90 transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:scale-105">
+                Buka Dashboard
+              </a>
+            </template>
+            <template v-else>
+              <a href="register.html"
+                class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold bg-white text-black hover:bg-white/90 transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:scale-105">
+                Mulai Sekarang
+              </a>
+            </template>
+            <a href="#preview"
+              class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all backdrop-blur-md">
+              Lihat Demo
+            </a>
+          </div>
+        </div>
+
+        <!-- Dashboard Preview Graphic -->
+        <div class="w-full max-w-[1080px] mx-auto mt-[72px] relative z-20 reveal">
+          <div
+            class="rounded-[28px] border border-white/10 bg-[#0a0a0a] shadow-2xl overflow-hidden aspect-[16/9] flex flex-col relative ring-1 ring-white/5">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none">
+            </div>
+
+            <!-- Fake Mac Header -->
+            <div class="h-12 border-b border-white/10 flex items-center px-6 gap-2 bg-white/[0.02]">
+              <div class="w-3 h-3 rounded-full bg-white/20"></div>
+              <div class="w-3 h-3 rounded-full bg-white/20"></div>
+              <div class="w-3 h-3 rounded-full bg-white/20"></div>
+              <div class="flex-1 flex justify-center">
+                <div class="px-4 py-1.5 rounded-md bg-white/5 border border-white/5 flex items-center gap-2">
+                  <i data-lucide="lock" class="w-3 h-3 text-white/40"></i>
+                  <span class="text-xs font-medium text-white/40">simag.ac.id</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fake Dashboard Body -->
+            <div class="flex-1 flex p-6 gap-6 bg-black relative">
+              <!-- Sidebar -->
+              <div class="hidden md:flex w-64 flex-col gap-4 border-r border-white/10 pr-6">
+                <div class="h-8 w-32 bg-white/10 rounded-md mb-4"></div>
+                <div class="h-10 w-full bg-white/10 rounded-lg"></div>
+                <div class="h-10 w-full bg-transparent border border-white/10 rounded-lg"></div>
+                <div class="h-10 w-full bg-transparent border border-white/10 rounded-lg"></div>
+                <div class="h-10 w-full bg-transparent border border-white/10 rounded-lg"></div>
+              </div>
+              <!-- Main Content -->
+              <div class="flex-1 flex flex-col gap-6">
+                <div
+                  class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-white/10">
+                  <div class="w-full">
+                    <div class="h-6 w-3/4 max-w-[192px] bg-white/20 rounded-md mb-2"></div>
+                    <div class="h-4 w-full max-w-[256px] bg-white/10 rounded-md"></div>
+                  </div>
+                  <div class="hidden md:block h-10 w-32 bg-white/10 rounded-lg"></div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 md:gap-4">
+                  <div class="h-20 md:h-32 rounded-xl bg-white/[0.03] border border-white/10 p-3 md:p-5">
+                    <div class="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-indigo-500/20 mb-2 md:mb-4"></div>
+                    <div class="h-3 md:h-4 w-16 md:w-24 bg-white/20 rounded-md mb-2"></div>
+                    <div class="h-6 md:h-8 w-12 md:w-16 bg-white/50 rounded-md"></div>
+                  </div>
+                  <div class="h-20 md:h-32 rounded-xl bg-white/[0.03] border border-white/10 p-3 md:p-5">
+                    <div class="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 mb-2 md:mb-4"></div>
+                    <div class="h-3 md:h-4 w-16 md:w-24 bg-white/20 rounded-md mb-2"></div>
+                    <div class="h-6 md:h-8 w-12 md:w-16 bg-white/50 rounded-md"></div>
+                  </div>
+                  <div class="h-20 md:h-32 rounded-xl bg-white/[0.03] border border-white/10 p-3 md:p-5">
+                    <div class="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-amber-500/20 mb-2 md:mb-4"></div>
+                    <div class="h-3 md:h-4 w-16 md:w-24 bg-white/20 rounded-md mb-2"></div>
+                    <div class="h-6 md:h-8 w-12 md:w-16 bg-white/50 rounded-md"></div>
+                  </div>
+                </div>
+                <div class="flex-1 rounded-xl bg-white/[0.03] border border-white/10 p-6 flex flex-col gap-4">
+                  <div class="h-6 w-48 bg-white/20 rounded-md mb-2"></div>
+                  <div class="flex-1 rounded-lg border border-white/5 bg-black/50 p-4 flex flex-col gap-3">
+                    <div class="h-4 w-full bg-white/5 rounded"></div>
+                    <div class="h-4 w-5/6 bg-white/5 rounded"></div>
+                    <div class="h-4 w-4/6 bg-white/5 rounded"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- 03 Trusted Partners -->
+    <section class="py-[120px] w-full max-w-[1280px] mx-auto px-8 reveal">
+      <p class="text-center text-sm font-medium text-white/40 mb-10 uppercase tracking-widest">Dipercaya oleh institusi
+        dan industri terkemuka</p>
+      <div
+        class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+        <!-- Universitas -->
+        <a href="https://home.amikom.ac.id/" target="_blank" rel="noopener noreferrer"
+          class="flex items-center gap-3 text-white font-heading font-bold text-xl hover:text-indigo-400 transition-colors cursor-pointer">
+          <i data-lucide="graduation-cap" class="w-8 h-8"></i> Universitas Amikom Yogyakarta
         </a>
+        <!-- Industri -->
+        <div class="flex items-center gap-3 text-white font-heading font-bold text-xl"><i data-lucide="briefcase"
+            class="w-8 h-8"></i> GoTo</div>
+        <div class="flex items-center gap-3 text-white font-heading font-bold text-xl"><i data-lucide="box"
+            class="w-8 h-8"></i> Shopee</div>
+        <div class="flex items-center gap-3 text-white font-heading font-bold text-xl"><i data-lucide="cloud"
+            class="w-8 h-8"></i> AWS</div>
       </div>
-    </div>
+    </section>
 
-    <!-- Interactive Hero Widget -->
-    <div style="position:relative;z-index:2;perspective:1000px;">
-      <div class="glass-card" style="border-radius:24px;padding:32px;transform:rotateY(-5deg) rotateX(5deg);box-shadow:20px 30px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);">
-        <template v-if="isLoggedIn && sessionRole === 'mahasiswa'">
+    <!-- 04 Statistics -->
+    <section class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div
+          class="h-[150px] rounded-[24px] glass-panel flex flex-col items-center justify-center p-6 text-center hover:-translate-y-1 transition-transform">
+          <h3 class="font-heading text-4xl md:text-5xl font-bold mb-2">3.200+</h3>
+          <p class="text-sm font-medium text-white/50">Mahasiswa</p>
+        </div>
+        <div
+          class="h-[150px] rounded-[24px] glass-panel flex flex-col items-center justify-center p-6 text-center hover:-translate-y-1 transition-transform">
+          <h3 class="font-heading text-4xl md:text-5xl font-bold mb-2">200+</h3>
+          <p class="text-sm font-medium text-white/50">Perusahaan</p>
+        </div>
+        <div
+          class="h-[150px] rounded-[24px] glass-panel flex flex-col items-center justify-center p-6 text-center hover:-translate-y-1 transition-transform">
+          <h3 class="font-heading text-4xl md:text-5xl font-bold mb-2">98%</h3>
+          <p class="text-sm font-medium text-white/50">Kelulusan</p>
+        </div>
+        <div
+          class="h-[150px] rounded-[24px] glass-panel flex flex-col items-center justify-center p-6 text-center hover:-translate-y-1 transition-transform">
+          <h3 class="font-heading text-4xl md:text-5xl font-bold mb-2">45</h3>
+          <p class="text-sm font-medium text-white/50">Program Studi</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 Why SIMAG -->
+    <section id="about" class="py-[120px] w-full max-w-[1280px] mx-auto px-8 reveal">
+      <div class="mb-16 md:text-center max-w-2xl mx-auto">
+        <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">Kenapa Menggunakan SIMAG?</h2>
+        <p class="text-white/50 text-lg font-light">Semua proses magang dikelola dalam satu platform.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[300px]">
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between overflow-hidden relative group">
           <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-              <div>
-                <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:4px;font-weight:500;">Selamat datang kembali,</p>
-                <p class="brand-font" style="font-size:20px;font-weight:700;letter-spacing:-0.5px;">{{ lw.name }}</p>
-              </div>
-              <div style="background:linear-gradient(135deg,#4f46e5,#06b6d4);border-radius:16px;padding:12px 20px;text-align:center;box-shadow:0 10px 20px rgba(79,70,229,0.3);">
-                <div class="brand-font" style="font-size:32px;font-weight:800;line-height:1;"><span>{{ lw.progress }}</span><span style="font-size:16px;opacity:0.8;">%</span></div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.9);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Progress</div>
-              </div>
+            <div
+              class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-6 border border-indigo-500/20">
+              <i data-lucide="search" class="w-6 h-6 text-indigo-400"></i>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
-              <div style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.2);border-radius:16px;padding:16px;">
-                <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;font-weight:500;">SKS Konversi</div>
-                <div class="brand-font" style="font-size:24px;font-weight:800;color:#818cf8;">{{ lw.sks }} <span style="font-size:12px;color:rgba(255,255,255,0.3);font-weight:500;">SKS</span></div>
-              </div>
-              <div style="background:rgba(34,211,238,0.05);border:1px solid rgba(34,211,238,0.2);border-radius:16px;padding:16px;">
-                <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;font-weight:500;">Logbook Selesai</div>
-                <div class="brand-font" style="font-size:24px;font-weight:800;color:#22d3ee;">{{ lw.logbook }} <span style="font-size:12px;color:rgba(255,255,255,0.3);font-weight:500;">Entri</span></div>
-              </div>
-            </div>
-            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:20px;">
-              <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.9);">{{ lw.company }}</span>
-                <span style="font-size:12px;font-weight:700;color:#4ade80;background:rgba(74,222,128,0.1);padding:4px 10px;border-radius:99px;">{{ lw.status }}</span>
-              </div>
-              <div style="background:rgba(255,255,255,0.05);height:8px;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);">
-                <div :style="{width: lw.progress + '%', height: '100%', background: 'linear-gradient(90deg, #10b981, #34d399)', borderRadius:'99px'}"></div>
-              </div>
-              <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:12px;font-weight:500;">{{ lw.logbookText }}</p>
-            </div>
+            <h3 class="font-heading text-2xl font-bold mb-3">Cari Magang</h3>
+            <p class="text-white/50 font-light leading-relaxed">Temukan posisi magang yang relevan dengan keahlian Anda
+              secara langsung dari mitra industri yang telah diverifikasi.</p>
           </div>
-        </template>
-        
-        <template v-else-if="isLoggedIn">
-          <div style="text-align:center;padding:60px 0;">
-            <div style="width:64px;height:64px;background:rgba(99,102,241,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <h3 class="brand-font" style="font-size:24px;font-weight:700;margin-bottom:8px;">Sesi Aktif: {{ sessionRole }}</h3>
-            <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:24px;">Lanjutkan pekerjaan Anda di dashboard khusus peran Anda.</p>
-            <a :href="'pages/dashboard-' + (sessionRole === 'adminprodi' ? 'admin' : sessionRole) + '.html'" class="btn-premium" style="padding:12px 28px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;display:inline-block;">Masuk Dashboard</a>
-          </div>
-        </template>
+        </div>
 
-        <template v-else>
-          <div style="text-align:center;padding:40px 20px;">
-            <div style="width:80px;height:80px;background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));border:1px solid rgba(168,85,247,0.3);border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:40px;box-shadow:0 10px 30px rgba(99,102,241,0.2);transform:rotate(-5deg);">🎓</div>
-            <h3 class="brand-font" style="font-size:26px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px;">Mulai Perjalananmu</h3>
-            <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:32px;">Masuk ke akun SIMAG untuk mengeksplor lowongan premium dan kelola magangmu dengan mudah.</p>
-            <a href="login.html" class="btn-premium" style="display:inline-block;padding:14px 36px;border-radius:12px;font-size:15px;font-weight:600;color:#fff;text-decoration:none;box-shadow:0 10px 25px rgba(79,70,229,0.4);">Akses Dashboard</a>
-          </div>
-        </template>
-      </div>
-    </div>
-  </section>
-
-  <!-- Statistics Banner -->
-  <section style="border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.01);padding:60px 0;position:relative;">
-    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center;" class="stats-grid">
-      <div class="stat-card">
-        <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;margin-bottom:8px;">2.8k+</div>
-        <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">Mahasiswa</div>
-      </div>
-      <div class="stat-card" style="border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);">
-        <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;margin-bottom:8px;">180+</div>
-        <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">Mitra Industri</div>
-      </div>
-      <div class="stat-card" style="border-right:1px solid rgba(255,255,255,0.05);">
-        <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;margin-bottom:8px;">96%</div>
-        <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">Kepuasan</div>
-      </div>
-      <div class="stat-card">
-        <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;margin-bottom:8px;">41k+</div>
-        <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">SKS Dikonversi</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section id="fitur" style="max-width:1200px;margin:0 auto;padding:120px 24px;">
-    <div style="text-align:center;margin-bottom:70px;">
-      <span style="display:inline-block;padding:6px 16px;background:rgba(99,102,241,0.1);color:#818cf8;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;">Fitur Unggulan</span>
-      <h2 class="brand-font" style="font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-1px;line-height:1.2;">Ekosistem Magang<br>yang Sempurna</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:30px;">
-      <div class="glass-card" style="border-radius:24px;padding:40px;">
-        <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.05));border:1px solid rgba(99,102,241,0.2);margin-bottom:24px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <h3 class="brand-font" style="font-size:22px;font-weight:700;margin-bottom:12px;">Smart Matching</h3>
-        <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;">Sistem AI mencocokkan profil mahasiswa dengan kompetensi industri secara presisi. SKS dikonversi secara real-time berdasarkan bobot magang aktif.</p>
-      </div>
-      <div class="glass-card" style="border-radius:24px;padding:40px;">
-        <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg, rgba(168,85,247,0.2), rgba(168,85,247,0.05));border:1px solid rgba(168,85,247,0.2);margin-bottom:24px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <h3 class="brand-font" style="font-size:22px;font-weight:700;margin-bottom:12px;">Kurasi Premium</h3>
-        <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;">Akses ke database perusahaan terverifikasi dengan sistem rating transparan. Lowongan dipersonalisasi sesuai dengan jurusan dan peminatan.</p>
-      </div>
-      <div class="glass-card" style="border-radius:24px;padding:40px;">
-        <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg, rgba(20,184,166,0.2), rgba(20,184,166,0.05));border:1px solid rgba(20,184,166,0.2);margin-bottom:24px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        </div>
-        <h3 class="brand-font" style="font-size:22px;font-weight:700;margin-bottom:12px;">Logbook Interaktif</h3>
-        <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;">Pelaporan harian digital yang mulus dengan multi-approval. Dosen dan mentor industri dapat memonitor progres secara real-time.</p>
-      </div>
-      <div class="glass-card" style="border-radius:24px;padding:40px;">
-        <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05));border:1px solid rgba(245,158,11,0.2);margin-bottom:24px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <h3 class="brand-font" style="font-size:22px;font-weight:700;margin-bottom:12px;">Auto Konversi SKS</h3>
-        <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;">Sistem canggih yang menghitung dan mengonversi jam kerja magang menjadi capaian SKS (KHS) secara otomatis di akhir periode.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Untuk Siapa Section -->
-  <section id="untuk-siapa" style="background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:100px 0;">
-    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <div style="text-align:center;margin-bottom:60px;">
-        <span style="font-size:12px;color:#818cf8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">UNTUK SIAPA</span>
-        <h2 class="brand-font" style="font-size:clamp(30px,4vw,42px);font-weight:800;margin-top:12px;">Setiap aktor memiliki pengalaman yang sempurna</h2>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;" class="roles-grid">
-        <div class="glass-card" style="border-radius:20px;padding:32px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#818cf8);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px;">🎓</div>
-          <h3 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:10px;">Mahasiswa FIKOM</h3>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;">Eksplor lowongan, daftar, isi daily logbook dan lihat progres persetujuan secara instan.</p>
-          <a href="#" @click.prevent="openRolePage('mahasiswa', 'pages/dashboard-mahasiswa.html')" style="font-size:13px;color:#818cf8;text-decoration:none;font-weight:600;">Buka dashboard mahasiswa →</a>
-        </div>
-        <div class="glass-card" style="border-radius:20px;padding:32px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#a78bfa);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px;">👨‍💼</div>
-          <h3 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:10px;">Admin Program Studi</h3>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;">Kelola pendaftaran, verifikasi data, dan awasi seluruh pelaksanaan magang secara terpusat.</p>
-          <a href="#" @click.prevent="openRolePage('adminprodi', 'pages/dashboard-admin.html')" style="font-size:13px;color:#a78bfa;text-decoration:none;font-weight:600;">Lihat dashboard admin →</a>
-        </div>
-        <div class="glass-card" style="border-radius:20px;padding:32px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px;">🏢</div>
-          <h3 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:10px;">Perusahaan Mitra</h3>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;">Buat lowongan, saring pelamar, beri approval, dan nilai performa anak magang.</p>
-          <a href="#" @click.prevent="openRolePage('mitra', 'pages/dashboard-mitra.html')" style="font-size:13px;color:#34d399;text-decoration:none;font-weight:600;">Buka dashboard mitra →</a>
-        </div>
-        <div class="glass-card" style="border-radius:20px;padding:32px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px;">👨‍🏫</div>
-          <h3 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:10px;">Dosen Pembimbing</h3>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;">Pantau logbook bimbingan, berikan evaluasi, dan setujui konversi SKS akhir.</p>
-          <a href="#" @click.prevent="openRolePage('dospem', 'pages/dashboard-dospem.html')" style="font-size:13px;color:#fbbf24;text-decoration:none;font-weight:600;">Buka dashboard dosen →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Cara Kerja Section -->
-  <section id="cara-kerja" style="max-width:1200px;margin:0 auto;padding:120px 24px;">
-    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;" class="hiw-grid">
-      <div>
-        <span style="font-size:12px;color:#818cf8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">ALUR MAGANG</span>
-        <h2 class="brand-font" style="font-size:clamp(32px,4vw,48px);font-weight:800;margin-top:16px;line-height:1.2;letter-spacing:-1px;">Dari pendaftaran hingga sertifikat magang, hitungan minggu</h2>
-        <p style="color:rgba(255,255,255,0.5);margin-top:24px;font-size:16px;line-height:1.6;">Platform SIMAG mengotomatisasi kerumitan birokrasi magang FIKOM, membantu Anda fokus pada pembelajaran dan pengalaman kerja.</p>
-        <a href="login.html" class="btn-outline-premium" style="display:inline-flex;align-items:center;gap:8px;margin-top:40px;padding:12px 24px;border-radius:12px;font-size:15px;color:#fff;font-weight:600;text-decoration:none;">Baca detail alur <span style="color:#818cf8;">→</span></a>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:32px;background:rgba(255,255,255,0.02);padding:40px;border-radius:24px;border:1px solid rgba(255,255,255,0.05);box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
-        <div style="display:flex;gap:20px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(99,102,241,0.15);color:#818cf8;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">01</div>
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between overflow-hidden relative group">
           <div>
-            <h4 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:8px;">Pendaftaran & Verifikasi</h4>
-            <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Lengkapi biodata dan unggah dokumen pendukung. Admin FIKOM akan memverifikasi kelayakan Anda.</p>
+            <div
+              class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20">
+              <i data-lucide="send" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+            <h3 class="font-heading text-2xl font-bold mb-3">Ajukan Magang</h3>
+            <p class="text-white/50 font-light leading-relaxed">Proses pendaftaran yang mudah, aman, dan langsung
+              terhubung dengan sistem administrasi kampus tanpa dokumen fisik.</p>
           </div>
         </div>
-        <div style="display:flex;gap:20px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(168,85,247,0.15);color:#c084fc;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">02</div>
+
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between overflow-hidden relative group">
           <div>
-            <h4 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:8px;">Smart Matching</h4>
-            <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Algoritma akan merekomendasikan posisi dan mitra terbaik sesuai peminatan kurikulum S1 Anda.</p>
+            <div
+              class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
+              <i data-lucide="book-open" class="w-6 h-6 text-amber-400"></i>
+            </div>
+            <h3 class="font-heading text-2xl font-bold mb-3">Logbook Harian</h3>
+            <p class="text-white/50 font-light leading-relaxed">Catat aktivitas magang harian Anda secara digital,
+              dapatkan approval dari mentor perusahaan dan dosen pembimbing seketika.</p>
           </div>
         </div>
-        <div style="display:flex;gap:20px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(20,184,166,0.15);color:#2dd4bf;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">03</div>
+
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between overflow-hidden relative group">
           <div>
-            <h4 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:8px;">Pelaksanaan Magang</h4>
-            <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Isi jurnal harian, lakukan bimbingan bersama dosen pembimbing, dan dapatkan persetujuan langsung dari supervisor industri.</p>
-          </div>
-        </div>
-        <div style="display:flex;gap:20px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(245,158,11,0.15);color:#fbbf24;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">04</div>
-          <div>
-            <h4 class="brand-font" style="font-size:18px;font-weight:700;margin-bottom:8px;">Konversi & Laporan Akhir</h4>
-            <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;">Nilai akhir diakumulasi dan otomatis terkonversi menjadi KHS / Transkrip sesuai bobot SKS prodi.</p>
+            <div
+              class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center mb-6 border border-pink-500/20">
+              <i data-lucide="eye" class="w-6 h-6 text-pink-400"></i>
+            </div>
+            <h3 class="font-heading text-2xl font-bold mb-3">Monitoring Dosen</h3>
+            <p class="text-white/50 font-light leading-relaxed">Dosen dapat memantau progres mahasiswa secara real-time,
+              memberikan evaluasi berkala, dan melakukan konversi nilai akhir.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Simulasi Role Section (Visible for Logged In Users Only) -->
-  <section v-if="isLoggedIn" id="simulasi-fitur-section" style="position:relative;background:rgba(255,255,255,0.01);border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.03);padding:100px 0;overflow:hidden;">
-    <div style="position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg, transparent, rgba(168,85,247,0.5), transparent);"></div>
-    <div style="max-width:1000px;margin:0 auto;padding:0 24px;text-align:center;position:relative;z-index:2;">
-      <span style="display:inline-block;padding:6px 16px;background:rgba(168,85,247,0.1);color:#c084fc;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;">SIMULASI FITUR</span>
-      <h2 class="brand-font" style="font-size:clamp(30px,4vw,42px);font-weight:800;margin-bottom:16px;letter-spacing:-1px;">Rasakan Pengalaman <span class="text-gradient">SIMAG</span></h2>
-      <p style="color:rgba(255,255,255,0.5);font-size:16px;margin-bottom:48px;max-width:500px;margin-left:auto;margin-right:auto;">Pilih peran di bawah ini untuk melihat pratinjau panel kontrol yang dirancang khusus untuk masing-masing pengguna.</p>
-
-      <div class="preview-role-tabs" style="display:inline-flex;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:99px;padding:8px;margin-bottom:40px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-        <button class="preview-role-tab" :class="{active: previewRole === 'mahasiswa'}" @click="previewRole = 'mahasiswa'">Mahasiswa</button>
-        <button class="preview-role-tab" :class="{active: previewRole === 'dospem'}" @click="previewRole = 'dospem'">Dosen Pembimbing</button>
-        <button class="preview-role-tab" :class="{active: previewRole === 'adminprodi'}" @click="previewRole = 'adminprodi'">Admin Prodi</button>
-        <button class="preview-role-tab" :class="{active: previewRole === 'mitra'}" @click="previewRole = 'mitra'">Mitra Industri</button>
+    <!-- 06 Internship Flow -->
+    <section id="workflow" class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="mb-20 text-center max-w-2xl mx-auto">
+        <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">Alur Magang</h2>
+        <p class="text-white/50 text-lg font-light">Proses end-to-end dari pendaftaran hingga konversi SKS.</p>
       </div>
 
-      <!-- Simulation Cards Container -->
-      <div class="glass-card" style="border-radius:24px;padding:40px;text-align:left;box-shadow:0 30px 60px rgba(0,0,0,0.5);">
-        
-        <!-- Mahasiswa -->
-        <div v-show="previewRole === 'mahasiswa'" style="animation: fadeIn 0.3s ease;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:20px;">
-            <div class="brand-font" style="font-weight:800;font-size:22px;display:flex;align-items:center;gap:12px;">
-              <span style="display:flex;width:32px;height:32px;background:rgba(99,102,241,0.2);color:#818cf8;border-radius:8px;align-items:center;justify-content:center;font-size:16px;">🎓</span> Magang Aktif
+      <div class="relative flex flex-col md:flex-row justify-between gap-8 md:gap-4">
+        <!-- Horizontal connector -->
+        <div class="hidden md:block absolute top-[28px] left-[40px] right-[40px] h-[2px] bg-white/10 z-0"></div>
+
+        <!-- Steps -->
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-black border border-white/20 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-xl">
+            1</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Cari Lowongan</h4>
+            <p class="text-sm text-white/50 font-light">Eksplorasi posisi</p>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-black border border-white/20 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-xl">
+            2</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Ajukan Magang</h4>
+            <p class="text-sm text-white/50 font-light">Daftar & validasi</p>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-black border border-white/20 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-xl">
+            3</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Disetujui</h4>
+            <p class="text-sm text-white/50 font-light">Proses seleksi mitra</p>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-black border border-white/20 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-xl">
+            4</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Isi Logbook</h4>
+            <p class="text-sm text-white/50 font-light">Laporan harian</p>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-black border border-white/20 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-xl">
+            5</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Penilaian</h4>
+            <p class="text-sm text-white/50 font-light">Evaluasi akhir</p>
+          </div>
+        </div>
+
+        <div class="relative z-10 flex flex-row md:flex-col items-center md:items-start gap-6 md:gap-4 flex-1">
+          <div
+            class="w-14 h-14 rounded-full bg-indigo-600 border border-indigo-500 flex items-center justify-center text-xl font-heading font-bold text-white shrink-0 shadow-[0_0_20px_rgba(79,70,229,0.5)]">
+            6</div>
+          <div>
+            <h4 class="font-heading font-bold text-lg mb-1">Selesai</h4>
+            <p class="text-sm text-white/50 font-light">Konversi nilai/SKS</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 Platform Preview -->
+    <section id="preview" class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="flex flex-col items-center">
+        <div
+          class="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-xl bg-white/5 border border-white/10 mb-12">
+          <button @click="activePreviewTab = 'mahasiswa'"
+            :class="activePreviewTab === 'mahasiswa' ? 'bg-white/10 text-white shadow-sm' : 'text-white/50 hover:text-white'"
+            class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all">Mahasiswa</button>
+          <button @click="activePreviewTab = 'dosen'"
+            :class="activePreviewTab === 'dosen' ? 'bg-white/10 text-white shadow-sm' : 'text-white/50 hover:text-white'"
+            class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all">Dosen</button>
+          <button @click="activePreviewTab = 'admin'"
+            :class="activePreviewTab === 'admin' ? 'bg-white/10 text-white shadow-sm' : 'text-white/50 hover:text-white'"
+            class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all">Admin</button>
+          <button @click="activePreviewTab = 'mitra'"
+            :class="activePreviewTab === 'mitra' ? 'bg-white/10 text-white shadow-sm' : 'text-white/50 hover:text-white'"
+            class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all">Mitra</button>
+        </div>
+
+        <div
+          class="w-full max-w-[1080px] rounded-[28px] glass-panel aspect-[16/10] flex relative overflow-hidden shadow-2xl">
+          <iframe :src="previewIframeSrc" class="w-full h-full border-none bg-black/50 pointer-events-none"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 Features -->
+    <section id="features" class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="mb-16 md:text-center max-w-2xl mx-auto">
+        <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">Fitur Utama</h2>
+        <p class="text-white/50 text-lg font-light">Sistem komprehensif untuk menyederhanakan birokrasi magang.</p>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[220px]">
+
+        <!-- Smart Matching -->
+        <div
+          class="md:col-span-2 rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform group">
+          <i data-lucide="cpu" class="w-10 h-10 text-indigo-400 mb-6 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-2xl font-bold mb-4">Smart Matching</h3>
+          <p class="text-white/50 font-light leading-relaxed">Algoritma pencocokan cerdas yang merekomendasikan lowongan
+            magang berdasarkan skill, IPK, dan minat mahasiswa untuk memastikan tingkat penerimaan maksimal.</p>
+        </div>
+
+        <!-- Notification -->
+        <div
+          class="rounded-[24px] glass-panel p-[24px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform group">
+          <i data-lucide="bell" class="w-8 h-8 text-rose-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-lg font-bold">Notification</h3>
+        </div>
+
+        <!-- Logbook -->
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform group">
+          <i data-lucide="file-text"
+            class="w-8 h-8 text-emerald-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-xl font-bold mb-2">Logbook</h3>
+          <p class="text-white/50 text-sm font-light leading-relaxed">Pencatatan harian yang transparan dan langsung
+            terhubung dengan dosen pembimbing.</p>
+        </div>
+
+        <!-- Medium 2 -->
+        <div
+          class="md:col-span-2 rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform group">
+          <i data-lucide="activity" class="w-8 h-8 text-pink-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-xl font-bold mb-2">Monitoring Dosen</h3>
+          <p class="text-white/50 text-sm font-light leading-relaxed">Dashboard khusus dosen untuk memantau ratusan
+            mahasiswa bimbingan secara efisien.</p>
+        </div>
+
+        <!-- Small 1 -->
+        <div
+          class="rounded-[24px] glass-panel p-[24px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform group">
+          <i data-lucide="check-circle"
+            class="w-8 h-8 text-amber-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-lg font-bold">Penilaian</h3>
+        </div>
+
+        <!-- Small 2 -->
+        <div
+          class="rounded-[24px] glass-panel p-[24px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform group">
+          <i data-lucide="folder-open"
+            class="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-lg font-bold">Dokumen</h3>
+        </div>
+
+        <!-- Small 4 -->
+        <div
+          class="rounded-[24px] glass-panel p-[24px] flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform group">
+          <i data-lucide="download" class="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform"></i>
+          <h3 class="font-heading text-lg font-bold">Export</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 User Roles -->
+    <section class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="mb-16 md:text-center max-w-2xl mx-auto">
+        <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">Peran Pengguna</h2>
+        <p class="text-white/50 text-lg font-light">Akses yang disesuaikan untuk setiap pengguna dalam ekosistem.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform">
+          <i data-lucide="user" class="w-8 h-8 text-white mb-6"></i>
+          <h3 class="font-heading text-xl font-bold mb-4">Mahasiswa</h3>
+          <ul class="flex flex-col gap-3 text-sm text-white/50 font-light">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Cari Magang
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Kelola
+              Logbook</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Upload
+              Berkas</li>
+          </ul>
+        </div>
+
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform">
+          <i data-lucide="book-check" class="w-8 h-8 text-white mb-6"></i>
+          <h3 class="font-heading text-xl font-bold mb-4">Dosen</h3>
+          <ul class="flex flex-col gap-3 text-sm text-white/50 font-light">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Monitoring
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Validasi
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Penilaian
+            </li>
+          </ul>
+        </div>
+
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform">
+          <i data-lucide="shield" class="w-8 h-8 text-white mb-6"></i>
+          <h3 class="font-heading text-xl font-bold mb-4">Admin</h3>
+          <ul class="flex flex-col gap-3 text-sm text-white/50 font-light">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Kelola Data
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Kelola
+              Mitra</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Laporan
+            </li>
+          </ul>
+        </div>
+
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col hover:-translate-y-1 transition-transform">
+          <i data-lucide="building-2" class="w-8 h-8 text-white mb-6"></i>
+          <h3 class="font-heading text-xl font-bold mb-4">Perusahaan</h3>
+          <ul class="flex flex-col gap-3 text-sm text-white/50 font-light">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Lowongan
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Seleksi
+            </li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Evaluasi
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 Testimonials -->
+    <section class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="mb-16 md:text-center max-w-2xl mx-auto">
+        <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">Testimonial</h2>
+        <p class="text-white/50 text-lg font-light">Pengalaman nyata dari para pengguna SIMAG.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between">
+          <p class="text-white/80 font-light leading-relaxed mb-8">"Proses administrasi yang biasanya memakan waktu
+            berminggu-minggu kini selesai dalam hitungan menit. Sangat membantu produktivitas kami di fakultas."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center font-bold">DR</div>
+            <div>
+              <h4 class="font-bold text-sm">Dr. Rina P.</h4>
+              <p class="text-xs text-white/50">Dosen Pembimbing</p>
             </div>
           </div>
-          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:32px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
-              <div>
-                <h3 class="brand-font" style="font-size:24px;font-weight:800;margin-bottom:6px;">{{ pr.mhs.company }}</h3>
-                <span style="font-size:15px;color:rgba(255,255,255,0.5);font-weight:500;">{{ pr.mhs.pos }}</span>
+        </div>
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between">
+          <p class="text-white/80 font-light leading-relaxed mb-8">"Mencari tempat magang yang valid dan aman menjadi
+            jauh lebih mudah. Fitur logbook harian juga membuat pelaporan jadi tidak menumpuk di akhir."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center font-bold">AD</div>
+            <div>
+              <h4 class="font-bold text-sm">Andi D.</h4>
+              <p class="text-xs text-white/50">Mahasiswa Informatika</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-[24px] glass-panel p-[32px] flex flex-col justify-between">
+          <p class="text-white/80 font-light leading-relaxed mb-8">"Kami mendapatkan talenta yang tepat karena sistem
+            filtering SIMAG sangat akurat sesuai kebutuhan industri kami."</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center font-bold">HR</div>
+            <div>
+              <h4 class="font-bold text-sm">Budi Santoso</h4>
+              <p class="text-xs text-white/50">HR Director, TechCorp</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 FAQ -->
+    <section id="faq" class="py-[120px] w-full max-w-[1280px] mx-auto px-8 border-t border-white/10 reveal">
+      <div class="max-w-[800px] mx-auto">
+        <div class="mb-16 md:text-center">
+          <h2 class="font-heading text-[40px] font-bold tracking-tight mb-4">FAQ</h2>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <!-- FAQ Item -->
+          <details class="group rounded-[16px] glass-panel px-6 py-4 cursor-pointer">
+            <summary class="flex justify-between items-center font-medium text-lg list-none outline-none">
+              Bagaimana cara daftar magang?
+              <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="mt-4 text-white/50 font-light leading-relaxed">
+              Mahasiswa cukup login menggunakan akun akademik, melengkapi profil, dan langsung dapat memilih posisi dari
+              daftar mitra perusahaan yang tersedia di portal.
+            </div>
+          </details>
+          <!-- FAQ Item -->
+          <details class="group rounded-[16px] glass-panel px-6 py-4 cursor-pointer">
+            <summary class="flex justify-between items-center font-medium text-lg list-none outline-none">
+              Bagaimana approval dosen?
+              <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="mt-4 text-white/50 font-light leading-relaxed">
+              Semua pengajuan magang akan masuk ke dashboard dosen pembimbing secara otomatis untuk divalidasi dengan
+              satu klik.
+            </div>
+          </details>
+          <!-- FAQ Item -->
+          <details class="group rounded-[16px] glass-panel px-6 py-4 cursor-pointer">
+            <summary class="flex justify-between items-center font-medium text-lg list-none outline-none">
+              Bagaimana logbook bekerja?
+              <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="mt-4 text-white/50 font-light leading-relaxed">
+              Mahasiswa mengisi jurnal kegiatan harian. Mentor industri dan dosen pembimbing akan mendapat notifikasi
+              untuk melakukan review dan persetujuan secara real-time.
+            </div>
+          </details>
+          <!-- FAQ Item -->
+          <details class="group rounded-[16px] glass-panel px-6 py-4 cursor-pointer">
+            <summary class="flex justify-between items-center font-medium text-lg list-none outline-none">
+              Bagaimana penilaian dilakukan?
+              <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="mt-4 text-white/50 font-light leading-relaxed">
+              Penilaian adalah hasil kalkulasi otomatis dari metrik evaluasi mentor industri dan dosen pembimbing yang
+              kemudian bisa diexport untuk konversi SKS.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 CTA -->
+    <section
+      class="border-t border-white/10 w-full relative overflow-hidden h-[320px] flex items-center justify-center reveal">
+      <div class="absolute inset-0 bg-indigo-600/10 blur-[80px]"></div>
+      <div class="relative z-10 text-center px-8 w-full max-w-[1280px] mx-auto">
+        <h2 class="font-heading text-[40px] md:text-[48px] font-bold tracking-tight mb-4">Siap Memulai Magang?</h2>
+        <p class="text-white/50 text-lg font-light mb-8 max-w-[600px] mx-auto">Gabung bersama ribuan mahasiswa yang
+          telah menggunakan SIMAG.</p>
+        <div class="flex justify-center gap-4">
+          <template v-if="isLoggedIn">
+            <a :href="'pages/dashboard-' + (sessionRole === 'adminprodi' ? 'admin' : sessionRole) + '.html'"
+              class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold bg-white text-black hover:bg-white/90 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+              Buka Dashboard
+            </a>
+          </template>
+          <template v-else>
+            <a href="register.html"
+              class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold bg-white text-black hover:bg-white/90 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+              Mulai Sekarang
+            </a>
+            <a href="login.html"
+              class="h-12 px-8 rounded-[14px] flex items-center justify-center text-base font-semibold border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all">
+              Hubungi Kami
+            </a>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 Footer -->
+    <footer class="bg-[#111217] pt-[80px] pb-[40px] border-t border-white/5">
+      <div class="max-w-[1280px] mx-auto px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div>
+            <a href="index.html" class="flex items-center gap-2 mb-6">
+              <div class="w-6 h-6 rounded-md bg-white flex items-center justify-center text-black font-bold text-xs">S
               </div>
-              <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;line-height:1;">{{ pr.mhs.prog }}<span style="font-size:20px;">%</span></div>
-            </div>
-            <div style="background:rgba(255,255,255,0.05);height:12px;border-radius:99px;overflow:hidden;margin-bottom:30px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.5);">
-              <div :style="{width: pr.mhs.prog + '%', height: '100%', background: 'linear-gradient(90deg, #3b82f6, #10b981)', borderRadius:'99px'}"></div>
-            </div>
-            <a href="#" @click.prevent="openRolePage('mahasiswa', 'pages/logbook-saya.html')" class="btn-premium" style="display:block;width:100%;text-align:center;padding:16px;border-radius:12px;font-size:15px;font-weight:600;color:#fff;text-decoration:none;">Isi Jurnal Harian</a>
+              <span class="font-heading text-lg font-bold tracking-tight">SIMAG</span>
+            </a>
+            <p class="text-sm text-white/40 font-light leading-relaxed">Official platform for structured, efficient, and
+              transparent internship management.</p>
+          </div>
+
+          <div>
+            <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-white/80">Platform</h4>
+            <ul class="flex flex-col gap-4 text-sm text-white/50 font-light">
+              <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#workflow" class="hover:text-white transition-colors">Workflow</a></li>
+              <li><a href="login.html" class="hover:text-white transition-colors">Login</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-white/80">Tentang</h4>
+            <ul class="flex flex-col gap-4 text-sm text-white/50 font-light">
+              <li><a href="https://home.amikom.ac.id/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Universitas</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Panduan</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-white/80">Kontak</h4>
+            <ul class="flex flex-col gap-4 text-sm text-white/50 font-light">
+              <li><a href="#" class="hover:text-white transition-colors">Bantuan</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Dukungan Teknis</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Sosial Media</a></li>
+            </ul>
           </div>
         </div>
 
-        <!-- Admin -->
-        <div v-show="previewRole === 'adminprodi'" style="animation: fadeIn 0.3s ease;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:20px;">
-            <div class="brand-font" style="font-weight:800;font-size:22px;display:flex;align-items:center;gap:12px;">
-              <span style="display:flex;width:32px;height:32px;background:rgba(245,158,11,0.2);color:#fbbf24;border-radius:8px;align-items:center;justify-content:center;font-size:16px;">⚙️</span> Command Center
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:30px;">
-            <div style="background:linear-gradient(135deg, rgba(99,102,241,0.1), transparent);border:1px solid rgba(99,102,241,0.2);padding:24px;border-radius:16px;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;text-transform:uppercase;">Pendaftaran</p>
-              <strong class="brand-font" style="font-size:36px;color:#a5b4fc;">{{ pr.admin.pend }}</strong>
-            </div>
-            <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1), transparent);border:1px solid rgba(16,185,129,0.2);padding:24px;border-radius:16px;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;text-transform:uppercase;">Mahasiswa Aktif</p>
-              <strong class="brand-font" style="font-size:36px;color:#6ee7b7;">{{ pr.admin.mhs }}</strong>
-            </div>
-            <div style="background:linear-gradient(135deg, rgba(236,72,153,0.1), transparent);border:1px solid rgba(236,72,153,0.2);padding:24px;border-radius:16px;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;text-transform:uppercase;">Total SKS</p>
-              <strong class="brand-font" style="font-size:36px;color:#f9a8d4;">{{ pr.admin.sks }}</strong>
-            </div>
-          </div>
-          <a href="#" @click.prevent="openRolePage('adminprodi', 'pages/dashboard-admin.html')" class="btn-premium" style="display:block;width:100%;text-align:center;padding:16px;border-radius:12px;font-size:15px;font-weight:600;color:#fff;text-decoration:none;">Buka Panel Admin</a>
-        </div>
-
-        <!-- Mitra -->
-        <div v-show="previewRole === 'mitra'" style="animation: fadeIn 0.3s ease;">
-           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:20px;">
-            <div class="brand-font" style="font-weight:800;font-size:22px;display:flex;align-items:center;gap:12px;">
-              <span style="display:flex;width:32px;height:32px;background:rgba(20,184,166,0.2);color:#2dd4bf;border-radius:8px;align-items:center;justify-content:center;font-size:16px;">🏢</span> Intern Tracking
-            </div>
-          </div>
-          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:32px;">
-            <h3 class="brand-font" style="font-size:24px;font-weight:800;margin-bottom:6px;">{{ pr.mitra.name }}</h3>
-            <p style="font-size:15px;color:rgba(255,255,255,0.5);font-weight:500;margin-bottom:24px;">{{ pr.mitra.pos }}</p>
-            <div style="background:rgba(255,255,255,0.05);height:12px;border-radius:99px;overflow:hidden;margin-bottom:16px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.5);">
-              <div :style="{width: pr.mitra.prog + '%', height: '100%', background: 'linear-gradient(90deg, #14b8a6, #2dd4bf)', borderRadius:'99px'}"></div>
-            </div>
-            <p style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:30px;">{{ pr.mitra.log }}</p>
-            <a href="#" @click.prevent="openRolePage('mitra', 'pages/detail-intern.html')" class="btn-premium" style="display:block;width:100%;text-align:center;padding:16px;border-radius:12px;font-size:15px;font-weight:600;color:#fff;text-decoration:none;">Buka Dashboard Mitra</a>
-          </div>
-        </div>
-
-        <!-- Dospem -->
-        <div v-show="previewRole === 'dospem'" style="animation: fadeIn 0.3s ease;">
-           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:20px;">
-            <div class="brand-font" style="font-weight:800;font-size:22px;display:flex;align-items:center;gap:12px;">
-              <span style="display:flex;width:32px;height:32px;background:rgba(168,85,247,0.2);color:#c084fc;border-radius:8px;align-items:center;justify-content:center;font-size:16px;">👨‍🏫</span> Mahasiswa Bimbingan
-            </div>
-          </div>
-          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:32px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
-              <div>
-                <h3 class="brand-font" style="font-size:24px;font-weight:800;margin-bottom:6px;">{{ pr.dospem.name }}</h3>
-                <span style="font-size:15px;color:rgba(255,255,255,0.5);font-weight:500;">{{ pr.dospem.pos }}</span>
-              </div>
-              <div class="brand-font text-gradient" style="font-size:42px;font-weight:800;line-height:1;">{{ pr.dospem.prog }}<span style="font-size:20px;">%</span></div>
-            </div>
-            <div style="background:rgba(168,85,247,0.1);border-left:4px solid #c084fc;padding:16px;border-radius:12px;margin-bottom:30px;">
-              <p style="font-size:14px;font-weight:600;color:#e9d5ff;margin-bottom:4px;">Logbook menunggu review!</p>
-              <p style="font-size:13px;color:rgba(255,255,255,0.5);">Mahasiswa telah mengirimkan jurnal harian terbarunya.</p>
-            </div>
-            <a href="#" @click.prevent="openRolePage('dospem', 'pages/dashboard-dospem.html')" class="btn-premium" style="display:block;width:100%;text-align:center;padding:16px;border-radius:12px;font-size:15px;font-weight:600;color:#fff;text-decoration:none;">Review Jurnal</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section style="margin:80px 24px 100px;position:relative;">
-    <div style="max-width:1000px;margin:0 auto;border-radius:32px;background:linear-gradient(135deg, #3730a3, #4f46e5);padding:80px 40px;text-align:center;box-shadow: 0 30px 60px rgba(79,70,229,0.3);position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-50%;left:-20%;width:100%;height:100%;background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);pointer-events:none;"></div>
-      <div style="position:relative;z-index:2;">
-        <h2 class="brand-font" style="font-size:clamp(32px,5vw,56px);font-weight:800;color:#fff;margin-bottom:24px;line-height:1.1;letter-spacing:-1px;">Masa Depan Karirmu<br>Dimulai di Sini</h2>
-        <p style="font-size:18px;color:rgba(255,255,255,0.7);max-width:500px;margin:0 auto 40px;">Bergabunglah dengan ekosistem magang paling canggih di Universitas Amikom Yogyakarta hari ini.</p>
-        <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
-          <a href="login.html" style="background:#fff;color:#4f46e5;padding:18px 40px;border-radius:14px;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 10px 20px rgba(0,0,0,0.2);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Mulai Sekarang →</a>
-          <a href="panduan.html" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:18px 40px;border-radius:14px;font-weight:600;font-size:16px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Baca Panduan</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer id="kontak" style="border-top:1px solid rgba(255,255,255,0.05);padding:60px 0 30px;background:rgba(0,0,0,0.2);">
-    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;" class="footer-grid">
-        <div>
-          <span class="brand-font" style="font-size:24px;font-weight:800;letter-spacing:-0.5px;">SIMAG<span style="color:#818cf8">.</span></span>
-          <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.7;margin-top:16px;max-width:280px;">Platform manajemen magang digital generasi baru untuk ekosistem FIKOM Universitas Amikom Yogyakarta.</p>
-        </div>
-        <div>
-          <p style="font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;">Platform</p>
-          <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;">
-            <a href="#fitur" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Fitur Unggulan</a>
-            <a href="#cara-kerja" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Cara Kerja</a>
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Pricing</a>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;">Dukungan</p>
-          <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;">
-            <a href="panduan.html" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Dokumentasi</a>
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Bantuan / FAQ</a>
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Kontak Tim</a>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;">Institusi</p>
-          <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;">
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Universitas Amikom</a>
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Fakultas Ilmu Komputer</a>
-            <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Prodi Informatika</a>
+        <div
+          class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 font-light">
+          <p>&copy; 2026 SIMAG System. Hak Cipta Dilindungi.</p>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="hover:text-white transition-colors">Privacy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms</a>
           </div>
         </div>
       </div>
-      <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
-        <p style="font-size:13px;color:rgba(255,255,255,0.3);font-weight:500;">© 2026 SIMAG. Hak cipta dilindungi.</p>
-        <p style="font-size:13px;color:rgba(255,255,255,0.3);font-weight:500;">Dibuat dengan ❤️ di Yogyakarta</p>
-      </div>
-    </div>
-  </footer>
-</div>
+    </footer>
 
-<script src="shared/utils.js"></script>
-<script src="shared/api-client.js"></script>
-<script>
-'use strict';
-const { createApp } = Vue;
-createApp({
-  data() {
-    return {
-      isLoggedIn: false,
-      sessionRole: '',
-      previewRole: 'mahasiswa',
-      lw: { name: 'Memuat...', progress: 0, sks: 0, logbook: 0, company: 'Belum ada magang', status: '', logbookText: '' },
-      pr: {
-        mhs: { company: 'Shopee', pos: 'Software Engineer Intern', prog: 0 },
-        dospem: { name: 'Xin', pos: 'Shopee • Software Engineer', prog: 0 },
-        admin: { pend: 2, mhs: 1, sks: 20 },
-        mitra: { name: 'Raka Aditya', pos: 'Software Engineer Intern', prog: 87, count: 12, log: '131 dari 150 logbook telah dikumpulkan.' }
-      }
-    };
-  },
-  methods: {
-    logout() {
-      simag_logout();
-    },
-    openRolePage(requiredRole, destination) {
-      const { token, role } = simag_getSession();
-      if (token && role === requiredRole) {
-        window.location.href = destination;
-        return;
-      }
-      simag_setPostLoginRedirect(requiredRole, destination);
-      window.location.href = `login.html?role=${encodeURIComponent(requiredRole)}`;
-    },
-    async loadWidget() {
-      if (this.sessionRole === 'mahasiswa') {
-        try {
-          const summary = await SIMAG_DATA.getDashboardSummary();
-          const intern = summary.intern || {};
-          const sks = summary.sks || {};
-          const company = summary.company || {};
-          
-          this.lw.name = simag_getSession().user?.name || 'Mahasiswa';
-          this.lw.progress = intern.progress || 0;
-          this.lw.sks = sks.sks || 0;
-          this.lw.logbook = intern.logbookCompleted || 0;
-          this.lw.company = company.name || 'Belum ada magang';
-          this.lw.status = intern.status ? ('● ' + intern.status) : '';
-          this.lw.logbookText = `${intern.logbookCompleted || 0} logbook dari ${intern.logbookTarget || 150} target ✓`;
-        } catch(e) {
-          console.error(e);
+  </div>
+
+  <script src="shared/utils.js"></script>
+  <script src="shared/api-client.js"></script>
+  <script>
+    'use strict';
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          isLoggedIn: false,
+          sessionRole: '',
+          scrolled: false,
+          activePreviewTab: 'mahasiswa',
+          mobileMenuOpen: false
+        };
+      },
+      computed: {
+        previewIframeSrc() {
+          const tab = this.activePreviewTab;
+          const dashFile = tab === 'dosen' ? 'dospem' : tab;
+          // Map preview tab names to backend role names
+          const tabToRole = { mahasiswa: 'mahasiswa', dosen: 'dospem', admin: 'adminprodi', mitra: 'mitra' };
+          const tabRole = tabToRole[tab];
+          // Only use real session for the tab matching the logged-in user's role
+          const isOwnRole = this.isLoggedIn && this.sessionRole === tabRole;
+          const params = isOwnRole ? 'preview=true' : 'preview=true&nosession=true';
+          return `pages/dashboard-${dashFile}.html?${params}`;
         }
-      }
-    },
-    async loadPreviews() {
-      if (!window.SIMAG_DATA) return;
-      try {
-        const data = await window.SIMAG_DATA.getData();
-        const interns = data.interns || [];
+      },
+      methods: {
+        logout() {
+          simag_logout();
+        },
+        handleScroll() {
+          this.scrolled = window.scrollY > 20;
+
+          const reveals = document.querySelectorAll('.reveal');
+          for (let i = 0; i < reveals.length; i++) {
+            const windowHeight = window.innerHeight;
+            const elementTop = reveals[i].getBoundingClientRect().top;
+            const elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+              reveals[i].classList.add('active');
+            }
+          }
+        }
+      },
+      mounted() {
         const session = simag_getSession();
-        
-        let myIntern = null;
-        if (session.user && session.role === 'mahasiswa') {
-          myIntern = interns.find(i => i.id === session.user.id);
-        }
-        if (!myIntern) {
-          myIntern = interns.find(i => i.companyId) || (interns.length > 0 ? interns[0] : null);
-        }
-        
-        let activeStudentName = 'Mahasiswa';
-        let activeCompanyName = 'Perusahaan';
-        
-        if (session.user) {
-          if (session.role === 'mahasiswa') activeStudentName = session.user.name;
-          if (session.role === 'mitra') activeCompanyName = session.user.name;
-        }
+        if (session.token && session.role) {
+          this.isLoggedIn = true;
+          this.sessionRole = session.role;
 
-        if (myIntern) {
-          const student = (data.users || []).find(u => u.id === myIntern.id) || { name: myIntern.name || myIntern.student?.name || activeStudentName };
-          const company = (data.companies || []).find(c => c.id === myIntern.companyId) || { name: myIntern.company?.name || myIntern.company || activeCompanyName };
-          
-          this.pr.mhs.company = company.name === 'Perusahaan' ? this.pr.mhs.company : company.name;
-          this.pr.mhs.pos = myIntern.position || this.pr.mhs.pos;
-          this.pr.mhs.prog = myIntern.progress || 0;
-          
-          this.pr.dospem.name = student.name === 'Mahasiswa' ? this.pr.dospem.name : student.name;
-          this.pr.dospem.pos = `${company.name === 'Perusahaan' ? 'Perusahaan Mitra' : company.name} • ${myIntern.position || 'Intern'}`;
-          this.pr.dospem.prog = myIntern.progress || 0;
-          
-          this.pr.mitra.name = student.name === 'Mahasiswa' ? this.pr.mitra.name : student.name;
-          this.pr.mitra.pos = `${myIntern.position || 'Intern'} Intern`;
-          this.pr.mitra.prog = myIntern.progress || 0;
-          this.pr.mitra.log = `${myIntern.logbookCompleted || 0} dari ${myIntern.logbookTarget || 150} logbook telah dikumpulkan.`;
-          this.pr.mitra.count = interns.length;
+          const roleMap = {
+            'adminprodi': 'admin',
+            'dospem': 'dosen',
+            'mitra': 'mitra',
+            'mahasiswa': 'mahasiswa'
+          };
+          this.activePreviewTab = roleMap[session.role] || 'mahasiswa';
         }
-        
-        if (data.applications) {
-          this.pr.admin.pend = data.applications.filter(a => a.status === 'Pending').length;
-          this.pr.admin.mhs = interns.length;
-          const totalSks = data.sksConversions ? data.sksConversions.reduce((sum, item) => sum + (item.sks || 0), 0) : 0;
-          this.pr.admin.sks = totalSks || 20;
+        window.addEventListener('scroll', this.handleScroll);
+        setTimeout(this.handleScroll, 100);
+
+        if (window.lucide) {
+          lucide.createIcons();
         }
-      } catch(e) {
-        console.error(e);
+      },
+      unmounted() {
+        window.removeEventListener('scroll', this.handleScroll);
       }
-    }
-  },
-  async mounted() {
-    const session = simag_getSession();
-    if (session.token && session.role) {
-      this.isLoggedIn = true;
-      this.sessionRole = session.role;
-      this.previewRole = session.role;
-    }
-    await this.loadWidget();
-    await this.loadPreviews();
-  }
-}).mount('#app');
-</script>
+    }).mount('#app');
+  </script>
+
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script>
+    const lenis = new Lenis({ autoRaf: true });
+  </script>
 </body>
+
 </html>
