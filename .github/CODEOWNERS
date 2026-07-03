@@ -1,0 +1,5 @@
+# These owners will be the default reviewers for pull requests in these directories.
+* @DimsDwi
+/backend/ @YazzelunggaHitapriyaBudaya
+/shared/ @DimsDwi @YazzelunggaHitapriyaBudaya
+/pages/ @DimsDwi @AdityaChristopherLallo
