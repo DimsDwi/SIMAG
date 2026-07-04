@@ -1,7 +1,7 @@
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
-  testDir: './tests',
+  testDir: './test',
   testMatch: ['**/live-interactive-qa.spec.js'],
   timeout: 180000,
   retries: 0,
