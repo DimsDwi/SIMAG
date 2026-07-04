@@ -4,7 +4,7 @@
       "description": "Frontend untuk Sistem Informasi Magang",
       "scripts": {
             "dev": "vite",
-            "build": "vite build",
+            "build": "vite build && node -e \"fs.cpSync('shared', 'dist/shared', {recursive: true})\"",
             "start:api": "node api/index.js"
       },
       "dependencies": {
