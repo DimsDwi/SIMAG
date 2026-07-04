@@ -414,8 +414,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Sync sidebar badges automatically across all pages
   if (window.SIMAG_DATA && typeof SIMAG_DATA.syncSidebarBadges === 'function') {
-    const { user } = simag_getSession();
-    SIMAG_DATA.syncSidebarBadges(user ? user.id : null);
+    const { token, user } = simag_getSession();
+    if (token) {
+      SIMAG_DATA.syncSidebarBadges(user ? user.id : null);
+    }
   }
 });
 
