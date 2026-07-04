@@ -305,7 +305,21 @@ async function login({ identifier, password, role }) {
   const [rows] = await pool.query(query, params);
   if (rows.length > 0) {
     const user = rows[0];
-    const isMatch = await bcrypt.compare(password, user.password);
+    let isMatch = false;
+    // Check if the stored password is a bcrypt hash (starts with $2a$, $2b$, etc.)
+    if (user.password && user.password.startsWith('$2')) {
+      isMatch = await bcrypt.compare(password, user.password);
+    } else {
+      // Plaintext fallback for legacy seeded data
+      isMatch = (password === user.password);
+      
+      // Automatically upgrade the password to bcrypt here
+      if (isMatch) {
+        const hash = await bcrypt.hash(password, 10);
+        await pool.query('UPDATE users SET password = ? WHERE id = ?', [hash, user.id]);
+      }
+    }
+
     if (isMatch) {
       const token = jwt.sign({ id: user.linked_id, role: user.role }, JWT_SECRET, { expiresIn: '8h' });
       return {

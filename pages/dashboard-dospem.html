@@ -84,85 +84,129 @@
 
     <template v-else>
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;">
       <div>
-        <h1 class="brand-font text-gradient" style="font-size:28px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">Panel Dosen Pembimbing</h1>
-        <p style="font-size:14px;color:rgba(255,255,255,0.45);">Fakultas Ilmu Komputer — Semester Genap 2024/2025</p>
+        <h1 class="brand-font" style="font-size:28px;font-weight:800;margin-bottom:6px;letter-spacing:-0.5px;background:linear-gradient(135deg,#a5b4fc 0%,#c084fc 50%,#38bdf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Panel Dosen Pembimbing</h1>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:6px;">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:0.6"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          Fakultas Ilmu Komputer — Semester Genap 2024/2025
+        </p>
       </div>
-      <button type="button" onclick="window.location.href='jadwal-dospem.html'" class="btn-primary" style="padding:10px 20px;border-radius:9px;font-size:13px;color:#fff;font-weight:600;">+ Buat Jadwal Bimbingan</button>
+      <button type="button" onclick="window.location.href='jadwal-dospem.html'" class="btn-primary" style="padding:11px 22px;border-radius:10px;font-size:13px;color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Buat Jadwal Bimbingan
+      </button>
     </div>
 
     <!-- Alert -->
-    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:24px;min-height:74px;">
-      <div style="flex:1;">
-        <p style="font-size:14px;font-weight:500;color:#fbbf24;">
-          <span v-show="loading" class="simag-skeleton" style="width:250px;height:18px;display:inline-block;"></span>
-          <span>{{ reviewLogbooks.length }} Logbook Menunggu Review</span>
+    <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.22);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:28px;">
+      <div style="width:42px;height:42px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-size:14px;font-weight:600;color:#fbbf24;margin-bottom:3px;">
+          <span v-show="loading" class="simag-skeleton" style="width:220px;height:16px;display:inline-block;"></span>
+          <span v-show="!loading">{{ reviewLogbooks.length }} Logbook Menunggu Review</span>
         </p>
-        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">
-          <span v-show="loading" class="simag-skeleton" style="width:380px;height:14px;display:inline-block;"></span>
-          <span>{{ alertCopy }}</span>
+        <p style="font-size:12px;color:rgba(255,255,255,0.5);">
+          <span v-show="loading" class="simag-skeleton" style="width:320px;height:13px;display:inline-block;"></span>
+          <span v-show="!loading">{{ alertCopy }}</span>
         </p>
       </div>
-      <button onclick="window.location.href='review-logbook-dospem.html'" class="btn-primary" style="margin-left:auto;padding:8px 14px;border-radius:8px;font-size:12px;color:#fff;flex-shrink:0;">Review Sekarang</button>
+      <button v-show="reviewLogbooks.length > 0" onclick="window.location.href='review-logbook-dospem.html'" class="btn-primary" style="padding:9px 16px;border-radius:9px;font-size:12px;color:#fff;font-weight:600;flex-shrink:0;white-space:nowrap;">Review Sekarang</button>
     </div>
 
     <!-- Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;" class="dashboard-stats">
-      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Mahasiswa Bimbingan</p>
-        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
-        <p style="font-size:28px;font-weight:700;color:#a855f7;">{{ interns.length }}</p>
-        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
-        <p style="font-size:11px;color:#4ade80;margin-top:4px;">Semua aktif magang</p>
+      <!-- Card 1: Mahasiswa Bimbingan -->
+      <div class="glass-card" style="border-radius:14px;padding:20px;position:relative;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
+          <p style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.04em;text-transform:uppercase;">Mahasiswa Bimbingan</p>
+          <div style="width:34px;height:34px;border-radius:9px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#a855f7" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div v-show="loading" class="simag-skeleton" style="width:56px;height:36px;margin-bottom:6px;"></div>
+        <p v-show="!loading" style="font-size:32px;font-weight:800;color:#a855f7;line-height:1;margin-bottom:6px;">{{ interns.length }}</p>
+        <p style="font-size:11px;color:#4ade80;display:flex;align-items:center;gap:4px;">
+          <svg width="10" height="10" fill="#4ade80" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          Semua aktif magang
+        </p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Menunggu Penilaian</p>
-        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
-        <p style="font-size:28px;font-weight:700;color:#22d3ee;">{{ waitingEvaluations }}</p>
-        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Siap konversi nilai</p>
+      <!-- Card 2: Menunggu Penilaian -->
+      <div class="glass-card" style="border-radius:14px;padding:20px;position:relative;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
+          <p style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.04em;text-transform:uppercase;">Menunggu Penilaian</p>
+          <div style="width:34px;height:34px;border-radius:9px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#22d3ee" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+        </div>
+        <div v-show="loading" class="simag-skeleton" style="width:56px;height:36px;margin-bottom:6px;"></div>
+        <p v-show="!loading" style="font-size:32px;font-weight:800;color:#22d3ee;line-height:1;margin-bottom:6px;">{{ waitingEvaluations }}</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Siap konversi nilai</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Logbook Pending</p>
-        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
-        <p style="font-size:28px;font-weight:700;color:#fbbf24;">{{ reviewLogbooks.length }}</p>
-        <div v-show="loading" class="simag-skeleton" style="width:100px;height:14px;margin-top:4px;"></div>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">Perlu segera direview</p>
+      <!-- Card 3: Logbook Pending -->
+      <div class="glass-card" style="border-radius:14px;padding:20px;position:relative;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
+          <p style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.04em;text-transform:uppercase;">Logbook Pending</p>
+          <div style="width:34px;height:34px;border-radius:9px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#fbbf24" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+        </div>
+        <div v-show="loading" class="simag-skeleton" style="width:56px;height:36px;margin-bottom:6px;"></div>
+        <p v-show="!loading" style="font-size:32px;font-weight:800;color:#fbbf24;line-height:1;margin-bottom:6px;">{{ reviewLogbooks.length }}</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);">Perlu segera direview</p>
       </div>
-      <div class="glass-card" style="border-radius:12px;padding:20px;min-height:114px;">
-        <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Rata-rata Progress</p>
-        <div v-show="loading" class="simag-skeleton" style="width:60px;height:34px;"></div>
-        <p style="font-size:28px;font-weight:700;color:#4ade80;">{{ averageProgress }}%</p>
-        <div v-show="loading" class="simag-skeleton" style="width:100%;height:6px;margin-top:8px;border-radius:3px;"></div>
-        <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" :style="{ width: averageProgress + '%', background: '#4ade80' }"></div></div>
+      <!-- Card 4: Rata-rata Progress -->
+      <div class="glass-card" style="border-radius:14px;padding:20px;position:relative;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
+          <p style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.04em;text-transform:uppercase;">Rata-rata Progress</p>
+          <div style="width:34px;height:34px;border-radius:9px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+        </div>
+        <div v-show="loading" class="simag-skeleton" style="width:72px;height:36px;margin-bottom:6px;"></div>
+        <p v-show="!loading" style="font-size:32px;font-weight:800;color:#4ade80;line-height:1;margin-bottom:10px;">{{ averageProgress }}%</p>
+        <div v-show="loading" class="simag-skeleton" style="width:100%;height:6px;border-radius:3px;"></div>
+        <div v-show="!loading" style="background:rgba(255,255,255,0.08);border-radius:99px;height:6px;overflow:hidden;">
+          <div :style="{ width: averageProgress + '%', background: 'linear-gradient(90deg,#4ade80,#22d3ee)', borderRadius:'99px', height:'100%', transition:'width 0.8s ease' }"></div>
+        </div>
       </div>
     </div>
 
     <!-- Cards -->
     <div class="dashboard-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
       <!-- Student List -->
-      <div class="glass-card" style="border-radius:14px;padding:24px;min-height:340px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <h3 style="font-size:16px;font-weight:700;">Progress Mahasiswa Bimbingan</h3>
-          <button onclick="window.location.href='review-logbook-dospem.html'" style="font-size:12px;color:#a855f7;background:none;border:none;cursor:pointer;">Lihat Review</button>
+      <div class="glass-card" style="border-radius:16px;padding:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+          <div>
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:2px;">Mahasiswa Bimbingan</h3>
+            <p style="font-size:11px;color:rgba(255,255,255,0.35);">Progress & status magang</p>
+          </div>
+          <button onclick="window.location.href='review-logbook-dospem.html'" style="font-size:11px;color:#a855f7;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);border-radius:7px;padding:6px 12px;cursor:pointer;font-weight:500;">Lihat Review →</button>
         </div>
-        <div v-if="!interns.length" style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Belum ada mahasiswa bimbingan.</div>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            <div v-for="intern in interns" :key="intern.id" style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;">
-              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">{{ intern.initials }}</div>
-              <div style="flex:1;min-width:0;">
-                <p style="font-size:13px;font-weight:600;">{{ intern.name }}</p>
-                <p style="font-size:11px;color:rgba(255,255,255,0.4);">{{ intern.company?.name || intern.company || '-' }} - {{ intern.position }}</p>
+        <div v-if="!interns.length" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 20px;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:12px;color:rgba(255,255,255,0.4);">
+          <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="opacity:0.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <p style="font-size:13px;">Belum ada mahasiswa bimbingan.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div v-for="intern in interns" :key="intern.id" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.055)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;letter-spacing:0.5px;">{{ intern.initials }}</div>
+            <div style="flex:1;min-width:0;">
+              <p style="font-size:13px;font-weight:600;margin-bottom:2px;">{{ intern.name }}</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ intern.company?.name || intern.company || '-' }}</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:99px;height:4px;overflow:hidden;">
+                  <div :style="{ width: intern.progress + '%', background: 'linear-gradient(90deg,#6366f1,#22d3ee)', height:'100%', borderRadius:'99px' }"></div>
+                </div>
+                <span style="font-size:11px;font-weight:700;color:#4ade80;flex-shrink:0;">{{ intern.progress }}%</span>
               </div>
-              <div style="text-align:right;">
-                <span class="badge" :class="getStatusBadge(intern.status)">{{ intern.status }}</span>
-                <p style="font-size:13px;font-weight:700;color:#4ade80;margin-top:5px;">{{ intern.progress }}%</p>
-                <p style="font-size:11px;color:rgba(255,255,255,0.3);">{{ intern.logbookCompleted }} Logbook</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;min-width:74px;">
-                <button @click="goDetail(intern.id)" class="btn-outline" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;cursor:pointer;">Detail</button>
-                <button @click="goReview(intern)" class="btn-primary" style="padding:6px 8px;border-radius:7px;color:#fff;font-size:11px;cursor:pointer;">Review</button>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <span class="badge" :class="getStatusBadge(intern.status)" style="font-size:10px;">{{ intern.status }}</span>
+              <div style="display:flex;gap:6px;">
+                <button @click="goDetail(intern.id)" class="btn-outline" style="padding:5px 10px;border-radius:7px;color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;">Detail</button>
+                <button @click="goReview(intern)" class="btn-primary" style="padding:5px 10px;border-radius:7px;color:#fff;font-size:11px;cursor:pointer;">Review</button>
               </div>
             </div>
           </div>
@@ -170,23 +214,31 @@
       </div>
 
       <!-- Logbook Review -->
-      <div class="glass-card" style="border-radius:14px;padding:24px;min-height:340px;">
-        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Review Logbook &amp; Jurnal</h3>
-        <div v-if="!reviewLogbooks.length" style="padding:18px;background:rgba(255,255,255,0.03);border-radius:10px;color:rgba(255,255,255,0.45);font-size:13px;">Tidak ada logbook yang perlu direview.</div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div v-for="lb in reviewLogbooks" :key="lb.id" style="padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:3px solid #fbbf24;">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px;">
-                <div>
-                  <p style="font-size:13px;font-weight:600;">{{ lb.title }}</p>
-                  <p style="font-size:11px;color:rgba(255,255,255,0.4);">Dari: {{ getInternName(lb.internId) }} - {{ formatDate(lb.date) }}</p>
-                </div>
-                <span class="badge" :class="getStatusBadge(lb.status)">{{ getStatusLabel(lb.status) }}</span>
+      <div class="glass-card" style="border-radius:16px;padding:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+          <div>
+            <h3 style="font-size:15px;font-weight:700;margin-bottom:2px;">Logbook Menunggu Review</h3>
+            <p style="font-size:11px;color:rgba(255,255,255,0.35);">Klik untuk melihat dan menilai</p>
+          </div>
+          <span v-if="reviewLogbooks.length" style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.25);color:#fbbf24;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;">{{ reviewLogbooks.length }} Pending</span>
+        </div>
+        <div v-if="!reviewLogbooks.length" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 20px;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:12px;color:rgba(255,255,255,0.4);">
+          <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="opacity:0.4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+          <p style="font-size:13px;">Semua logbook sudah direview. ✓</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div v-for="lb in reviewLogbooks" :key="lb.id" style="padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;border-left:3px solid #fbbf24;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px;">
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:13px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ lb.title }}</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.38);">{{ getInternName(lb.internId) }} · {{ formatDate(lb.date) }}</p>
               </div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button @click="goLogbookDetail(lb.id)" style="padding:6px 12px;border-radius:6px;background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.3);color:#c4b5fd;font-size:11px;cursor:pointer;flex:1;">Detail</button>
-                <button @click="approveLogbook(lb.id)" style="padding:6px 12px;border-radius:6px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:11px;cursor:pointer;flex:1;">Setujui</button>
-                <button @click="requestRevision(lb)" style="padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:11px;cursor:pointer;flex:1;">Beri Revisi</button>
-              </div>
+              <span class="badge" :class="getStatusBadge(lb.status)" style="font-size:10px;flex-shrink:0;">{{ getStatusLabel(lb.status) }}</span>
+            </div>
+            <div style="display:flex;gap:7px;">
+              <button @click="goLogbookDetail(lb.id)" style="padding:6px 0;border-radius:8px;background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.25);color:#c4b5fd;font-size:11px;cursor:pointer;flex:1;font-weight:500;">Detail</button>
+              <button @click="approveLogbook(lb.id)" style="padding:6px 0;border-radius:8px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.25);color:#4ade80;font-size:11px;cursor:pointer;flex:1;font-weight:500;">Setujui ✓</button>
+              <button @click="requestRevision(lb)" style="padding:6px 0;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:11px;cursor:pointer;flex:1;font-weight:500;">Revisi</button>
             </div>
           </div>
         </div>
