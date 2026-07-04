@@ -1,7 +1,8 @@
 'use strict';
 
 (async function initSimagApi(global) {
-  const API_BASE_URL = 'http://localhost:3000/api';
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const API_BASE_URL = isLocal ? 'http://localhost:3000/api' : '/api';
   const GET_CACHE_TTL_MS = 5000;
   const pendingGets = new Map();
 

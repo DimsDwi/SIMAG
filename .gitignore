@@ -67,3 +67,4 @@ backend/data/*
 
 # Package lock (optional, depends on team policy)
 # package-lock.json
+playwright-report/

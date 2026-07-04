@@ -309,6 +309,11 @@ app.use((err, req, res, next) => {
     console.warn('Continuing with MySQL service anyway for audit purposes.\n');
   }
 
-  await app.listen(PORT);
-  console.log(`SIMAG API Server is running on http://localhost:${PORT}`);
+  // Only start the server locally, not when deployed as a Vercel Serverless Function
+  if (!process.env.VERCEL) {
+    await app.listen(PORT);
+    console.log(`SIMAG API Server is running on http://localhost:${PORT}`);
+  }
 })();
+
+module.exports = app;
