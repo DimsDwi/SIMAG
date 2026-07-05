@@ -321,3 +321,51 @@
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ── Print Media Query ───────────────────────────────────── */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  * {
+    color: #000 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  #simag-sidebar, .simag-mobile-menu-button, .bg-orb, button[onclick="window.print()"] {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  .glass-card {
+    background: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 20px !important;
+  }
+  h1, h2, h3, p, span {
+    color: #000 !important;
+    background: none !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+  .dashboard-stats {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+  }
+  .dashboard-stats .glass-card {
+    flex: 1 1 auto;
+    min-width: 150px;
+  }
+  table, th, td {
+    border: 1px solid #ddd !important;
+  }
+  .badge {
+    border: 1px solid #000 !important;
+  }
+}
