@@ -12,9 +12,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../shared/styles.css?v=1782406323813" />
+    <link rel="stylesheet" href="../shared/styles.css" />
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>[v-cloak] { display: none !important; }</style>
+  <style media="print">
+    @page { size: auto; margin: 15mm; }
+    body, html { background: #fff !important; color: #000 !important; }
+    * { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; box-shadow: none !important; }
+    #simag-sidebar, .simag-mobile-menu-button, .bg-orb, button, nav { display: none !important; }
+    main { padding: 0 !important; margin: 0 !important; overflow: visible !important; }
+    .glass-card { background: none !important; border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 20px !important; padding: 15px !important; border-radius: 8px !important; }
+    .dashboard-stats { display: flex !important; gap: 15px !important; margin-bottom: 20px !important; }
+    .dashboard-stats .glass-card { flex: 1; border: 2px solid #000 !important; }
+    .dashboard-stats p { color: #000 !important; }
+    .dashboard-stats p:last-child { font-size: 24px !important; font-weight: bold !important; }
+    .dashboard-two-col { display: block !important; }
+    table { width: 100% !important; border-collapse: collapse !important; border: 1px solid #000 !important; }
+    th, td { border: 1px solid #000 !important; padding: 8px !important; color: #000 !important; }
+    th { background: #f0f0f0 !important; font-weight: bold !important; }
+    .badge { border: 1px solid #000 !important; padding: 2px 6px !important; border-radius: 4px !important; font-weight: normal !important; }
+  </style>
 </head>
 <body>
 
