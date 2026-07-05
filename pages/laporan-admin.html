@@ -16,21 +16,73 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>[v-cloak] { display: none !important; }</style>
   <style media="print">
-    @page { size: auto; margin: 15mm; }
-    body, html { background: #fff !important; color: #000 !important; }
-    * { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; box-shadow: none !important; }
+    @page { size: A4; margin: 20mm; }
+    body, html { background: #fff !important; color: #111827 !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
+    * { -webkit-text-fill-color: initial !important; text-shadow: none !important; box-shadow: none !important; }
+    
+    /* Hide UI Elements */
     #simag-sidebar, .simag-mobile-menu-button, .bg-orb, button, nav { display: none !important; }
+    
+    /* Reset Layouts for Print */
+    .simag-layout-wrapper { display: block !important; min-height: auto !important; }
     main { padding: 0 !important; margin: 0 !important; overflow: visible !important; }
-    .glass-card { background: none !important; border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 20px !important; padding: 15px !important; border-radius: 8px !important; }
-    .dashboard-stats { display: flex !important; gap: 15px !important; margin-bottom: 20px !important; }
-    .dashboard-stats .glass-card { flex: 1; border: 2px solid #000 !important; }
-    .dashboard-stats p { color: #000 !important; }
-    .dashboard-stats p:last-child { font-size: 24px !important; font-weight: bold !important; }
+    div[style*="overflow-x:auto"] { overflow: visible !important; }
     .dashboard-two-col { display: block !important; }
-    table { width: 100% !important; border-collapse: collapse !important; border: 1px solid #000 !important; }
-    th, td { border: 1px solid #000 !important; padding: 8px !important; color: #000 !important; }
-    th { background: #f0f0f0 !important; font-weight: bold !important; }
-    .badge { border: 1px solid #000 !important; padding: 2px 6px !important; border-radius: 4px !important; font-weight: normal !important; }
+    
+    /* Headers & Typography */
+    .text-gradient { background: none !important; -webkit-text-fill-color: #111827 !important; color: #111827 !important; }
+    h1, h2 { color: #111827 !important; margin-bottom: 12px !important; }
+    p { color: #4b5563 !important; }
+    
+    /* Cards */
+    .glass-card { 
+      background: none !important; 
+      border: 1px solid #e5e7eb !important; 
+      break-inside: avoid; 
+      margin-bottom: 24px !important; 
+      padding: 24px !important; 
+      border-radius: 12px !important; 
+    }
+    
+    /* Stats Grid */
+    .dashboard-stats { display: flex !important; gap: 16px !important; margin-bottom: 32px !important; }
+    .dashboard-stats .glass-card { 
+      flex: 1; 
+      border: 1px solid #e5e7eb !important; 
+      border-top: 4px solid #111827 !important; 
+      padding: 16px !important;
+      border-radius: 8px !important;
+    }
+    .dashboard-stats p:first-child { color: #6b7280 !important; font-size: 11px !important; text-transform: uppercase; font-weight: 700 !important; letter-spacing: 0.5px; margin-bottom: 8px !important; }
+    .dashboard-stats p:last-child { color: #111827 !important; font-size: 28px !important; font-weight: 800 !important; margin-top: 0 !important; }
+    
+    /* Premium Data Tables */
+    table { width: 100% !important; border-collapse: collapse !important; border: none !important; margin-top: 8px !important; font-size: 12px !important; }
+    th, td { border: none !important; border-bottom: 1px solid #f3f4f6 !important; padding: 12px 8px !important; text-align: left !important; color: #1f2937 !important; vertical-align: top; }
+    th { 
+      background: #fff !important; 
+      color: #6b7280 !important; 
+      text-transform: uppercase; 
+      font-size: 10px !important; 
+      letter-spacing: 0.05em; 
+      font-weight: 700 !important; 
+      border-bottom: 2px solid #e5e7eb !important; 
+    }
+    tr:last-child td { border-bottom: none !important; }
+    
+    /* Badges */
+    .badge { 
+      border: 1px solid #e5e7eb !important; 
+      background: #f9fafb !important; 
+      color: #4b5563 !important; 
+      padding: 4px 10px !important; 
+      border-radius: 9999px !important; 
+      font-weight: 600 !important; 
+      font-size: 10px !important; 
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
